@@ -1,0 +1,26 @@
+         Help Wifi Jammer
+
+Be carefull the wifi jammer is a really
+powerfull tool, and may be considerated
+as illegal in some countries. Please
+use it only on a network belongs to you.
+
+To use the wifi jammer you need to have
+a network card compatible with injection
+as "ALFA NETWORK AWUS036H"
+
+before to jamm a network you need to scan
+ all networks around you. To do that, launch
+ "scann networks" wait approximately 10
+ seconds and press the 'quit button / CTRL + C'
+ Now bramble have some information about the networks
+ around you. select "jamm a wifi network" option
+ and let's start the jamm process. Keep on the process
+ to continue to jamm the network.
+
+
+Used :
+  -airodump-ng
+  -aireplay-ng
+
+developper Marc-Antoine Delannoy

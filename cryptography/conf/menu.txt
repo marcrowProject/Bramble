@@ -1,0 +1,7 @@
+<name=" 0 encrypt a file" src="./cryptography -encryptf" path="cryptography/cryptography">
+<name=" 5 evil twin" src="./starter.sh -test" path="evilTwin/src/starter.sh">
+<name=" 1 decrypt a file" src="./cryptography -decryptf" path="cryptography/cryptography">
+<name=" 2 encrypt a folder" src="./cryptography -encryptd" path="cryptography/cryptography">
+<name=" 3 decrypt a folder/archive" src="./cryptography -decryptd" path="cryptography/cryptography">
+<name="~Help" src="">
+<name="~end" src="">

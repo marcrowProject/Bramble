@@ -1,0 +1,20 @@
+         Help File
+
+Button
+° <- y + enter -> select
+° <- n + enter -> don't select
+° <- Ctrl+C -> stop process
+° <- off 
+
+if you have any questions or if you have
+developped a new script, go to
+https://github.com/marcrowProject/Bramble 
+and post it.
+
+description
+--keyVacuum--
+copy all data from an usb device
+to another. It' a fonctionnality
+as simple as usefull.
+
+developper Marc-Antoine Delannoy

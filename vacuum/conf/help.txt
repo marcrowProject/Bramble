@@ -1,0 +1,22 @@
+vacuum Help
+
+for the moment 3 mode exist.
+
+-before all plug the usb device than You
+want make a copy.
+
+-after that if you want to copy it to another
+usb disk, plug this usb device and select
+the option usb to usb.
+
+-else if you want to copy to your bramble device,
+select the option usb to internal storage.
+You can find the copy in the directory
+/bramble/result/vacuum/nameOfTheKey
+/!\ Be carefull the space on your device is limited.
+so use this option if you don't have the choice.
+
+-so know choose the target (and the Destination)
+
+-wait the end of the operation. if you interupt the copy,
+the copy will be incomplete.

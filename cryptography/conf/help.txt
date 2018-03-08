@@ -1,0 +1,7 @@
+cryptography Help
+
+the encryption use is aes 256
+
+before encrypt a folder, it is
+compressed to use less space on the
+disk.

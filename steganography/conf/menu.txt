@@ -1,0 +1,5 @@
+<name=" 0 hide file in a file" src="./steganography -h" path="steganography/steganography">
+<name=" 1 extract file from a file" src="./steganography -e" path="steganography/steganography">
+<name=" 2 display the content of a hidding file" src="./steganography -d" path="steganography/steganography">
+<name="~Help" src="steganography/conf/help.txt">
+<name="~exit" src="">

@@ -1,0 +1,5 @@
+<name=" 0 key to key" src="./keyVacuum -kk" path="vacuum/keyVacuum">
+<name=" 1 key to internal storage" src="./keyVacuum -ki" path="vacuum/keyVacuum">
+<name=" 2 key to web" src="./keyVacuum -kw" path="vacuum/keyVacuum">
+<name="~Help" src="vacuum/conf/help.txt">
+<name="~exit" src="">
