@@ -52,11 +52,13 @@ int loadMenu(std::map<std::string, std::string>& menu, std::string adr)
 
 int displayMenu(std::map<std::string, std::string>& menu)
 {
-    printf("\33[H\33[2J");
+    clrscr();
 
     while (1) {
         for (std::map<std::string, std::string>::iterator it = menu.begin(); it != menu.end(); ++it) {
+            color("7;1");
             std::cout << "->" << it->first << "<-" << '\n';
+            color("0");
             std::map<std::string, std::string>::iterator it2 = it;
             ++it2;
             if (it2 != menu.end()) {
@@ -91,10 +93,10 @@ int displayMenu(std::map<std::string, std::string>& menu)
             std::string ans;
             std::cin >> ans;
             std::cout << it->first << '\n';
-            printf("\33[H\33[2J");
+            clrscr();
 
             if (ans.compare("y") == 0) {
-                printf("\33[H\33[2J");
+                clrscr();
 
                 //extract the program, arguments and path---
 
@@ -178,7 +180,7 @@ int displayMenu(std::map<std::string, std::string>& menu)
                     ////
 
                     //Now we can lauch our programm
-                    printf("\33[H\33[2J");
+                    clrscr();
                     launch(arg, cPath);
                     return 0;
                 }
@@ -281,7 +283,7 @@ std::string spaceEchapment(std::string str)
 
 int readFile(std::string path)
 {
-    printf("\33[H\33[2J");
+    clrscr();
     std::ifstream file(path, std::ios::in); // open the file
     if (file) // if the opening doesn't generate an error
     {
@@ -295,7 +297,7 @@ int readFile(std::string path)
             }
             std::cin >> next;
             if (next.compare("y") != 0) {
-                printf("\33[H\33[2J");
+                clrscr();
                 return 0;
             }
         }
@@ -344,7 +346,7 @@ DIR* browseFile(std::string& path)
             j = (j + 1) % folder.size();
         }
         std::cin >> ans;
-        printf("\33[H\33[2J");
+        clrscr();
     }
 
     path += "/" + folder[i];
@@ -401,7 +403,7 @@ DIR* selectFile(std::string& path)
             j = (j + 1) % folder.size();
         }
         std::cin >> ans;
-        printf("\33[H\33[2J");
+        clrscr();
     }
     path += "/" + folder[i];
     std::cout << path << '\n';
@@ -419,7 +421,7 @@ DIR* selectFile(std::string& path)
 
 std::string selectFileFromDfPath()
 {
-    printf("\33[H\33[2J");
+    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
@@ -437,10 +439,10 @@ std::string selectFileFromDfPath()
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            printf("\33[H\33[2J");
+            clrscr();
         }
     }
-    printf("\33[H\33[2J");
+    clrscr();
     if (i == 0) {
         path = "./result";
     }
@@ -453,7 +455,7 @@ std::string selectFileFromDfPath()
 
 std::string selectFromDfPath()
 {
-    printf("\33[H\33[2J");
+    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
@@ -471,10 +473,10 @@ std::string selectFromDfPath()
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            printf("\33[H\33[2J");
+            clrscr();
         }
     }
-    printf("\33[H\33[2J");
+    clrscr();
     if (i == 0) {
         path = "./result";
     }

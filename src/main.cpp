@@ -57,30 +57,15 @@ int welcome() {
         }
     }
 }
-/*
-int launch(char* location, char** arg) {
-    pid_t pid = create_process();
-    switch (pid) {
-    case -1:
-        perror("fork");
-        return -1;
-        break;
-    case 0:
-        sonWork(arg,location);
-        break;
-    }
-    return 0;
-
-}*/
 
 
 int main(int argc, char ** argv)
 {
-    //handler to stop CTRL-C 
+    //handler to stop CTRL-C
     //to comment when you code
-    //signal(SIGINT, &sighandler);
+    signal(SIGINT, &sighandler);
 
-    //set to full screen 
+    //set to full screen
     //usefull when u have a regular use of bramble but it's execrable when you coding
     //char *arg[]= { "wmctrl", "-r", ":ACTIVE:", "-b", "toggle,fullscreen", NULL };
 

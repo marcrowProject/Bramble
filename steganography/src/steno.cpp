@@ -3,12 +3,12 @@
 int main(int argc, char ** argv)
 {
     int strt=0;
-    printf ("\33[H\33[2J");
+    clrscr();
     if(argc<2) {
         std::map<std::string,std::string> menu;
         strt=loadMenu(menu,"stenography/conf/menu.txt");
         if(strt==-2) {
-            printf ("\33[H\33[2J");
+            clrscr();
             strt=loadMenu(menu,"conf/menu.txt");
             if(strt==-2) return -2;
         }
@@ -32,10 +32,10 @@ int main(int argc, char ** argv)
                 std::cin >> ans;
                 std::cout << ans << '\n';
                 if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                printf ("\33[H\33[2J");
+                clrscr();
             }
         }
-        printf ("\33[H\33[2J");
+        clrscr();
 
         std::string pathsrc;
         if(i==0) {
@@ -57,10 +57,10 @@ int main(int argc, char ** argv)
                 std::cin >> ans;
                 std::cout << ans << '\n';
                 if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                printf ("\33[H\33[2J");
+                clrscr();
             }
         }
-        printf ("\33[H\33[2J");
+        clrscr();
 
         std::string pathdst;
         if(i==0) {
@@ -72,13 +72,13 @@ int main(int argc, char ** argv)
         selectFile(pathdst);
         std::cout << pathdst << '\n';
 
-        printf ("\33[H\33[2J");
+        clrscr();
         std::string choice;
         std::cout << "y to use a file as password \n\t\tor\nn to use password saved\n\t\tor\nan other letter to enter with keyboard" << '\n';
         std::cin >> choice;
         std::string pass;
         std::string path;
-        printf ("\33[H\33[2J");
+        clrscr();
 
         if(choice.compare("y")==0) {
             ans="n";
@@ -89,10 +89,10 @@ int main(int argc, char ** argv)
                     std::cin >> ans;
                     std::cout << ans << '\n';
                     if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                    printf ("\33[H\33[2J");
+                    clrscr();
                 }
             }
-            printf ("\33[H\33[2J");
+            clrscr();
             if(i==0) {
                 path="./result";
             }
@@ -116,7 +116,7 @@ int main(int argc, char ** argv)
                 std::cout << "password : " << pass << '\n';
                 std::cin >> ans;
             }
-            printf ("\33[H\33[2J");
+            clrscr();
 
 
             std::cout << "\nDo you want to make a copy of your passfile? y/n" << '\n';
@@ -131,10 +131,10 @@ int main(int argc, char ** argv)
                         std::cin >> ans;
                         std::cout << ans << '\n';
                         if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        printf ("\33[H\33[2J");
+                        clrscr();
                     }
                 }
-                printf ("\33[H\33[2J");
+                clrscr();
                 if(i==0) {
                     pathsave="./result";
                 }
@@ -147,7 +147,7 @@ int main(int argc, char ** argv)
                 arg="cp "+path+" "+pathsave+" -R -u";// -r to copy all folder -u to copy only file we don't already have
                 std::cout << "wait the end of this operation..." << '\n';
                 int test=system(arg.c_str());
-                printf ("\33[H\33[2J");
+                clrscr();
                 if(test==0) {
                     std::cout << "successfull copy" << '\n';
                 }
@@ -177,10 +177,10 @@ int main(int argc, char ** argv)
                         std::cin >> ans;
                         std::cout << ans << '\n';
                         if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        printf ("\33[H\33[2J");
+                        clrscr();
                     }
                 }
-                printf ("\33[H\33[2J");
+                clrscr();
                 if(i==0) {
                     pathPass="./result";
                 }
@@ -190,7 +190,7 @@ int main(int argc, char ** argv)
             }
             std::cout << pathPass << '\n';
             browseFile(pathPass);
-            printf ("\33[H\33[2J");
+            clrscr();
 
             std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
             if(file)  // si l'ouverture a réussi
@@ -257,10 +257,10 @@ int main(int argc, char ** argv)
                 std::cin >> ans;
                 std::cout << ans << '\n';
                 if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                printf ("\33[H\33[2J");
+                clrscr();
             }
         }
-        printf ("\33[H\33[2J");
+        clrscr();
 
         std::string pathsrc;
         if(i==0) {
@@ -272,13 +272,13 @@ int main(int argc, char ** argv)
         selectFile(pathsrc);
         std::cout << pathsrc << '\n';
 
-        printf ("\33[H\33[2J");
+        clrscr();
         std::string choice;
         std::cout << "y to use a file as password \n\t\tor\nn to use password saved\n\t\tor\nan other letter to enter with keyboard" << '\n';
         std::cin >> choice;
         std::string pass;
         std::string path;
-        printf ("\33[H\33[2J");
+        clrscr();
 
         if(choice.compare("y")==0) {
             ans="n";
@@ -289,10 +289,10 @@ int main(int argc, char ** argv)
                     std::cin >> ans;
                     std::cout << ans << '\n';
                     if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                    printf ("\33[H\33[2J");
+                    clrscr();
                 }
             }
-            printf ("\33[H\33[2J");
+            clrscr();
             if(i==0) {
                 path="./result";
             }
@@ -322,10 +322,10 @@ int main(int argc, char ** argv)
                         std::cin >> ans;
                         std::cout << ans << '\n';
                         if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        printf ("\33[H\33[2J");
+                        clrscr();
                     }
                 }
-                printf ("\33[H\33[2J");
+                clrscr();
                 if(i==0) {
                     pathPass="./result";
                 }
@@ -335,7 +335,7 @@ int main(int argc, char ** argv)
             }
             std::cout << pathPass << '\n';
             browseFile(pathPass);
-            printf ("\33[H\33[2J");
+            clrscr();
 
             std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
             if(file)  // si l'ouverture a réussi

@@ -18,6 +18,36 @@
 
 #include <sys/wait.h>
 
+//clear screen
+#define clrscr() printf("\033[H\033[2J")
+
+//change the color in the terminal
+#define color(arg) printf("\033[%sm",arg)
+/*
+with arg as const char *
+color("30");
+std::cout << "30 black" << '\n';
+color("31");
+std::cout << "31 red" << '\n';
+color("32");
+std::cout << "32 green" << '\n';
+color("33");
+std::cout << "33 yellow" << '\n';
+color("34");
+std::cout << "33 blue" << '\n';
+color("35");
+std::cout << "35 magenta" << '\n';
+color("36");
+std::cout << "36 cyan" << '\n';
+color("37");
+std::cout << "37 white" << '\n';
+color("7");
+std::cout << "7 inverse mode" << '\n';
+color("1");
+std::cout << "1 big" << '\n';
+*/
+
+
 //load the menu in the map menu
 int loadMenu(std::map<std::string,std::string> & menu, std::string adr);
 //interactive display

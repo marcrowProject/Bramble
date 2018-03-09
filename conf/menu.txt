@@ -10,5 +10,5 @@
 <name=" 9 key cloner -" src="./keyVacuum" path="vacuum/keyVacuum">
 <name="~Option -" src="./option" path="option/option">
 <name="~Help" src="conf/help.txt" path="">
-<name="  Tools -" src="./gadget" path="tools/gadget">
+<name="~Tools -" src="./gadget" path="tools/gadget">
 <name="~exit" src="" path="">
