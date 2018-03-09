@@ -123,11 +123,11 @@ int displayMenu(std::map<std::string, std::string>& menu)
                     std::cout << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl
                               << std::endl
-                              << "99999                         9    999" << std::endl
-                              << "99   9                        9    99" << std::endl
-                              << "9  99   9999 69999    9999999 999  9  9999" << std::endl
-                              << "99   9  9   9    9    9  9  9 9  9 9  99" << std::endl
-                              << "99999   9   996 6996  9  9  9 999  9  9999" << std::endl
+                              << "99999                        9    999" << std::endl
+                              << "99   9                       9    99" << std::endl
+                              << "9  99   9999 69999   9999999 999  9  9999" << std::endl
+                              << "99   9  9   9    9   9  9  9 9  9 9  99" << std::endl
+                              << "99999   9   996 699  9  9  9 999  9  9999" << std::endl
                               << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl;
                     std::cout << "\n\t\tSee you soon"
