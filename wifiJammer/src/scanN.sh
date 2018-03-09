@@ -1,5 +1,10 @@
 #!/bin/bash
 
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
+warning="\033[1;31m"
+
 ans="n"
 intSelected="none"
 allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1)
@@ -7,10 +12,10 @@ while [ $ans != "y" ]
 do
 	for interface in $allInterface
 	do
-		echo " choose the interface :"
+		echo -e $title" choose the interface :"$transparent
 		echo $allInterface
 		echo
-		echo $interface" (y/n)"
+		echo -e $bReverse""$interface" (y/n)"$transparent
 		read ans
 		if [ $ans = "y" ]; then
 			intSelected=$interface
@@ -20,7 +25,7 @@ do
 done
 
 if [ $intSelected = "none" ]; then
-	echo "please next time select an interface"
+	echo -e $warning"please next time select an interface"$transparent
 	exit
 fi
 

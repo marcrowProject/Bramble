@@ -1,7 +1,13 @@
 #!/bin/bash
+
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
+warning="\033[1;31m"
+
 path=""
 ans=""
-echo "select the file/folder you want to erase : "
+echo -e $title"select the file/folder you want to erase : "$transparent
 echo "-y- from internal storage "
 echo "-n- from usb device"
 read ans
@@ -21,7 +27,7 @@ while true;do
     echo "current -- $path --"
     echo $all
     echo
-    echo $choice" (y/n)"
+    echo -e $bReverse$choice" (y/n)"$transparent
     read ans
     if [ $ans = "y" ]; then
       path=$path"/"$choice
@@ -49,13 +55,13 @@ done
 clear
 
 echo $path
-echo "after that your datas from $path was deleting for ever!"
-echo "No one will can get back your datas "
-echo "do you want to remove : $path ? (y/n)"
+echo -e $warning"after that your datas from $path was deleting for ever!"
+echo -e "No one will can get back your datas "$transparent
+echo -e $title"do you want to remove : $path ? (y/n)"$transparent
 read ans
 if [ $ans = "y" ]; then
   clear
   sudo srm -r -l $path
 else
-  echo "erasing cancelled"
+  echo -e $title"erasing cancelled"$transparent
 fi

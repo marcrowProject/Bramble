@@ -1,7 +1,12 @@
 #!/bin/bash
 
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
+warning="\033[1;31m"
+
 clear
-echo "if you don't have scan networks around you, quit and do it"
+echo -e $warning"if you don't scan networks before, quit and do it"$transparent
 
 com="n"
 ans="n"
@@ -13,10 +18,10 @@ while [ $ans != "y" ]
 do
 	for interface in $allInterface
 	do
-		echo " choose the interface :"
+		echo -e $title" choose the interface :"$transparent
 		echo $allInterface
 		echo
-		echo $interface" (y/n)"
+		echo -e $bReverse""$interface" (y/n)"$transparent
 		read ans
 		if [ $ans = "y" ]; then
 			intSelected=$interface
@@ -26,7 +31,7 @@ do
 done
 
 if [ $intSelected = "none" ]; then
-	echo "please next time select an interface"
+	echo -e $warning"please next time select an interface"$transparent
 	exit
 fi
 
@@ -42,7 +47,7 @@ bssid=$(cat result/scanNetwork/scan-01.csv | awk "/BSSID/,/Station/" | cut -d ",
 for essid in $station
 do
 	i=$[i+1]
-	echo $essid" "$i
+	echo -e $bReverse""$essid" "$i""$transparent
 	read ans
 	if [ $ans = "y" ]; then
 		target=$essid

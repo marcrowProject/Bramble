@@ -1,7 +1,15 @@
 #!/bin/bash
+
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
+warning="\033[1;31m"
+
+clear
+
 echo "to work this app need than you scan networks before"
 
-echo "if you don't have scan networks around you, quit and do it"
+echo -e $warning"if you don't scan networks before, quit and do it"$transparent
 
 com="n"
 ans="n"
@@ -13,10 +21,11 @@ while [ $ans != "y" ]
 do
 	for interface in $allInterface
 	do
-		echo " choose the interface :"
+		clear
+		echo -e $title" choose the interface :"$transparent
 		echo $allInterface
 		echo
-		echo $interface" (y/n)"
+		echo -e $bReverse""$interface" (y/n)"$transparent
 		read ans
 		if [ $ans = "y" ]; then
 			intSelected=$interface
@@ -26,7 +35,7 @@ do
 done
 
 if [ $intSelected = "none" ]; then
-	echo "please next time select an interface"
+	echo -e $warning"please next time select an interface"$transparent
 	exit
 fi
 
@@ -42,7 +51,10 @@ bssid=$(cat result/scanNetwork/scan-01.csv | awk "/BSSID/,/Station/" | cut -d ",
 for essid in $station
 do
 	i=$[i+1]
-	echo $essid" "$i
+	clear
+	echo -e $bReverse""$essid" "$i""$transparent
+	echo "   |"
+	echo "   V"
 	read ans
 	if [ $ans = "y" ]; then
 		target=$essid
@@ -62,7 +74,5 @@ if [ $target != "none" ]; then
 	sudo iwconfig $intSelected channel $C
 	sudo rm result/scanNetwork/user*
 	#scna users
-	airodump-ng $intSelected --bssid $B -c $C -w result/scanNetwork/user
+	sudo airodump-ng $intSelected --bssid $B -c $C -w result/scanNetwork/user
 fi
-
-

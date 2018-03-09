@@ -1,13 +1,18 @@
 #!/bin/bash
+
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
+
 ans="n"
 $networkC
 allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1)
-echo " choose the interface :"
+echo -e $title" choose the interface :"$transparent
 while [ $ans != "y" ]
 do
 	for interface in $allInterface
 		do
-		echo $interface" (y/n)"
+		echo -e $bReverse""$interface" (y/n)"$transparent
 		read ans
 		if [ $ans = "y" ]; then
 			netMask=$(sudo ip a show $interface | grep "inet " | cut -d " " -f 6 | cut -d "/" -f 2)
@@ -23,8 +28,7 @@ do
 done
 rm ./result/scan.txt
 sudo nmap -p 518 $networkC | grep "(" | grep -v "Host is up" | grep -v "Starting Nmap" >> ./result/scan.txt
-echo "test"
-echo "y to continue / n to quit"
+echo -e $title"y to continue / n to quit"$transparent
 cat ./result/scan.txt | while  read line ; do
   	echo $line
   	sleep 1

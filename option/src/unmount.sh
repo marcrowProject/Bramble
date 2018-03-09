@@ -1,10 +1,13 @@
 #!/bin/bash
 
-
+transparent="\e[0m"
+bReverse="\e[7;1m"
+title="\e[3;33m"
 
 ans="n"
 folder="/media/pi/"
 test=$(ls $folder)
+#Select the directory where the usb is mounted
 if [ $? != "0" ]; then
   #if user isn't logged as pi user
   alldir=$(ls /media/)
@@ -14,7 +17,7 @@ if [ $? != "0" ]; then
     echo "Select where your usb is mounted : "
     echo $alldir
     echo
-    echo $dir" (y/n)"
+    echo -e $bReverse""$dir" (y/n)"$transparent
     read ans
     if [ $ans = "y" ]; then
       folder="/media/"$dir"/"
@@ -26,14 +29,15 @@ if [ $? != "0" ]; then
   done
 fi
 
+#Select the usb device
 if [ $? = "0" ]; then
   clear
   for usb in $test
   do
-    echo "Select the usb device : "
+    echo -e $title"Select the usb device : "$transparent
     echo $test
     echo
-    echo $usb" (y/n)"
+    echo $bReverse""$usb" (y/n)"$transparent
     read ans
     if [ $ans = "y" ]; then
       target=$folder$usb
