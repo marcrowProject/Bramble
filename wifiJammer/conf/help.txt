@@ -1,22 +1,24 @@
-         Help Wifi Jammer
+         Wifi Jammer Help
 
-Be carefull the wifi jammer is a really
+In fact, it's not really a wfi jammer
+it's a wifi deauther.
+
+Be carefull the wifi deauther is a really
 powerfull tool, and may be considerated
 as illegal in some countries. Please
 use it only on a network belongs to you.
 
 To use the wifi jammer you need to have
 a network card compatible with injection
-as "ALFA NETWORK AWUS036H"
+like "ALFA NETWORK AWUS036H"
 
 before to jamm a network you need to scan
  all networks around you. To do that, launch
  "scann networks" wait approximately 10
- seconds and press the 'quit button / CTRL + C'
- Now bramble have some information about the networks
- around you. select "jamm a wifi network" option
- and let's start the jamm process. Keep on the process
- to continue to jamm the network.
+ seconds then press the 'quit button / CTRL + C'
+ Now bramble have some informations about networks
+ and let's start the jamm process. Keep the process
+ active to continue to jamm the network.
 
 
 Used :
