@@ -6,7 +6,7 @@ int main(int argc, char ** argv)
     clrscr();
     if(argc<2) {
         std::map<std::string,std::string> menu;
-        strt=loadMenu(menu,"stenography/conf/menu.txt");
+        strt=loadMenu(menu,"steganography/conf/menu.txt");
         if(strt==-2) {
             clrscr();
             strt=loadMenu(menu,"conf/menu.txt");
@@ -143,19 +143,18 @@ int main(int argc, char ** argv)
                 }
                 browseFile(pathsave);
                 //copy the file
-                std::string arg;
-                arg="cp "+path+" "+pathsave+" -R -u";// -r to copy all folder -u to copy only file we don't already have
+                char *arg[]= { "cp",(char*) path.c_str(),(char*) pathsave.c_str(), "-R", "-u", NULL };
                 std::cout << "wait the end of this operation..." << '\n';
-                int test=system(arg.c_str());
+                launch(arg,"/bin/cp");
                 clrscr();
-                if(test==0) {
+              /*  if(test==0) {
                     std::cout << "successfull copy" << '\n';
                 }
                 else {
                     std::cout << "Error during the copy" + test  << '\n';
                     std::cin >> ans;
                     return 0;
-                }
+                }*/
             }
 
         }
@@ -219,16 +218,15 @@ int main(int argc, char ** argv)
             std::cout << "your password : ";
             std::cin >> pass;
         }
-        std::string arg;
-        arg="steghide --embed -ef "+pathsrc+" -cf "+pathdst+" -v -z 9";
         pass="\""+pass+"\"";
-        arg+=" -p "+pass;
-        std::cout << arg << '\n';
+        char *arg[]= { "steghide","--embed","-ef",(char*) pathsrc.c_str(),"-cf",(char*) pathdst.c_str(), "-v", "-z","9","-p",(char *) pass.c_str(), NULL };
+        launch(arg,"/usr/bin/steghide");
+      /*  std::cout << arg << '\n';
         int tmp = system(arg.c_str());
         if(tmp!=0) {
             std::cout << "Error : may be the source is too big or the destination file is to small" << '\n';
             return -1;
-        }
+        }*/
         std::cout << arg<< '\n';
         std::cout << "do you want erase the hidding file? y/n" << '\n';
         std::cin >> ans;
@@ -367,7 +365,7 @@ int main(int argc, char ** argv)
 
         pass="\""+pass+"\"";
 
-        std::string arg = "steghide --extract -sf "+pathsrc+" -p "+pass;
-        system(arg.c_str());
+        char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(), NULL };
+        launch(arg,"/usr/bin/steghide");
     }
 }
