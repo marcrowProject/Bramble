@@ -24,7 +24,7 @@ Finally for each features i wrote a help file to give you informations about how
 step by step.
 
 ## :books: Menu
-### :heart: _Actually work :_
+###  :mortar_board: _Actually work :_
          
          0. Cryptography
             -Encrypt file
@@ -51,7 +51,7 @@ step by step.
             -unmount an usb device
             -display ip adress
 
-### :fire: _In progress :_
+###  :hourglass_flowing_sand: _Coming soon :_
          7. Wifi Attack
             -Wps attack
             -Bruteforce attack
@@ -72,7 +72,7 @@ step by step.
  At today date, this software works only on the bramble enivronment.
 Maybe, in the future, it will be compatible with others devices powered by kali linux.
 
-## :gift_heart: Credits
+##  :thumbsup: Credits
  Fluxion 
 ## :white_square_button: Screenshots
 
