@@ -107,7 +107,7 @@ echo "rar"
 
 i=0
 type=""
-while [ $i -ne 7 ] ; do
+while [ $i -ne 7 ] | [ $1 != "all" ]; do
 	tput cup $i 15
 	echo -e $title"(y/n)"$transparent
 	tput cup $i 20
@@ -116,49 +116,49 @@ while [ $i -ne 7 ] ; do
 		case $i in
 			0)
 				if [ -z $type ];then
-					type="jpg,gif,png"
+					type="-t jpg,gif,png"
 				else
 					type=$type",jpg,gif,png"
 				fi
 				;;
 			1)
 				if [ -z $type ];then
-					type="avi,mov"
+					type="-t avi,mov"
 				else
 					type=$type",avi,mov"
 				fi
 				;;
 			2)
 				if [ -z $type ];then
-					type="doc"
+					type="-t doc"
 				else
 					type=$type",doc"
 				fi
 				;;				
 			3)
 				if [ -z $type ];then
-					type="pdf"
+					type="-t pdf"
 				else
 					type=$type",pdf"
 				fi
 				;;
 			4)
 				if [ -z $type ];then
-					type="wav"
+					type="-t wav"
 				else
 					type=$type",wav"
 				fi
 				;;
 			5)
 				if [ -z $type ];then
-					type="zip"
+					type="-t zip"
 				else
 					type=$type",zip"
 				fi
 				;;
 			6)
 				if [ -z $type ];then
-					type="rar"
+					type="-t rar"
 				else
 					type=$type",rar"
 				fi
@@ -179,16 +179,77 @@ while [ $i -ne 7 ] ; do
 		i=0
 	fi
 done
+#-----------------------------Select where you save restored files--------------------------------------------
+clear
+echo "Do you want to save restored files in an usb disk or in the internal storage?"
+echo -e $title"y to save in usb disk at /rescue_Date"
+echo -e "n to save in your Bramble at Bramble/result/rescue/Date"$transparent
+destination=""
+d=$(date +%Y-%m-%d_%H-%M)
+read ans
+if [ $ans = "y" ]; then
+	folder="/media/$USER/"
+	test=$(ls $folder)
+	#Select the directory where the usb is mounted
+	if [ $? != "0" ]; then
+	  #if the user change where all keys are mounted
+	  alldir=$(ls /media/)
+	  clear
+	  for dir in $alldir
+	  do
+		echo "Select where your usb is mounted : "
+		echo $alldir
+		echo
+		echo -e $bReverse""$dir" (y/n)"$transparent
+		read ans
+		if [ $ans = "y" ]; then
+		  folder="/media/"$dir"/"
+		  echo $folder
+		  test=$(ls $folder)
+		  break
+		fi
+		clear
+	  done
+	fi
 
+	#Select the usb device
+	if [ $? = "0" ]; then
+	  clear
+	  	#Until the user give a correct destination
+		while [ -z $destination ] ; do
+			for usb in $test
+			do
+				echo -e $title"Select the usb device : "$transparent
+				echo $test
+				echo
+				echo -e $bReverse""$usb" (y/n)"$transparent
+				read ans
+				if [ $ans = "y" ]; then
+					echo -e $red"Be carefull this process can take a lot of memory!"
+					echo "probably several GB." 
+					echo "If you are not sure to have enougth place press stop-button"
+					echo "And use an usb disk"$transparent
+					destination=$folder""$usb"/rescue/"$d
+					break
+				fi
+				clear
+			done
+		done
+	fi	
+#internal storage
+else
+	destination="result/resrescue_$d"
+fi
 
 
 clear
 
 #-----------------------------Start foremost--------------------------------------------
 sudo rm rescue -r 2> /dev/null
-echo "sudo foremost -t $type -i $partition -o rescue"
-sudo sudo foremost -t $type -i $partition -o rescue
-sudo chmod +rwx rescue
+echo "sudo foremost $type -i $partition -o $destination"
+echo -e $green "that can take a while, be patient :)"$transparent
+sudo foremost -t $type -i $partition -o $destination
+sudo chmod +rwx $destination
 echo "it's done!"
 
 
