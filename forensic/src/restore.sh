@@ -107,7 +107,12 @@ echo "rar"
 
 i=0
 type=""
-while [ $i -ne 7 ] | [ $1 != "all" ]; do
+arg1="none"
+if [ $# -ne 0 ]; then
+	arg1=$1
+fi
+
+while [ $i -ne 7 ] && [ $arg1 != "all" ]; do
 	tput cup $i 15
 	echo -e $title"(y/n)"$transparent
 	tput cup $i 20
@@ -116,51 +121,51 @@ while [ $i -ne 7 ] | [ $1 != "all" ]; do
 		case $i in
 			0)
 				if [ -z $type ];then
-					type="-t jpg,gif,png"
+					type='-t jpg,gif,png'
 				else
-					type=$type",jpg,gif,png"
+					type=$type',jpg,gif,png'
 				fi
 				;;
 			1)
 				if [ -z $type ];then
-					type="-t avi,mov"
+					type='-t avi,mov'
 				else
-					type=$type",avi,mov"
+					type=$type',avi,mov'
 				fi
 				;;
 			2)
 				if [ -z $type ];then
-					type="-t doc"
+					type='-t doc'
 				else
-					type=$type",doc"
+					type=$type',doc'
 				fi
 				;;				
 			3)
 				if [ -z $type ];then
-					type="-t pdf"
+					type='-t pdf'
 				else
-					type=$type",pdf"
+					type=$type',pdf'
 				fi
 				;;
 			4)
 				if [ -z $type ];then
-					type="-t wav"
+					type='-t wav'
 				else
 					type=$type",wav"
 				fi
 				;;
 			5)
 				if [ -z $type ];then
-					type="-t zip"
+					type='-t zip'
 				else
 					type=$type",zip"
 				fi
 				;;
 			6)
 				if [ -z $type ];then
-					type="-t rar"
+					type='-t rar'
 				else
-					type=$type",rar"
+					type=$type',rar'
 				fi
 				;;
 			*)
@@ -174,7 +179,7 @@ while [ $i -ne 7 ] | [ $1 != "all" ]; do
 	
 	i=$[i+1]
 	#in order avoid an empty restoration
-	if [ -z $type ] && [ $i -eq 7 ]; then
+	if [ $i -eq 7 ] && [ -z $type ]; then
 		echo -e "Please select something."
 		i=0
 	fi
@@ -225,10 +230,6 @@ if [ $ans = "y" ]; then
 				echo -e $bReverse""$usb" (y/n)"$transparent
 				read ans
 				if [ $ans = "y" ]; then
-					echo -e $red"Be carefull this process can take a lot of memory!"
-					echo "probably several GB." 
-					echo "If you are not sure to have enougth place press stop-button"
-					echo "And use an usb disk"$transparent
 					destination=$folder""$usb"/rescue/"$d
 					break
 				fi
@@ -238,17 +239,25 @@ if [ $ans = "y" ]; then
 	fi	
 #internal storage
 else
-	destination="result/resrescue_$d"
+	clear
+	echo -e $red"Be carefull this process can take a lot of memory!"
+	echo "probably several GB." 
+	echo "If you are not sure to have enougth place press stop-button"
+	echo -e "And use an usb disk"$transparent
+	echo "press y to continue"
+	destination="result/rescue/$d"
+	read ans
 fi
 
 
 clear
 
 #-----------------------------Start foremost--------------------------------------------
+echo $PWD
 sudo rm rescue -r 2> /dev/null
-echo "sudo foremost $type -i $partition -o $destination"
+echo "sudo foremost $type -i $partition -o $destination" 
 echo -e $green "that can take a while, be patient :)"$transparent
-sudo foremost -t $type -i $partition -o $destination
+sudo foremost $type -i $partition -o $destination
 sudo chmod +rwx $destination
 echo "it's done!"
 

@@ -1,0 +1,5 @@
+<name=" 0 restore all deleted files" src="./restore.sh -all" path="forensic/src/restore.sh">
+<name=" 1 retore specific type of files" src="./restore.sh" path="forensic/src/restore.sh">
+<name=" 2 erasing permently a file/folder *" src="./tools/src/safeRemove.sh" path="tools/src/safeRemove.sh">
+<name="~Help" src="./forensic/conf/help.txt" path="">
+<name="~exit" src="" path="">

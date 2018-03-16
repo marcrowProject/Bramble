@@ -1,4 +1,4 @@
-CC=g++ 
+CC=g++
 CFLAGS= -g -c -Wall -Wextra -ansi -std=c++11 -Wno-unused-parameter -Wno-unused-function
 LDFLAGS= -g
 SOURCES=src/main.cpp src/tools.cpp src/crypt.cpp
@@ -13,7 +13,8 @@ DIR3=tools
 DIR4=cryptography
 DIR5=option
 DIR6=wifiJammer
-EXEC=($DIR)/stenography
+DIR7=forensic
+EXEC=($DIR)/steganography
 
 all: $(SOURCES) $(EXECUTABLE) $(EXEC)
 
@@ -27,6 +28,7 @@ $(EXEC) :
 	@(cd $(DIR4) && $(MAKE))
 	@(cd $(DIR5) && $(MAKE))
 	@(cd $(DIR6) && $(MAKE))
+	@(cd $(DIR7) && $(MAKE))
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -43,6 +45,7 @@ clean:
 	@(cd $(DIR4) && $(MAKE) $@)
 	@(cd $(DIR5) && $(MAKE) $@)
 	@(cd $(DIR6) && $(MAKE) $@)
-	
+	@(cd $(DIR7) && $(MAKE) $@)
+
 #Crée les dépendances avec les .h si un .h modifié on refait le make
 -include $(DEPS)
