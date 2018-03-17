@@ -230,7 +230,7 @@ if [ $ans = "y" ]; then
 				echo -e $bReverse""$usb" (y/n)"$transparent
 				read ans
 				if [ $ans = "y" ]; then
-					destination=$folder""$usb"/rescue/"$d
+					destination=$folder""$usb"/rescue_$d"
 					break
 				fi
 				clear
@@ -245,7 +245,7 @@ else
 	echo "If you are not sure to have enougth place press stop-button"
 	echo -e "And use an usb disk"$transparent
 	echo "press y to continue"
-	destination="result/rescue/$d"
+	destination="result/rescue_$d"
 	read ans
 fi
 
@@ -253,12 +253,11 @@ fi
 clear
 
 #-----------------------------Start foremost--------------------------------------------
-echo $PWD
 sudo rm rescue -r 2> /dev/null
 echo "sudo foremost $type -i $partition -o $destination" 
 echo -e $green "that can take a while, be patient :)"$transparent
 sudo foremost $type -i $partition -o $destination
-sudo chmod +rwx $destination
+sudo chmod +rwx $destination -R
 echo "it's done!"
 
 
