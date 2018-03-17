@@ -32,24 +32,28 @@ step by step.
          1. Steganography
             -Hide a file in a file
             -Get an hidden file
-         2. Wifi jammer/deauther
+         2. Forensic Tools
+            -Restore all deleted files
+            -Retore specific type of files
+            -Erasing permently a file/folder
+         3. Wifi jammer/deauther
             -Scan access point
             -Scan networks
-            -deauth all users from a network
-            -deauth one user
-         3. Evil twin
+            -Deauth all users from a network
+            -Deauth one user
+         4. Evil twin
             -Fluxion custom version for bramble
-         4. Key cloner
+         5. Key cloner
             -Copy an usb device to another usb key
             -Copy an usb device to internal storage
-         5. Tools
-            -erasing permently a file/folder
-            -password generator from file
-            -scan a network
-            -change mac adress
-         6. Option
-            -unmount an usb device
-            -display ip adress
+         6. Tools
+            -Erasing permently a file/folder
+            -Password generator from file
+            -Scan a network
+            -Change mac adress
+         7. Option
+            -Unmount an usb device
+            -Display ip adress
 
 ###  :hourglass_flowing_sand: _Coming soon :_
          7. Wifi Attack
