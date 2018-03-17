@@ -44,8 +44,9 @@ step by step.
          4. Evil twin
             -Fluxion custom version for bramble
          5. Key cloner
-            -Copy an usb device to another usb key
-            -Copy an usb device to internal storage
+            -Copy an usb storage to another usb key
+            -Copy an usb storage to internal storage
+            -Copy only some types of files
          6. Tools
             -Erasing permently a file/folder
             -Password generator from file
