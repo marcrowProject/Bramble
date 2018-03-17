@@ -144,7 +144,7 @@ int main(int argc, char ** argv)
         if(ans.compare("n")==0||ans.compare("N")==0) {
             browseFile(path);
         }
-        arg="cp "+path+" result/cloner -R -u";// -r to copy all folder -u to copy only file we don't already have
+        arg="cp "+path+" result/clone -R -u";// -r to copy all folder -u to copy only file we don't already have
         std::cout << "copy : " <<  "wait the end of this operation..." << '\n';
         int test=system(arg.c_str());
         printf ("\33[H\33[2J");

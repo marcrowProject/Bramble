@@ -61,9 +61,9 @@ fi
 #----------------------------Select a destination for the copy----------------------------
 
 clear
-echo "Do you want to copy files in an usb disk or in the internal storage?"
+echo -e "Do you want to copy files in an usb disk \n\t or \nin the internal storage?"
 echo -e $title"y to save in usb disk at /clone"
-echo -e "n to save in your Bramble at Bramble/result/clone"$transparent
+echo -e "n to save in your Bramble \n  at Bramble/result/cloner/usbName/date"$transparent
 destination=""
 d=$(date +%Y-%m-%d_%H-%M)
 read ans
@@ -121,7 +121,8 @@ else
 	echo "If you are not sure to have enougth place press stop-button"
 	echo -e "And use an usb disk"$transparent
 	echo "press y to continue"
-	destination="clone/$usbSrc""_$d"
+	destination="result/clone/$usbSrc""_$d"
+	mkdir $destination 2> /dev/null
 	read ans
 fi
 
@@ -196,7 +197,6 @@ echo "source "$resultSrc
 echo "destination "$resultDst
 
 clear
-#echo "type "$type
 tput cup 3 0
 echo "["
 tput cup 3 $[size+1]
