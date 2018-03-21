@@ -3,22 +3,22 @@
    
 # :seedling: Bramble a new hacking Open source suite.
 ## :scroll: Summary
- Bramble software is designed for bramble project. It incorporates many features
+ Bramble software has been designed for the bramble project. It incorporates many features
 of pentesting and IT Security. It's easy to use and completely editable. It allows 
-beginners to learn hacking and for the others gives a customisable plug and 
-play hacking tools so you can add your own code quickly. 
+beginners to learn hacking and gives more experienced users a customisable plug and 
+play hacking tools so they can add their own code quickly. 
 
 ## :clubs: Contribute
- Bramble is an open source project so you can contribute ! If you develop some 
+ Bramble is an open source project to which you can contribute ! If you develop some 
 features, don't be shy and share it with us. We will work together in order to implement
-it in Bramble.
+it in the platform.
 
 
 ## :mag: How it works
  Bramble is based mainly on C++. But you can adding easily some code using another language. If you 
-dislike C++ (you make a mistake ^^) it doesn't really matter because i give some templates 
+don't like C++ (that would be a mistake ^^) it doesn't really matter because i offer some templates 
 to help you and to save your time. 
-I try to put lot of comments in my code and i add some links to online classes/articles 
+I try to put lots of comments in my code and i add some links to online classes/articles 
 to have a better understanding of how the code works.
 Finally for each features i wrote a help file to give you informations about how to use it 
 step by step.
@@ -34,8 +34,8 @@ step by step.
             -Get an hidden file
          2. Forensic Tools
             -Restore all deleted files
-            -Retore specific type of files
-            -Erasing permently a file/folder
+            -Restore specific type of files
+            -Erase permently a file/folder
          3. Wifi jammer/deauther
             -Scan access point
             -Scan networks
@@ -48,7 +48,7 @@ step by step.
             -Copy an usb storage to internal storage
             -Copy only some types of files
          6. Tools
-            -Erasing permently a file/folder
+            -Erase permently a file/folder
             -Password generator from file
             -Scan a network
             -Change mac adress
@@ -74,8 +74,8 @@ step by step.
             -telnet
 
 ## :globe_with_meridians: Requirements
- At today date, this software works only on the bramble enivronment.
-Maybe, in the future, it will be compatible with others devices powered by kali linux.
+ As of today, this software works only on the bramble enivronment.
+It may become compatible with others devices powered by kali linux.
 
 ##  :thumbsup: Credits
  Fluxion 
