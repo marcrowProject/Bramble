@@ -6,12 +6,13 @@ title="\e[3;33m"
 
 ans="n"
 $networkC
-allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1)
-echo -e $title" choose the interface :"$transparent
+allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1 | grep -v "lo")
 while [ $ans != "y" ]
 do
 	for interface in $allInterface
 		do
+		clear
+		echo -e $title" choose the interface :"$transparent
 		echo -e $bReverse""$interface" (y/n)"$transparent
 		read ans
 		if [ $ans = "y" ]; then
@@ -19,14 +20,14 @@ do
 			network=$(sudo route -n | grep $interface | cut -d " " -f 1 | grep -v "0.0.0.0")
 			networkC=$network"/"$netMask
 			echo "add : "$networkC
-			if [ $network = "" ]; then
+			if [ -z $network ]; then
 				echo "interface not initialized"
 				exit
 			fi
 		fi
 	done
 done
-rm ./result/scan.txt
+rm ./result/scan.txt 2> /dev/null
 sudo nmap -p 518 $networkC | grep "(" | grep -v "Host is up" | grep -v "Starting Nmap" >> ./result/scan.txt
 echo -e $title"y to continue / n to quit"$transparent
 cat ./result/scan.txt | while  read line ; do
