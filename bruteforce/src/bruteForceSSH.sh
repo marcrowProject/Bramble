@@ -31,12 +31,12 @@ do
 done
 
 #---------------------------------Scann the network------------------------------
-#rm result/scanNetwork/scanSSH 2> /dev/null
+rm result/scanNetwork/scanSSH 2> /dev/null
 
 # -p 22 because 22 is the ssh port
 # -oX because we want a XML output file, it's easier to manipulate
 # for more information go to https://nmap.org/ or see nmap -h
-#nmap -p 22 $networkC --open -oX result/scanNetwork/scanSSH
+nmap -p 22 $networkC --open -oX result/scanNetwork/scanSSH
 echo "sudo nmap -p 22 $networkC -oX --open"
 declare -a hostnamesArray
 hostnamesArray=($(xml_grep 'hostname' result/scanNetwork/scanSSH | grep "hostname" | cut -d '"' -f2))

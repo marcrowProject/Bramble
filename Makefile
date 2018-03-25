@@ -14,6 +14,7 @@ DIR4=cryptography
 DIR5=option
 DIR6=wifiJammer
 DIR7=forensic
+DIR8=bruteforce
 EXEC=($DIR)/steganography
 
 all: $(SOURCES) $(EXECUTABLE) $(EXEC)
@@ -29,6 +30,7 @@ $(EXEC) :
 	@(cd $(DIR5) && $(MAKE))
 	@(cd $(DIR6) && $(MAKE))
 	@(cd $(DIR7) && $(MAKE))
+	@(cd $(DIR8) && $(MAKE))
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -46,6 +48,7 @@ clean:
 	@(cd $(DIR5) && $(MAKE) $@)
 	@(cd $(DIR6) && $(MAKE) $@)
 	@(cd $(DIR7) && $(MAKE) $@)
+	@(cd $(DIR8) && $(MAKE) $@)
 
 #Crée les dépendances avec les .h si un .h modifié on refait le make
 -include $(DEPS)

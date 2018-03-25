@@ -1,0 +1,5 @@
+<name=" 0 ssh bruteforce" src="./bruteforce/src/bruteForceSSH.sh" path="bruteforce/src/bruteForceSSH.sh">
+<name=" 1 telnet bruteforce" src="" path="">
+<name=" 2 zip bruteforce" src="" path="">
+<name="~Help" src="/conf/help.txt">
+<name="~exit" src="">
