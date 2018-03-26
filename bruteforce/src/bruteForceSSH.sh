@@ -178,6 +178,7 @@ if [ $ans == "n" ] || [ $ans == "y" ] ; then
 		nDisplay=$((${#dicoArray[@]}-1))
 	fi
 	p=0
+	ans="n"
 	while [ $ans != "y" ]
 	do
 		clear
@@ -212,7 +213,7 @@ echo $username
 echo $password
 
 echo "hydra ${addressArray[i]} ssh -V $username -P $password -e s -t 10"
-hydra ${addressArray[i]} ssh -vV $username $password -e s -t 10 -I -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
+hydra ${addressArray[i]} ssh -vV $username $password -e s -t 4 -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
 
 ##Uncomment this part to add by default the hostname in the user names dictionnary
 # Supress the line we hadded in the user dictionnary
