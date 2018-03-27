@@ -31,6 +31,8 @@ $(EXEC) :
 	@(cd $(DIR6) && $(MAKE))
 	@(cd $(DIR7) && $(MAKE))
 	@(cd $(DIR8) && $(MAKE))
+	mkdir result/scanNetwork
+	mkdir result/clone
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
