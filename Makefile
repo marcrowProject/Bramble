@@ -31,8 +31,8 @@ $(EXEC) :
 	@(cd $(DIR6) && $(MAKE))
 	@(cd $(DIR7) && $(MAKE))
 	@(cd $(DIR8) && $(MAKE))
-	mkdir result/scanNetwork
-	mkdir result/clone
+	mkdir -p result/scanNetwork 
+	mkdir -p result/clone
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -42,7 +42,7 @@ $(EXEC) :
 	$(CC) -MM -MD $(CFLAGS) $< -o $@
 
 clean:
-	rm -f bramble src/*.o src/*.d src/*~ *~ result/scanNetwork/*
+	rm -f bramble src/*.o src/*.d src/*~ *~ 
 	@(cd $(DIR) && $(MAKE) $@)
 	@(cd $(DIR2) && $(MAKE) $@)
 	@(cd $(DIR3) && $(MAKE) $@)
@@ -51,6 +51,7 @@ clean:
 	@(cd $(DIR6) && $(MAKE) $@)
 	@(cd $(DIR7) && $(MAKE) $@)
 	@(cd $(DIR8) && $(MAKE) $@)
+	
 
 #Crée les dépendances avec les .h si un .h modifié on refait le make
 -include $(DEPS)
