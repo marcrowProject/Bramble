@@ -33,7 +33,7 @@ rm $path/tmp_dico$i
 #if hydra found a password
 state=($(tail -n 1 result/scanNetwork/tmp))
 if [ ${state[0]} = "#" ]; then
-	echo -e $red"We have finished to test $(($i*90)) passwords"
+	echo -e $red"We have finished to test $((($i+1)*90)) passwords"
 	echo -e "\t\t but"
 	echo -e "We actually didn't find a correct password"$transparent
 else
