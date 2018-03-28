@@ -47,12 +47,14 @@ step by step.
             -Copy an usb storage to another usb key
             -Copy an usb storage to internal storage
             -Copy only some types of files
-         6. Tools
+         6. Bruteforce
+            -ssh
+         7. Tools
             -Erase permently a file/folder
             -Password generator from file
             -Scan a network
             -Change mac adress
-         7. Option
+         8. Option
             -Unmount an usb device
             -Display ip adress
 
@@ -70,7 +72,6 @@ step by step.
          10. Network backdoor
          11. Bruteforce
             -zip
-            -ssh	
             -telnet
 
 ## :globe_with_meridians: Requirements
