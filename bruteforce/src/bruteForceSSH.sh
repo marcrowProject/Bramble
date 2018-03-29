@@ -6,6 +6,7 @@ title="\e[3;33m"
 red="\033[1;31m"
 green="\033[1;32m"
 purple="\033[0;35m"
+yellow="\033[1;33m"
 
 #---------------------------------User select the interface------------------------------
 
@@ -79,7 +80,7 @@ if [ $? -eq 0 ]; then
 		networkAdress
 		nmap -p 22 $networkC -oG result/scanNetwork/scanSSH --open
 	else
-		echo "we found a recent ssh scan file."
+		echo -e $green"we found a recent ssh scan file."$transparent
 		echo "do you want to use it (press y)"
 		echo "or rescan the network (press n)?"
 		read ans
@@ -130,7 +131,7 @@ do
 	echo -e $bReverse"-"${hostnamesArray[i]}"-"$transparent"state: "$colorS" "${statesArray[i]}$transparent
 	echo "|-> adress "${addressArray[i]}
 
-	for j in `seq $(($i+1)) $nDisplay`;
+	for j in `seq $(($i+1)) $(($i+$nDisplay))`;
 	do
 		modJ=$(($j % ${#statesArray[@]}))
 		if [  ${statesArray[$modJ]} = "open" ]; then
@@ -158,10 +159,13 @@ usernameoption=""
 passwordOption=""
 bool="0"
 clear
-echo -e "If you$red don't know$transparent the username press y/n"$transparent
-echo -e "else press another key to enter the username"
+echo -e $title"Select an option for the username"$transparent
+echo -e "Use a dico for the username | $title press y$transparent"
+echo -e "Select a username in listUser.txt | $title press n$transparent"
+echo -e "Enter the name with a keyboard | $title press another key$transparent"
 read ans
-if [ $ans == "n" ] || [ $ans == "y" ]; then
+#select a dico
+if [ $ans == "y" ]; then
 	dicoArray=($(ls conf/dico))
 	if [ ${#dicoArray[@]} -gt 8 ]; then
 		nDisplay=4
@@ -177,7 +181,7 @@ if [ $ans == "n" ] || [ $ans == "y" ]; then
 		echo "please select a dictionnary :"
 		echo -e $bReverse""${dicoArray[k]}" "$transparent
 
-		for j in `seq $(($k+1)) $nDisplay`;
+		for j in `seq $(($k+1)) $(($i+$nDisplay))`;
 		do
 			modJ=$(($j % ${#dicoArray[@]}))
 			echo ${dicoArray[modJ]}
@@ -196,7 +200,43 @@ if [ $ans == "n" ] || [ $ans == "y" ]; then
 	##
 	usernameOption="-L "
 
+#select from bruteforce/conf/listUser.txt
+elif [ $ans == "n" ]; then
+	userArray=($(cat bruteforce/conf/listUser.txt))
+	size=$(wc -l bruteforce/conf/listUser.txt | cut -d " " -f 1)
+	echo $size
+	#How many user name are display in the same time
+	if [ $size -gt 5 ]; then
+		nDisplay=5
+	else
+		nDisplay=$(($size-1))
+	fi
 
+	ans="n"
+	i=0
+	while [ $ans != "y" ]; 
+	do
+		clear
+		echo -e $title"Select an username in the list :"$transparent
+		echo -e $bReverse"-"${userArray[i]}"-"$transparent
+		for j in `seq $(($i+1)) $(($i+$nDisplay))`;
+		do
+			modJ=$(($j % $size))
+			echo ${userArray[modJ]}
+		done
+		echo "   V"
+		read ans
+		#protect against empty input
+		if [ -z $ans ];then
+			ans="n"
+		fi
+		
+		if [ $ans != "y" ]; then
+			i=$((($i+1)%$size))
+		fi
+	done
+	username=${userArray[i]}
+	usernameOption="-l"
 else
 	clear
 	echo "please enter the username :"
@@ -272,7 +312,7 @@ fi
 ##
 echo -e $green
 tail -n 1 "result/scanNetwork/pass_${hostnamesArray[i]}"
-echo -e "result saved in result/scanNetwork/pass_hostname"$transparent
+echo -e $title"result saved in result/scanNetwork/pass_hostname"$transparent
 echo -e $title"press a button to  quit"$transparent
 read tmp
 
