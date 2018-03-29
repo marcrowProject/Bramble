@@ -194,17 +194,16 @@ if [ $ans == "y" ]; then
 		fi
 	done
 	username=$PWD"/conf/dico/"${dicoArray[k]}
-	##Uncomment this part to add by default the hostname in the user names dictionnary
-	#sed -i "1i${hostnamesArray[i]}" "$username"
-	#bool="1"
-	##
 	usernameOption="-L "
 
 #select from bruteforce/conf/listUser.txt
 elif [ $ans == "n" ]; then
+	#add the hostname from listUser.txt
+	sed -i "1i${hostnamesArray[i]}" bruteforce/conf/listUser.txt
+	
 	userArray=($(cat bruteforce/conf/listUser.txt))
 	size=$(wc -l bruteforce/conf/listUser.txt | cut -d " " -f 1)
-	echo $size
+	
 	#How many user name are display in the same time
 	if [ $size -gt 5 ]; then
 		nDisplay=5
@@ -214,18 +213,23 @@ elif [ $ans == "n" ]; then
 
 	ans="n"
 	i=0
+	clear
+	echo -e $yellow"Generally the username is the same as the hostname"
+	echo -e "So i temporarly add it in the list for you :)"$transparent
 	while [ $ans != "y" ]; 
 	do
-		clear
 		echo -e $title"Select an username in the list :"$transparent
 		echo -e $bReverse"-"${userArray[i]}"-"$transparent
+		
 		for j in `seq $(($i+1)) $(($i+$nDisplay))`;
 		do
 			modJ=$(($j % $size))
 			echo ${userArray[modJ]}
 		done
+		
 		echo "   V"
 		read ans
+		
 		#protect against empty input
 		if [ -z $ans ];then
 			ans="n"
@@ -234,9 +238,13 @@ elif [ $ans == "n" ]; then
 		if [ $ans != "y" ]; then
 			i=$((($i+1)%$size))
 		fi
+		clear
 	done
+	
 	username=${userArray[i]}
 	usernameOption="-l"
+	#supress the hostname from listUser.txt
+	sed -i '1d' bruteforce/conf/listUser.txt
 else
 	clear
 	echo "please enter the username :"
@@ -259,6 +267,7 @@ if [ $ans == "n" ] || [ $ans == "y" ] ; then
 	fi
 	p=0
 	ans="n"
+	
 	while [ $ans != "y" ]
 	do
 		clear
@@ -276,6 +285,7 @@ if [ $ans == "n" ] || [ $ans == "y" ] ; then
 		if [ $ans = "y" ]; then
 			break
 		else
+		
 		p=$((($p+1)%${#dicoArray[@]}))
 		fi
 	done
@@ -304,12 +314,7 @@ else
 	echo "hydra ${addressArray[i]} ssh -V $usernameOption $username $passwordOption $password -e s -t 10"
 	hydra ${addressArray[i]} ssh -vV $usernameOption $username $passwordOption $password -e s -F -o "result/scanNetwork/pass_${hostnamesArray[i]}"
 fi
-##Uncomment this part to add by default the hostname in the user names dictionnary
-# Supress the line we hadded in the user dictionnary
-#if [ $bool = "1" ]; then
-#	sed -i '1d' "conf/dico/${dicoArray[k]}"
-#fi
-##
+
 echo -e $green
 tail -n 1 "result/scanNetwork/pass_${hostnamesArray[i]}"
 echo -e $title"result saved in result/scanNetwork/pass_hostname"$transparent
