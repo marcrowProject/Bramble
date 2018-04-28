@@ -1,5 +1,11 @@
 #include "tools.h"
 
+/////////////////////////////////Terminal manipulation//////////////////////////
+
+void goto_x_y(unsigned int y, unsigned int x)
+{
+    printf("\033[%u;%uH", y, x);
+}
 
 /////////////////////////////////manipulate Menu////////////////////////////////
 
@@ -196,14 +202,14 @@ int status;
 /* copy the father process and return the son pid (who is the copy of her father*/
 pid_t create_process(void)
 {
-    std::cout << "createProcess\n";
+    //std::cout << "createProcess\n";
     pid_t pid;
 
     //make a safe copy with an unique pid for the son
     do {
         pid = fork();
     } while ((pid == -1) && (errno == EAGAIN));
-    std::cout << "process will be created\n";
+    //std::cout << "process will be created\n";
     return pid;
 }
 
@@ -241,7 +247,7 @@ void launch(char** argument, char* pathFile)
         perror("wait :");
         exit(EXIT_FAILURE);
     }
-    std::cout << "wait the end \n";
+    //std::cout << "wait the end \n";
     waitpid(pid, &status, WUNTRACED | WCONTINUED);
 }
 
@@ -497,10 +503,4 @@ std::string selectFromDfPath()
     }
     browseFile(path);
     return path;
-}
-
-
-void goto_x_y(unsigned int y, unsigned int x)
-{
-    printf("\033[%u;%uH", y, x);
 }

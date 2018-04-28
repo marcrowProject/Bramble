@@ -19,7 +19,9 @@ int main(int argc, char ** argv)
     if (strcmp(argv[1],"-h")==0) {
         printf ("\33[H\33[1J");
         std::cout << "select the file you want to hide:" << '\n';
-        std::vector<std::string> uOi; //usb or internal storage
+        unsigned int i=0;
+        std::string ans;
+        /*std::vector<std::string> uOi; //usb or internal storage
         unsigned int i=0;
         uOi.insert(uOi.begin(),"from usb device");
         uOi.insert(uOi.begin(),"from internal storage bramble/result");
@@ -43,13 +45,14 @@ int main(int argc, char ** argv)
         }
         else {
             pathsrc="/media";
-        }
-        selectFile(pathsrc);
+        }*/
+        std::string pathsrc=selectFileFromDfPath();
+        //selectFile(pathsrc);
         std::cout << pathsrc << '\n';
 
 
-        ans="n";
-        std::cout << "select the file where you want to hide the file:" << '\n';
+        /*ans="n";
+        std::cout << "select the file inside you want to hide the file:" << '\n';
         while(ans.compare("y")!=0 ) {
             for (i=0; i<uOi.size(); i++) {
                 std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
@@ -69,7 +72,8 @@ int main(int argc, char ** argv)
         else {
             pathdst="/media";
         }
-        selectFile(pathdst);
+        selectFile(pathdst);*/
+        std::string pathdst=selectFileFromDfPath();
         std::cout << pathdst << '\n';
 
         clrscr();
@@ -81,7 +85,8 @@ int main(int argc, char ** argv)
         clrscr();
 
         if(choice.compare("y")==0) {
-            ans="n";
+
+            /*ans="n";
             while(ans.compare("y")!=0 ) {
                 for (i=0; i<uOi.size(); i++) {
                     std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
@@ -99,7 +104,8 @@ int main(int argc, char ** argv)
             else {
                 path="/media";
             }
-            selectFile(path);
+            selectFile(path);*/
+            path=selectFileFromDfPath();
             if(path.compare(pathdst)==0) {
                 std::cout << "you can't select the same file for lock and hide." << '\n';
                 return 0;
@@ -123,7 +129,8 @@ int main(int argc, char ** argv)
             std::cin >> ans;
 
             if(ans.compare("y")==0) {
-                ans="n";
+
+                /*ans="n";
                 while(ans.compare("y")!=0 ) {
                     for (i=0; i<uOi.size(); i++) {
                         std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
@@ -139,9 +146,10 @@ int main(int argc, char ** argv)
                     pathsave="./result";
                 }
                 else {
-                    pathsave="/media";/* message */
+                    pathsave="/media";
                 }
-                browseFile(pathsave);
+                browseFile(pathsave);*/
+                pathsave=selectFromDfPath();
                 //copy the file
                 char *arg[]= { "cp",(char*) path.c_str(),(char*) pathsave.c_str(), "-R", "-u", NULL };
                 std::cout << "wait the end of this operation..." << '\n';
@@ -165,10 +173,11 @@ int main(int argc, char ** argv)
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
-                pathPass="./.pass";
+                pathPass="./conf/.pass";
             }
             //load custom file
             else {
+                /*
                 while(ans.compare("y")!=0 ) {
                     for (i=0; i<uOi.size(); i++) {
                         std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
@@ -184,13 +193,14 @@ int main(int argc, char ** argv)
                     pathPass="./result";
                 }
                 else {
-                    pathPass="/media";/* message */
+                    pathPass="/media";
                 }
             }
             std::cout << pathPass << '\n';
             browseFile(pathPass);
-            clrscr();
-
+            clrscr();*/
+                pathPass=selectFileFromDfPath();
+            }
             std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
             if(file)  // si l'ouverture a réussi
             {
