@@ -5,9 +5,9 @@
 
 int loadMenu(std::map<std::string, std::string>& menu, std::string adr)
 {
-    std::ifstream fileMenu(adr, std::ios::in); // on ouvre le fichier en lecture
+    std::ifstream fileMenu(adr, std::ios::in);
     std::cout << "loadMenu \n";
-    if (fileMenu) // si l'ouverture a réussi
+    if (fileMenu)
     {
         // instructions
 
@@ -123,11 +123,11 @@ int displayMenu(std::map<std::string, std::string>& menu)
                     std::cout << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl
                               << std::endl
-                              << "99999                        9    999" << std::endl
-                              << "99   9                       9    99" << std::endl
-                              << "9  99   9999 69999   9999999 999  9  9999" << std::endl
-                              << "99   9  9   9    9   9  9  9 9  9 9  99" << std::endl
-                              << "99999   9   996 699  9  9  9 999  9  9999" << std::endl
+                              << "99999                       9    999" << std::endl
+                              << "99   9                      9    99" << std::endl
+                              << "9  99   9999 69999  9999999 999  9  9999" << std::endl
+                              << "99   9  9   9    9  9  9  9 9  9 9  99" << std::endl
+                              << "99999   9   996 699 9  9  9 999  9  9999" << std::endl
                               << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl;
                     std::cout << "\n\t\tSee you soon"
@@ -220,6 +220,7 @@ void sonWork(char** arg, char* location)
 void launch(char** argument, char* pathFile)
 {
     pid_t pid = create_process();
+
     switch (pid) {
 
     case -1:
@@ -277,6 +278,7 @@ std::string spaceEchapment(std::string str)
     return str;
 }
 
+
 /////////////////////////////////manipulate files///////////////////////////////
 //////////////////////////////////////// & /////////////////////////////////////
 /////////////////////////////////Browse in directory////////////////////////////
@@ -313,6 +315,8 @@ DIR* browseFile(std::string& path)
 {
     //find name of user and load the list of usb keys
     std::string tmp, ans, select;
+    //number of lines displayed
+    int nbDisplayed=6;
 
     //open directory and load the name of all file in folder map
     std::vector<std::string> folder;
@@ -338,10 +342,12 @@ DIR* browseFile(std::string& path)
         int j = 0;
         for (std::vector<std::string>::iterator it = folder.begin(); it < folder.end(); it++) {
             if (i == j) {
+                color("7;1");
                 std::cout << "->" << *it << "<-" << '\n';
+                color("0");
             }
             else {
-                std::cout << *it << '\n';
+                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
             }
             j = (j + 1) % folder.size();
         }
@@ -370,6 +376,8 @@ DIR* selectFile(std::string& path)
 {
     //find name of user and load the list of usb keys
     std::string tmp, ans, select;
+    //number of lines displayed
+    int nbDisplayed=6;
 
     //open directory and load the name of all file in folder map
     std::vector<std::string> folder;
@@ -395,10 +403,12 @@ DIR* selectFile(std::string& path)
         int j = 0;
         for (it = folder.begin(); it < folder.end(); it++) {
             if (i == j) {
+                color("7;1");
                 std::cout << "->" << *it << "<-" << '\n';
+                color("0");
             }
             else {
-                std::cout << *it << '\n';
+                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
             }
             j = (j + 1) % folder.size();
         }
@@ -433,7 +443,9 @@ std::string selectFileFromDfPath()
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
-            std::cout << "-- " << uOi[i % uOi.size()] << " --" << '\n';
+            color("7;1");
+            std::cout << "-> " << uOi[i % uOi.size()] << "<-" << '\n';
+            color("0");
             std::cout << uOi[(i + 1) % uOi.size()] << '\n';
             std::cin >> ans;
             std::cout << ans << '\n';
@@ -467,7 +479,9 @@ std::string selectFromDfPath()
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
-            std::cout << "-- " << uOi[i % uOi.size()] << " --" << '\n';
+            color("7;1");
+            std::cout << "->" << uOi[i % uOi.size()] << "<-" << '\n';
+            color("0");
             std::cout << uOi[(i + 1) % uOi.size()] << '\n';
             std::cin >> ans;
             std::cout << ans << '\n';

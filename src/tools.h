@@ -45,6 +45,8 @@ color("7");
 std::cout << "7 inverse mode" << '\n';
 color("1");
 std::cout << "1 big" << '\n';
+
+!! I use color("7;1") for the current item
 */
 
 
