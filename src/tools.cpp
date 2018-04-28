@@ -431,18 +431,18 @@ DIR* selectFile(std::string& path)
 
 std::string selectFileFromDfPath()
 {
-    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
 
     std::vector<std::string> uOi; //usb or internal storage
-    uOi.insert(uOi.begin(), "from usb device");
+    uOi.insert(uOi.begin(), "from usb device                     ");
     uOi.insert(uOi.begin(), "from internal storage bramble/result");
 
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
+            goto_x_y(2,0);
             color("7;1");
             std::cout << "-> " << uOi[i % uOi.size()] << "<-" << '\n';
             color("0");
@@ -451,7 +451,6 @@ std::string selectFileFromDfPath()
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            clrscr();
         }
     }
     clrscr();
@@ -467,18 +466,18 @@ std::string selectFileFromDfPath()
 
 std::string selectFromDfPath()
 {
-    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
 
     std::vector<std::string> uOi; //usb or internal storage
-    uOi.insert(uOi.begin(), "from usb device");
+    uOi.insert(uOi.begin(), "from usb device                     ");
     uOi.insert(uOi.begin(), "from internal storage bramble/result");
 
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
+            goto_x_y(2,0);
             color("7;1");
             std::cout << "->" << uOi[i % uOi.size()] << "<-" << '\n';
             color("0");
@@ -487,7 +486,6 @@ std::string selectFromDfPath()
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            clrscr();
         }
     }
     clrscr();
@@ -499,4 +497,10 @@ std::string selectFromDfPath()
     }
     browseFile(path);
     return path;
+}
+
+
+void goto_x_y(unsigned int y, unsigned int x)
+{
+    printf("\033[%u;%uH", y, x);
 }
