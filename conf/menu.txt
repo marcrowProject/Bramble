@@ -1,5 +1,5 @@
 <name=" 0 cryptography *" src="./cryptography" path="cryptography/cryptography">
-<name=" 1 hide file on file *" src="./steganography" path="steganography/steganography">
+<name=" 1 hide file in a file *" src="./steganography" path="steganography/steganography">
 <name=" 2 forensic tools *" src="./forensic" path="forensic/forensic">
 <name=" 3 wifi jammer **" src="./wifiJammer" path="wifiJammer/wifiJammer">
 <name=" 4 wifi attack" src="" path="">
