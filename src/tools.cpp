@@ -216,7 +216,7 @@ pid_t create_process(void)
 //behavior of the son
 void sonWork(char** arg, char* location)
 {
-    std::cout << "sonWork\n";
+    //std::cout << "sonWork\n";
     if (execv(location, arg) == -1) {
         perror("execv");
         exit(EXIT_FAILURE);
