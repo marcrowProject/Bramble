@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $1 = "arp" ]; then
+	sudo python ./tools/src/scanArp.py
+	exit
+fi
+
 transparent="\e[0m"
 bReverse="\e[7;1m"
 title="\e[3;33m"
