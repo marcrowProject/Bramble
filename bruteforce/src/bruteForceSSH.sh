@@ -215,7 +215,7 @@ elif [ $ans == "n" ]; then
 	i=0
 	clear
 	echo -e $yellow"Generally the username is the same as the hostname"
-	echo -e "So i temporarly add it in the list for you :)"$transparent
+	echo -e "So i temporarily add it in the list for you :)"$transparent
 	while [ $ans != "y" ]; 
 	do
 		echo -e $title"Select an username in the list :"$transparent
