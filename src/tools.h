@@ -45,8 +45,11 @@ color("7");
 std::cout << "7 inverse mode" << '\n';
 color("1");
 std::cout << "1 big" << '\n';
-*/
 
+!! I use color("7;1") for the current item
+*/
+//move in the terminal
+void goto_x_y(unsigned int y, unsigned int x);
 
 //load the menu in the map menu
 int loadMenu(std::map<std::string,std::string> & menu, std::string adr);

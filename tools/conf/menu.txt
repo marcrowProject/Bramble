@@ -1,6 +1,7 @@
 <name=" 0 erasing permently a file/folder *" src="./tools/src/safeRemove.sh" path="tools/src/safeRemove.sh">
 <name=" 1 password generator from file" src="./gadget -passGen" path="tools/gadget">
 <name=" 2 scan a network" src="./scan.sh" path="tools/src/scan.sh">
+<name=" 2 scan a network (arp)"  src="./scan.sh arp" path="tools/src/scan.sh">
 <name=" 3 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
 <name="~Help" src="/conf/help.txt">
 <name="~exit" src="">

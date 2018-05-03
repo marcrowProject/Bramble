@@ -1,13 +1,19 @@
 #include "tools.h"
 
+/////////////////////////////////Terminal manipulation//////////////////////////
+
+void goto_x_y(unsigned int y, unsigned int x)
+{
+    printf("\033[%u;%uH", y, x);
+}
 
 /////////////////////////////////manipulate Menu////////////////////////////////
 
 int loadMenu(std::map<std::string, std::string>& menu, std::string adr)
 {
-    std::ifstream fileMenu(adr, std::ios::in); // on ouvre le fichier en lecture
+    std::ifstream fileMenu(adr, std::ios::in);
     std::cout << "loadMenu \n";
-    if (fileMenu) // si l'ouverture a réussi
+    if (fileMenu)
     {
         // instructions
 
@@ -123,11 +129,11 @@ int displayMenu(std::map<std::string, std::string>& menu)
                     std::cout << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl
                               << std::endl
-                              << "99999                        9    999" << std::endl
-                              << "99   9                       9    99" << std::endl
-                              << "9  99   9999 69999   9999999 999  9  9999" << std::endl
-                              << "99   9  9   9    9   9  9  9 9  9 9  99" << std::endl
-                              << "99999   9   996 699  9  9  9 999  9  9999" << std::endl
+                              << "99999                       9    999" << std::endl
+                              << "99   9                      9    99" << std::endl
+                              << "9  99   9999 69999  9999999 999  9  9999" << std::endl
+                              << "99   9  9   9    9  9  9  9 9  9 9  99" << std::endl
+                              << "99999   9   996 699 9  9  9 999  9  9999" << std::endl
                               << std::endl
                               << "brambleBrambleBRambleBRAmbleBRAMbleBRAMBle" << std::endl;
                     std::cout << "\n\t\tSee you soon"
@@ -196,21 +202,21 @@ int status;
 /* copy the father process and return the son pid (who is the copy of her father*/
 pid_t create_process(void)
 {
-    std::cout << "createProcess\n";
+    //std::cout << "createProcess\n";
     pid_t pid;
 
     //make a safe copy with an unique pid for the son
     do {
         pid = fork();
     } while ((pid == -1) && (errno == EAGAIN));
-    std::cout << "process will be created\n";
+    //std::cout << "process will be created\n";
     return pid;
 }
 
 //behavior of the son
 void sonWork(char** arg, char* location)
 {
-    std::cout << "sonWork\n";
+    //std::cout << "sonWork\n";
     if (execv(location, arg) == -1) {
         perror("execv");
         exit(EXIT_FAILURE);
@@ -220,6 +226,7 @@ void sonWork(char** arg, char* location)
 void launch(char** argument, char* pathFile)
 {
     pid_t pid = create_process();
+
     switch (pid) {
 
     case -1:
@@ -240,7 +247,7 @@ void launch(char** argument, char* pathFile)
         perror("wait :");
         exit(EXIT_FAILURE);
     }
-    std::cout << "wait the end \n";
+    //std::cout << "wait the end \n";
     waitpid(pid, &status, WUNTRACED | WCONTINUED);
 }
 
@@ -276,6 +283,7 @@ std::string spaceEchapment(std::string str)
     std::cout << str << '\n';
     return str;
 }
+
 
 /////////////////////////////////manipulate files///////////////////////////////
 //////////////////////////////////////// & /////////////////////////////////////
@@ -313,6 +321,8 @@ DIR* browseFile(std::string& path)
 {
     //find name of user and load the list of usb keys
     std::string tmp, ans, select;
+    //number of lines displayed
+    int nbDisplayed=6;
 
     //open directory and load the name of all file in folder map
     std::vector<std::string> folder;
@@ -338,10 +348,12 @@ DIR* browseFile(std::string& path)
         int j = 0;
         for (std::vector<std::string>::iterator it = folder.begin(); it < folder.end(); it++) {
             if (i == j) {
+                color("7;1");
                 std::cout << "->" << *it << "<-" << '\n';
+                color("0");
             }
             else {
-                std::cout << *it << '\n';
+                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
             }
             j = (j + 1) % folder.size();
         }
@@ -370,6 +382,8 @@ DIR* selectFile(std::string& path)
 {
     //find name of user and load the list of usb keys
     std::string tmp, ans, select;
+    //number of lines displayed
+    int nbDisplayed=6;
 
     //open directory and load the name of all file in folder map
     std::vector<std::string> folder;
@@ -395,10 +409,12 @@ DIR* selectFile(std::string& path)
         int j = 0;
         for (it = folder.begin(); it < folder.end(); it++) {
             if (i == j) {
+                color("7;1");
                 std::cout << "->" << *it << "<-" << '\n';
+                color("0");
             }
             else {
-                std::cout << *it << '\n';
+                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
             }
             j = (j + 1) % folder.size();
         }
@@ -421,25 +437,26 @@ DIR* selectFile(std::string& path)
 
 std::string selectFileFromDfPath()
 {
-    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
 
     std::vector<std::string> uOi; //usb or internal storage
-    uOi.insert(uOi.begin(), "from usb device");
+    uOi.insert(uOi.begin(), "from usb device                     ");
     uOi.insert(uOi.begin(), "from internal storage bramble/result");
 
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
-            std::cout << "-- " << uOi[i % uOi.size()] << " --" << '\n';
+            goto_x_y(2,0);
+            color("7;1");
+            std::cout << "-> " << uOi[i % uOi.size()] << "<-" << '\n';
+            color("0");
             std::cout << uOi[(i + 1) % uOi.size()] << '\n';
             std::cin >> ans;
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            clrscr();
         }
     }
     clrscr();
@@ -455,25 +472,26 @@ std::string selectFileFromDfPath()
 
 std::string selectFromDfPath()
 {
-    clrscr();
     std::string pass, path;
     std::string ans;
     size_t i;
 
     std::vector<std::string> uOi; //usb or internal storage
-    uOi.insert(uOi.begin(), "from usb device");
+    uOi.insert(uOi.begin(), "from usb device                     ");
     uOi.insert(uOi.begin(), "from internal storage bramble/result");
 
     ans = "n";
     while (ans.compare("y") != 0) {
         for (i = 0; i < uOi.size(); i++) {
-            std::cout << "-- " << uOi[i % uOi.size()] << " --" << '\n';
+            goto_x_y(2,0);
+            color("7;1");
+            std::cout << "->" << uOi[i % uOi.size()] << "<-" << '\n';
+            color("0");
             std::cout << uOi[(i + 1) % uOi.size()] << '\n';
             std::cin >> ans;
             std::cout << ans << '\n';
             if (ans.compare("y") == 0 || ans.compare("Y") == 0)
                 break;
-            clrscr();
         }
     }
     clrscr();

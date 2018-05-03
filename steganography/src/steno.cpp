@@ -19,59 +19,11 @@ int main(int argc, char ** argv)
     if (strcmp(argv[1],"-h")==0) {
         printf ("\33[H\33[1J");
         std::cout << "select the file you want to hide:" << '\n';
-        std::vector<std::string> uOi; //usb or internal storage
         unsigned int i=0;
-        uOi.insert(uOi.begin(),"from usb device");
-        uOi.insert(uOi.begin(),"from internal storage bramble/result");
         std::string ans;
-        while(ans.compare("y")!=0 ) {
-            std::cout << ans << '\n';
-            for (i=0; i<uOi.size(); i++) {
-                std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                std::cin >> ans;
-                std::cout << ans << '\n';
-                if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                clrscr();
-            }
-        }
-        clrscr();
-
-        std::string pathsrc;
-        if(i==0) {
-            pathsrc="./result";
-        }
-        else {
-            pathsrc="/media";
-        }
-        selectFile(pathsrc);
-        std::cout << pathsrc << '\n';
-
-
-        ans="n";
-        std::cout << "select the file where you want to hide the file:" << '\n';
-        while(ans.compare("y")!=0 ) {
-            for (i=0; i<uOi.size(); i++) {
-                std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                std::cin >> ans;
-                std::cout << ans << '\n';
-                if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                clrscr();
-            }
-        }
-        clrscr();
-
-        std::string pathdst;
-        if(i==0) {
-            pathdst="./result";
-        }
-        else {
-            pathdst="/media";
-        }
-        selectFile(pathdst);
-        std::cout << pathdst << '\n';
-
+        std::cout << "select the file inside you want to hide the file:" << '\n';
+        std::string pathsrc=selectFileFromDfPath();
+        std::string pathdst=selectFileFromDfPath();
         clrscr();
         std::string choice;
         std::cout << "y to use a file as password \n\t\tor\nn to use password saved\n\t\tor\nan other letter to enter with keyboard" << '\n';
@@ -81,25 +33,7 @@ int main(int argc, char ** argv)
         clrscr();
 
         if(choice.compare("y")==0) {
-            ans="n";
-            while(ans.compare("y")!=0 ) {
-                for (i=0; i<uOi.size(); i++) {
-                    std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                    std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                    std::cin >> ans;
-                    std::cout << ans << '\n';
-                    if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                    clrscr();
-                }
-            }
-            clrscr();
-            if(i==0) {
-                path="./result";
-            }
-            else {
-                path="/media";
-            }
-            selectFile(path);
+            path=selectFileFromDfPath();
             if(path.compare(pathdst)==0) {
                 std::cout << "you can't select the same file for lock and hide." << '\n';
                 return 0;
@@ -123,25 +57,7 @@ int main(int argc, char ** argv)
             std::cin >> ans;
 
             if(ans.compare("y")==0) {
-                ans="n";
-                while(ans.compare("y")!=0 ) {
-                    for (i=0; i<uOi.size(); i++) {
-                        std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                        std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                        std::cin >> ans;
-                        std::cout << ans << '\n';
-                        if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        clrscr();
-                    }
-                }
-                clrscr();
-                if(i==0) {
-                    pathsave="./result";
-                }
-                else {
-                    pathsave="/media";/* message */
-                }
-                browseFile(pathsave);
+                pathsave=selectFromDfPath();
                 //copy the file
                 char *arg[]= { "cp",(char*) path.c_str(),(char*) pathsave.c_str(), "-R", "-u", NULL };
                 std::cout << "wait the end of this operation..." << '\n';
@@ -165,32 +81,12 @@ int main(int argc, char ** argv)
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
-                pathPass="./.pass";
+                pathPass="./conf/.pass";
             }
             //load custom file
             else {
-                while(ans.compare("y")!=0 ) {
-                    for (i=0; i<uOi.size(); i++) {
-                        std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                        std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                        std::cin >> ans;
-                        std::cout << ans << '\n';
-                        if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        clrscr();
-                    }
-                }
-                clrscr();
-                if(i==0) {
-                    pathPass="./result";
-                }
-                else {
-                    pathPass="/media";/* message */
-                }
+                pathPass=selectFileFromDfPath();
             }
-            std::cout << pathPass << '\n';
-            browseFile(pathPass);
-            clrscr();
-
             std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
             if(file)  // si l'ouverture a réussi
             {
@@ -364,8 +260,11 @@ int main(int argc, char ** argv)
         }
 
         pass="\""+pass+"\"";
-
-        char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(), NULL };
+        std::string dest=pathsrc+"-extract";
+        char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(),"-xf",(char*) dest.c_str(), NULL };
         launch(arg,"/usr/bin/steghide");
+        std::cout << "Press a key to quit" << '\n';
+        std::string tmp;
+        std::cin >> tmp;
     }
 }

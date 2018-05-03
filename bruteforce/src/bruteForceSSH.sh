@@ -109,6 +109,14 @@ hostnamesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d "(" -f 
 statesArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 4 | cut -d "/" -f 2))
 addressArray=($(cat result/scanNetwork/scanSSH | grep "Ports" | cut -d " " -f 2))
 
+#if we didn't found any ssh open port we stop the process
+if [ ${#statesArray[@]} -eq 0 ]; then
+	clear
+	echo -e $red"Sorry we can't found any ssh open port"$transparent
+	echo "try again later"
+	read tmp
+	exit
+fi
 #---------------------------------User select a target------------------------------
 ans="n"
 i=0
