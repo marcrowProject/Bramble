@@ -24,7 +24,7 @@ Finally for each features i wrote a help file to give you informations about how
 step by step.
 
 ## :books: Menu
-###  :mortar_board: _Actually work :_
+###  :mortar_board: _Currently work :_
          
          0. Cryptography
             -Encrypt file
@@ -53,6 +53,7 @@ step by step.
             -Erase permently a file/folder
             -Password generator from file
             -Scan a network
+            -ARP scanner
             -Change mac adress
          8. Option
             -Unmount an usb device
@@ -71,8 +72,7 @@ step by step.
             -Custom sniffer
          10. Network backdoor
          11. Bruteforce
-            -zip
-            -telnet
+            -zip (for the moment too slow)
 
 ## :globe_with_meridians: Requirements
  As of today, this software works only on the bramble enivronment.
