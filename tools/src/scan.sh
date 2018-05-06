@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $1 = "arp" ]; then
-	sudo python ./tools/src/scanArp.py
+	sudo python ./tools/src/arpScanner.py
 	exit
 fi
 
