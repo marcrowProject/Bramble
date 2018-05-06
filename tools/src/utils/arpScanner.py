@@ -56,7 +56,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0):
         thread_1.join()
         time.sleep(0.2)
     #send&receive packets for the arp scan
-    ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = addr_list), timeout=1, iface=my_interface, verbose=verbosity) #retry=2
+    ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = addr_list), timeout=1, iface=my_interface, verbose=verbosity, retry=1) #retry=2
     #-----------------------------Save the result------------------------------------------
     nb_decoy=3 # limit the number of decoys
     threads_list = []
