@@ -1,9 +1,5 @@
 #!/usr/bin/python
 
-# Python arp poison example script
-# Written by aviran
-# visit for more details aviran.org
-
 from scapy.all import *
 import sys
 from utils.arpScanner import arp_scan
