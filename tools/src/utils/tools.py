@@ -33,7 +33,7 @@ def write_arp_scan_result(res_list,output="./result/scanNetwork/scanARP"):
 
 def select_val(list, message="Please make a choice:"):
     for value in list:
-        print(message)
+        print(colors.CLEAR+colors.HEADER+message+colors.ENDC)
         print(str(list))
         print(colors.BREVERSE+"--"+str(value)+"--"+colors.ENDC)
         answer = raw_input()

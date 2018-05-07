@@ -9,10 +9,8 @@ import random
 import os
 import sys
 import argparse
-import time
 from utils.network import *
 from utils.tools import *
-from utils.arpScanner import *
 
 
 #-----------------------retrieve parameters-------------------------------------
