@@ -32,6 +32,7 @@ def write_arp_scan_result(res_list,output="./result/scanNetwork/scanARP"):
     my_file.close()
 
 def select_val(list, message="Please make a choice:"):
+    """User select a value in the list"""
     for value in list:
         print(colors.CLEAR+colors.HEADER+message+colors.ENDC)
         print(str(list))
@@ -41,3 +42,19 @@ def select_val(list, message="Please make a choice:"):
         if answer == "y":
             return str(value)
     return select_val(list,message)
+
+def print_file(path):
+    """Display the content of a file"""
+    my_file = open(path,'r')
+    all = my_file.read()
+    content = all.split("\n")
+    i = 0
+    nb_lines_printed = 5
+    answer="y"
+    print("press y to continue, n to stop to read")
+    while i < len(content) and answer != "n":
+        print("\n".join([lines for lines in content[i:(i+nb_lines_printed)]]))
+        answer = raw_input()
+        #come back from lines delete it and come back again
+        print("\033[1A\033[K\033[1A")
+        i += nb_lines_printed

