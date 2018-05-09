@@ -1,5 +1,5 @@
 #! /usr/bin/python
-
+import os.path, time
 
 class colors: #Add colors in terminal
     HEADER = '\033[95m'
@@ -44,6 +44,7 @@ def select_val(list, message="Please make a choice:"):
     return select_val(list,message)
 
 def print_file(path):
+    print(colors.CLEAR)
     """Display the content of a file"""
     my_file = open(path,'r')
     all = my_file.read()
@@ -51,7 +52,7 @@ def print_file(path):
     i = 0
     nb_lines_printed = 5
     answer="y"
-    print("press y to continue, n to stop to read")
+    print(colors.BREVERSE+"press y to continue, n to stop to read"+colors.ENDC)
     while i < len(content) and answer != "n":
         print("\n".join([lines for lines in content[i:(i+nb_lines_printed)]]))
         answer = raw_input()
@@ -71,3 +72,13 @@ def dns_get_parser(path_src, path_dst="dns.txt"):
     	else:
     		#packet[3]==time packet[4]==src packet[6]==dst packet[7]==type packet[10]==content
     		output.write(packet[4]+" "+packet[7]+" "+packet[10]+"\n")
+
+def recent_file(path, limit_time=300):
+    try:
+        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path)
+        if time.time() - ctime < limit_time:
+            return True
+        else:
+            return False
+    except OSError:
+        return False
