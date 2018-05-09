@@ -30,7 +30,7 @@ class Sniffer(Thread):
 
     def run(self):
         if self.type == "dns":
-            os.system("sudo tshark -i wlan0 -f 'dst port 53 or port 80' -Y 'eth.src!=84:ef:18:7b:34:14' -T tabs > dns_http_sniffed.txt" ) #-Y 'eth.src!=84:ef:18:7b:34:14'
+            os.system("sudo tshark -i wlan0 -f 'dst port 53 or port 80' -Y 'eth.src!=84:ef:18:7b:34:14' -T ps > dns_http_sniffed.txt" ) #-Y 'eth.src!=84:ef:18:7b:34:14'
 
 class Spoofer(Thread):
     def __init__(self, gateway_ip, target_ip, my_mac, interface):
@@ -112,7 +112,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0):
         thread_1.join()
         time.sleep(0.2)
     #send&receive packets for the arp scan
-    ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = addr_list), timeout=1, iface=my_interface, verbose=verbosity, retry=1) #retry=2
+    ans, unans = srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = addr_list), timeout=1, iface=my_interface, verbose=verbosity, retry=2) #retry=2
     #-----------------------------Save the result------------------------------------------
     nb_decoy=3 # limit the number of decoys
     threads_list = []

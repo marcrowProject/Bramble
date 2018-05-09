@@ -59,11 +59,15 @@ def print_file(path):
         print("\033[1A\033[K\033[1A")
         i += nb_lines_printed
 
-def dns_get_parser(path_src="voila", path_dst="dns.txt"):
+def dns_get_parser(path_src, path_dst="dns.txt"):
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
-    dns_res = [ligne.split("\t") for ligne in my_file if "DNS" in ligne or "GET" in ligne]
-    for packet in dns_res:
-    	num_packet, time, src, dst, protocol, num_packet_by_protocol, content = packet
-    	info = content.split(" ")[-1] if protocol == "DNS" else content
-    	output.write(protocol+" "+ src.split(" ")[0]+" "+ info)
+    dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne]
+    for packets in dns_res:
+    	packet = [ clean for clean in packets if clean!=""]
+    	if "DNS" in packet:
+    		#packet[3]=time packet[4]=src packet[6]=dst packet[7]=type packet[13]=content
+    		output.write(packet[4]+" "+packet[7]+" "+packet[13]+"\n")
+    	else:
+    		#packet[3]==time packet[4]==src packet[6]==dst packet[7]==type packet[10]==content
+    		output.write(packet[4]+" "+packet[7]+" "+packet[10]+"\n")
