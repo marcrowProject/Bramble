@@ -1,0 +1,25 @@
+         Help File
+
+Packet sniffing allows individuals
+to capture data as it is transmitted
+over a network. This technique is used
+by network professionals to diagnose
+network issues, and by malicious users
+to capture unencrypted data, like
+passwords and usernames. If this
+information is captured in transit,
+a user can gain access to a system
+or network.
+
+source : https://www.computerhope.com/jargon/s/sniffing.htm
+
+In our case you can use the sniffer to know
+if your pc is infected by malware, to
+see which sites your child visits,
+or see if someone use your network
+without your permission.
+
+Please do not use it to steal data that
+does not belong to you.
+
+developper Marc-Antoine Delannoy

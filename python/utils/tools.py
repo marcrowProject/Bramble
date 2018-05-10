@@ -43,14 +43,13 @@ def select_val(list, message="Please make a choice:"):
             return str(value)
     return select_val(list,message)
 
-def print_file(path):
+def print_file(path, nb_lines_printed=5):
     print(colors.CLEAR)
     """Display the content of a file"""
     my_file = open(path,'r')
-    all = my_file.read()
-    content = all.split("\n")
+    content = my_file.read()
+    content = content.split("\n")
     i = 0
-    nb_lines_printed = 5
     answer="y"
     print(colors.BREVERSE+"press y to continue, n to stop to read"+colors.ENDC)
     while i < len(content) and answer != "n":
@@ -60,10 +59,9 @@ def print_file(path):
         print("\033[1A\033[K\033[1A")
         i += nb_lines_printed
 
-def dns_get_parser(path_src, path_dst="dns.txt"):
+def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_proper.txt"):
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
-    my_file = open("dns_http_sniffed.txt")
     dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne]
     version = 2.45 #2.4.5 #1.12
     for packets in dns_res:
@@ -71,17 +69,17 @@ def dns_get_parser(path_src, path_dst="dns.txt"):
     	if version > 2:
     		if "DNS" in packet:
     			#packet[3]=time packet[4]=src packet[6]=dst packet[7]=type packet[13]=content
-    			output.write(packet[4]+" "+packet[7]+" "+packet[13])
+    			output.write(packet[4]+" "+packet[7]+" "+packet[13]+"\n")
     		else:
     			#packet[3]==time packet[4]==src packet[6]==dst packet[7]==type packet[10]==content
-    			output.write(packet[4]+" "+packet[7]+" "+packet[10])
+    			output.write(packet[4]+" "+packet[7]+" "+packet[10]+"\n")
     	else:
     		if "DNS" in packet:
     			#packet[2]=time packet[3]=src packet[5]=dst packet[6]=type packet[12]=content
-    			output.write(packet[3]+" "+packet[6]+" "+packet[12])
+    			output.write(packet[3]+" "+packet[6]+" "+packet[12]+"\n")
     		else:
     			#packet[2]==time packet[3]==src packet[5]==dst packet[6]==type packet[9]==content
-    			output.write(packet[3]+" "+packet[6]+" "+packet[9])
+    			output.write(packet[3]+" "+packet[6]+" "+packet[9]+"\n")
 
 def recent_file(path, limit_time=300):
     try:
