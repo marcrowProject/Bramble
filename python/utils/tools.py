@@ -63,15 +63,25 @@ def print_file(path):
 def dns_get_parser(path_src, path_dst="dns.txt"):
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
+    my_file = open("dns_http_sniffed.txt")
     dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne]
+    version = 2.45 #2.4.5 #1.12
     for packets in dns_res:
     	packet = [ clean for clean in packets if clean!=""]
-    	if "DNS" in packet:
-    		#packet[3]=time packet[4]=src packet[6]=dst packet[7]=type packet[13]=content
-    		output.write(packet[4]+" "+packet[7]+" "+packet[13]+"\n")
+    	if version > 2:
+    		if "DNS" in packet:
+    			#packet[3]=time packet[4]=src packet[6]=dst packet[7]=type packet[13]=content
+    			output.write(packet[4]+" "+packet[7]+" "+packet[13])
+    		else:
+    			#packet[3]==time packet[4]==src packet[6]==dst packet[7]==type packet[10]==content
+    			output.write(packet[4]+" "+packet[7]+" "+packet[10])
     	else:
-    		#packet[3]==time packet[4]==src packet[6]==dst packet[7]==type packet[10]==content
-    		output.write(packet[4]+" "+packet[7]+" "+packet[10]+"\n")
+    		if "DNS" in packet:
+    			#packet[2]=time packet[3]=src packet[5]=dst packet[6]=type packet[12]=content
+    			output.write(packet[3]+" "+packet[6]+" "+packet[12])
+    		else:
+    			#packet[2]==time packet[3]==src packet[5]==dst packet[6]==type packet[9]==content
+    			output.write(packet[3]+" "+packet[6]+" "+packet[9])
 
 def recent_file(path, limit_time=300):
     try:
