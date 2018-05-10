@@ -1,3 +1,4 @@
 <name=" 0 sniffing website's names" src="./sniffer -dns" path="sniffer/sniffer">
+<name=" 1 read a previous sniffing session" src="./sniffer -reader" path="sniffer/sniffer">
 <name="~Help" src="sniffer/conf/help.txt">
 <name="~exit" src="">

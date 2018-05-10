@@ -26,8 +26,8 @@ int main(int argc, char ** argv)
     }
 
     if (strcmp(argv[1],"-reader")==0) {
-      char *arg[]= { "sudo", "python", "./python/reader.py", NULL };
-      launch(arg,"/usr/bin/sudo");
+      char *arg[]= { "python", "./python/reader.py", NULL };
+      launch(arg,"/usr/bin/python2.7");
     }
 
 
