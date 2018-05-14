@@ -8,6 +8,7 @@ import sys
 from tools import *
 import fcntl, socket, struct
 import random
+import time;
 from threading import * #Use thread for decoy scan
 
 
@@ -208,6 +209,19 @@ def arpSpoofing(gateway_ip, target_ip, my_mac):
     while 1:
         sendp(packet, verbose=0)
 
+def detect_arp_spoofing():
+
+    beginning = time.asctime( time.localtime(time.time()) )
+    ans = sniff(filter="arp", count=10000, prn=None, lfilter=None, timeout=3, iface="wlan0")
+    end = time.asctime( time.localtime(time.time()) )
+    my_list = []
+    for packet in ans:
+        for arp in packet:
+            my_list.append(str(arp.psrc))
+    my_set = set(my_list)
+    for packet in my_set:
+        nb_pck = colors.OKGREEN + str(my_list.count(packet)) if my_list.count(packet)<20 else colors.FAIL + str(my_list.count(packet))
+        print  nb_pck + " packets from : " + packet
 
 
 #dns request
