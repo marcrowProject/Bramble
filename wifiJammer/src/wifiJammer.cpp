@@ -16,4 +16,10 @@ int main(int argc, char ** argv)
         displayMenu(menu);
         return 0;
     }
+
+    if (strcmp(argv[1],"-d")==0) {
+      char *arg[]= { "sudo", "python", "./python/arpSpoofer.py", "-d", NULL };
+      launch(arg,"/usr/bin/sudo");
+    }
+
 }
