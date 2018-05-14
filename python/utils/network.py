@@ -177,7 +177,7 @@ def preset_arp_spoofing(ip_forward=True):
     print(colors.HEADER+"search devices on the network"+colors.ENDC)
     target_list = arp_scan(my_interface)
     print(colors.CLEAR+colors.OKGREEN+"Number of devices : "+str(len(target_list))+colors.ENDC)
-    print(colors.OKBLUE+colors.BOLD+"press y to spoof all the network")
+    print(colors.OKBLUE+colors.BOLD+"press y to spoof all devices on the network")
     print("press n to spoof only one target on the network"+colors.ENDC)
     answer = raw_input()
     if answer == "n":

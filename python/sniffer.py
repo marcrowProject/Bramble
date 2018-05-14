@@ -7,7 +7,6 @@ import socket, struct
 import argparse
 import sys
 from threading import *
-
 thread_list = []
 address = preset_arp_spoofing(True)
 th_spoofer = Spoofer(address[0], address[1], address[2], address[3])

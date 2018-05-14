@@ -62,7 +62,7 @@ def print_file(path, nb_lines_printed=5):
 def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_proper.txt"):
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
-    dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne]
+    dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne and ".css" not in ligne and".js" not in ligne]
     version = 2.45 #2.4.5 #1.12
     for packets in dns_res:
     	packet = [ clean for clean in packets if clean!=""]

@@ -19,7 +19,6 @@ int main(int argc, char ** argv)
     }
 
 
-    //generate password
     if (strcmp(argv[1],"-dns")==0) {
       char *arg[]= { "sudo", "python", "./python/sniffer.py", NULL };
       launch(arg,"/usr/bin/sudo");
