@@ -45,6 +45,7 @@ class Spoofer(Thread):
         self.interface = interface
         self.running = True
 
+
     def run(self):
         packet = Ether()/ARP(op="who-has",hwsrc=self.my_mac,psrc=self.gateway_ip,pdst=self.target_ip)
         while self.running:
@@ -52,6 +53,77 @@ class Spoofer(Thread):
 
     def stop(self):
         self.running = False
+
+class Spoofer_Detector(Thread):
+    def __init__(self, output, timeout=100):
+        Thread.__init__(self)
+        self.timeout = timeout
+        self.stop_sniffer = Event()
+        self.running = True
+        self.no_interrupt=True
+        self.my_output = open_file(output,"a")
+        if self.my_output == -1 :
+            exit()
+
+    def run(self):
+        while self.running and self.no_interrupt:
+            beginning =  time.time()
+            ans = sniff(filter="arp",
+                        prn=None,
+                        lfilter=None,
+                        timeout=self.timeout,
+                        iface="wlan0",
+                        stop_filter=self.should_stop_sniffer)
+            end = beginning + self.timeout
+            self.no_interrupt = detect_suspect_arp_request(ans, beginning, end, self.my_output)
+            if not self.no_interrupt:
+                self.my_output.close()
+
+    def stop(self):
+        self.running=False
+
+    def join(self, timeout=None):
+        self.running=False
+        self.stop_sniffer.set()
+        super(Spoofer_Detector,self).join(timeout)
+
+    def should_stop_sniffer(self, packet):
+        return self.stop_sniffer.isSet()
+
+    def is_running(self):
+        return self.running == self.no_interrupt
+
+
+def detect_suspect_arp_request(ans, beginning, end, my_output):
+    result=True
+    my_list = []
+    for packet in ans:
+        for arp in packet:
+            my_list.append(str(arp.psrc))
+    my_set = set(my_list)
+    total_time = end - beginning
+    print my_set
+    for ip in my_set:
+        nb_pck = str(my_list.count(ip))
+        print total_time
+        print int(nb_pck)/int(total_time)
+        if 1 > int(nb_pck)/int(total_time) > 1 and result == 0:
+             print (time.asctime(time.localtime(end)) + colors.WARNING + " - " \
+                    + ip + " " + nb_pck + colors.ENDC)
+             print ip + " May be it attacking you"
+             my_output.write(time.asctime(time.localtime(end))+ " - " \
+                    + ip + " : " + nb_pck + "\n")
+        elif int(nb_pck)/total_time > 1:
+             result = False
+             print (time.asctime(time.localtime(end)) + colors.FAIL + " - "
+                    + ip + " : " + nb_pck + colors.ENDC)
+             print ip + " attacking you"
+             my_output.write(time.asctime(time.localtime(end))+ " - " \
+                    + ip + " : " + nb_pck + "\n")
+        else:
+            print " no problem "+ nb_pck + "\n"
+    return result
+
 
 def select_interface():
     all_interfaces = netifaces.interfaces()

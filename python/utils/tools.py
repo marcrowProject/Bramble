@@ -90,3 +90,18 @@ def recent_file(path, limit_time=300):
             return False
     except OSError:
         return False
+
+def open_file(path,rwa):
+    try:
+        output = open(path,rwa)
+        return output
+    except IOError:
+        print(colors.FAIL+"\nWe can't save the result"+colors.ENDC)
+        print(colors.WARNING+"May be the directory doesn't exist")
+        print("But it's pretty sure your output path is wrong"+colors.ENDC)
+        print(colors.HEADER+"Use -o 'your_path' to change the output"+colors.ENDC)
+        print("\n\n\t"+colors.FAIL+"Failed."+colors.ENDC+" Press a button to quit")
+        return -1
+    except:
+        print(+colors.FAIL+"A problem occured"+colors.ENDC)
+    return -1
