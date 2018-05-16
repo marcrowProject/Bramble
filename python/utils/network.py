@@ -102,29 +102,33 @@ def detect_suspect_arp_request(ans, beginning, end, my_output):
             my_list.append(str(arp.psrc))
     my_set = set(my_list)
     total_time = end - beginning
-    print my_set
     for ip in my_set:
         nb_pck = str(my_list.count(ip))
-        print total_time
-        print int(nb_pck)/int(total_time)
-        if 1 > int(nb_pck)/int(total_time) > 1 and result == 0:
-             print (time.asctime(time.localtime(end)) + colors.WARNING + " - " \
-                    + ip + " " + nb_pck + colors.ENDC)
-             print ip + " May be it attacking you"
-             my_output.write(time.asctime(time.localtime(end))+ " - " \
-                    + ip + " : " + nb_pck + "\n")
-        elif int(nb_pck)/total_time > 1:
+        if 2 > int(nb_pck)/int(total_time) > 1 and result == 0:
+             his_hostname = getHostname(ip)
+             print colors.WARNING + " May be " + ip + " attacking you" + colors.ENDC
+             print (time.asctime(time.localtime(end)) +  " " \
+                    +"\n   '->" + his_hostname + " : " + nb_pck +"\n")
+             my_output.write(time.asctime(time.localtime(end))+ " " \
+                            + ip + "\n   '->" + his_hostname + " : " + nb_pck + "\n\n")
+        elif int(nb_pck)/total_time > 2:
              result = False
-             print (time.asctime(time.localtime(end)) + colors.FAIL + " - "
-                    + ip + " : " + nb_pck + colors.ENDC)
-             print ip + " attacking you"
+             his_hostname = getHostname(ip)
+             print colors.FAIL + ip + " attacking you" + colors.ENDC
+             print (time.asctime(time.localtime(end)) + "\n   '->" \
+                    + his_hostname + " : " + nb_pck +"\n")
              my_output.write(time.asctime(time.localtime(end))+ " - " \
-                    + ip + " : " + nb_pck + "\n")
-        else:
-            print " no problem "+ nb_pck + "\n"
+                            + ip + "\n   '->" + his_hostname + " : " + nb_pck + "\n\n")
     return result
 
 
+def getHostname(ip):
+    try:
+        info = socket.gethostbyaddr(ip)
+        hostname = str(info[0])
+    except:
+        hostname = "Unknown"
+    return hostname
 def select_interface():
     all_interfaces = netifaces.interfaces()
     all_interfaces_reversed = reversed(all_interfaces)
