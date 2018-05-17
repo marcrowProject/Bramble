@@ -63,7 +63,7 @@ def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_prope
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
     dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne and ".css" not in ligne and".js" not in ligne]
-    version = 2.45 #2.4.5 #1.12
+    version = 1.12 #2.4.5 #1.12
     for packets in dns_res:
     	packet = [ clean for clean in packets if clean!=""]
     	if version > 2:
@@ -84,15 +84,13 @@ def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_prope
 def recent_file(path, limit_time=300):
     try:
         (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path)
-        if time.time() - ctime < limit_time:
-            return True
-        else:
-            return False
+        return time.time() - ctime < limit_time
     except OSError:
         return False
 
 def open_file(path,rwa):
     try:
+        print path
         output = open(path,rwa)
         return output
     except IOError:

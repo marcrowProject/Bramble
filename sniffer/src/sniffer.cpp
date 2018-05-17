@@ -29,6 +29,11 @@ int main(int argc, char ** argv)
       launch(arg,"/usr/bin/python2.7");
     }
 
+    if (strcmp(argv[1],"-detect")==0) {
+      char *arg[]= { "sudo", "python", "./python/arpSpooferDetector.py", NULL };
+      launch(arg,"/usr/bin/sudo");
+    }
+
 
 
 

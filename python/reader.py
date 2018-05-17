@@ -4,11 +4,16 @@ from utils.tools import *
 import os
 
 print(colors.CLEAR)
-type_list = ["website's names", "passwords", "devices", "custom"]
+type_list = ["website's names",
+            "passwords",
+            "devices",
+            "custom",
+            "detection report"]
 file_name_list = ["dns_http_sniffed_proper.txt",
             "password_sniffed_proper.txt",
             "scan.txt",
-            "custom_sniffed.txt"]
+            "custom_sniffed.txt",
+            "detection.txt"]
 answer = "n"
 i=-1
 file_not_found = colors.FAIL + " X "+colors.ENDC
