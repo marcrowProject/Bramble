@@ -66,7 +66,7 @@ def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_prope
     version = 1.12 #2.4.5 #1.12
     for packets in dns_res:
     	packet = [ clean for clean in packets if clean!=""]
-    	if version > 2:
+    	if packet[7] == "DNS" or "HTTP":
     		if "DNS" in packet:
     			#packet[3]=time packet[4]=src packet[6]=dst packet[7]=type packet[13]=content
     			output.write(packet[4]+" "+packet[7]+" "+packet[13]+"\n")
