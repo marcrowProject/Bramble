@@ -13,7 +13,7 @@ print colors.CLEAR
 print colors.HEADER + "This tools allows you to detect a suspicious arp traffic.\n"\
 +"If it detects something suspect it automatically stops itself \n"\
 +"If you want to stop the process press ctrl-c." + colors.ENDC
-print "Network analysis in progress..."
+print "Network analysis in progress...\n"
 
 my_detector = Spoofer_Detector("result/scanNetwork/detection.txt",5)
 my_detector.start()
@@ -24,7 +24,7 @@ try:
 except KeyboardInterrupt:
     print("\nPlease wait...")
     print(colors.OKGREEN+"Stopping the process"+colors.ENDC)
-    my_detector.join(2.0)#need to wait to stop the sniffing process and retrieve last packets
+    my_detector.join(2.0)#need to wait to stop the sniffing process and retrieve the latest packets
 
 print(colors.OKGREEN + "Finished!" + colors.ENDC)
 print("Press a button to quit.")

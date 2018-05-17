@@ -90,7 +90,6 @@ def recent_file(path, limit_time=300):
 
 def open_file(path,rwa):
     try:
-        print path
         output = open(path,rwa)
         return output
     except IOError:

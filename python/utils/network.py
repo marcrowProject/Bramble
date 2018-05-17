@@ -66,11 +66,14 @@ class Spoofer_Detector(Thread):
             exit()
 
     def run(self):
+        if not recent_file("result/scanNetwork/scan.txt"):
+            arp_scan("wlan0")
         while self.running and self.no_interrupt:
             beginning =  time.time()
+            my_lfilter = lambda (r): ARP in r and r[ARP].op == 1
             ans = sniff(filter="arp",
                         prn=None,
-                        lfilter=None,
+                        lfilter=my_lfilter,
                         timeout=self.timeout,
                         iface="wlan0",
                         stop_filter=self.should_stop_sniffer)
@@ -94,33 +97,6 @@ class Spoofer_Detector(Thread):
         return self.running == self.no_interrupt
 
 
-def detect_suspect_arp_request(ans, beginning, end, my_output):
-    result=True
-    my_list = []
-    for packet in ans:
-        for arp in packet:
-            my_list.append(str(arp.psrc))
-    my_set = set(my_list)
-    total_time = end - beginning
-    for ip in my_set:
-        nb_pck = str(my_list.count(ip))
-        if 2 > int(nb_pck)/int(total_time) > 1 and result == 0:
-             his_hostname = getHostname(ip)
-             print colors.WARNING + " May be " + ip + " attacking you" + colors.ENDC
-             print (time.asctime(time.localtime(end)) +  " " \
-                    +"\n   '->" + his_hostname + " : " + nb_pck +"\n")
-             my_output.write(time.asctime(time.localtime(end))+ " " \
-                            + ip + "\n   '->" + his_hostname + " : " + nb_pck + "\n\n")
-        elif int(nb_pck)/total_time > 2:
-             result = False
-             his_hostname = getHostname(ip)
-             print colors.FAIL + ip + " attacking you" + colors.ENDC
-             print (time.asctime(time.localtime(end)) + "\n   '->" \
-                    + his_hostname + " : " + nb_pck +"\n")
-             my_output.write(time.asctime(time.localtime(end))+ " - " \
-                            + ip + "\n   '->" + his_hostname + " : " + nb_pck + "\n\n")
-    return result
-
 
 def getHostname(ip):
     try:
@@ -129,6 +105,16 @@ def getHostname(ip):
     except:
         hostname = "Unknown"
     return hostname
+
+def getInfoFromScan(data, separator=" ",my_input="result/scanNetwork/scan.txt"):
+    my_file = open_file(my_input,"r")
+    if my_file == -1:
+        exit()
+    for line in my_file:
+        if data in line:
+            return line.split(" ")
+    return ["Unknown","Unknown","Unknown"]
+
 def select_interface():
     all_interfaces = netifaces.interfaces()
     all_interfaces_reversed = reversed(all_interfaces)
@@ -212,7 +198,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
         his_ip = rcv.sprintf(r"%Ether.psrc%")
         his_mac = rcv.sprintf(r"%Ether.src%")
         ip_list.append(his_ip)
-        my_file.write(his_ip+"\n")
+        my_file.write(his_ip+" "+his_mac)
         if decoy and nb_decoy > 0:
             my_thread = Decoy(str(his_ip), addr_list, my_interface)
             my_thread.start()
@@ -221,10 +207,12 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
         try:
             info = socket.gethostbyaddr(his_ip)
             his_hostname = str(info[0])
+            my_file.write(" "+his_hostname+"\n")
             if verbosity > 0:
                 print(his_mac+" - "+his_ip+" - "+his_hostname)
         except:
             print(his_mac+" - "+his_ip)
+            my_file.write(" Unknown\n")
     if verbosity > 0:
         print(colors.OKGREEN+"\nIt's done."+colors.ENDC+" Press a button to quit")
     for current in threads_list:
@@ -285,6 +273,48 @@ def arpSpoofing(gateway_ip, target_ip, my_mac):
     while 1:
         sendp(packet, verbose=0)
 
+def detect_suspect_arp_request(ans, beginning, end, my_output):
+    result=True
+    my_list = []
+    for packet in ans:
+        for arp in packet:
+            my_list.append(str(arp.hwsrc))
+    my_set = set(my_list)
+    total_time = end - beginning
+    for ip in my_set:
+        nb_pck = str(my_list.count(ip))
+        if int(nb_pck)/int(total_time) > 1:
+            #we have only the mac address because the hacker spoof her ip
+            #-> we use our scan files to found information about him
+            list_info = getInfoFromScan(ip)
+            his_ip = list_info[0]
+            his_hostname = list_info[2].replace("\n","")
+            his_mac = ip
+            if list_info[0]=="Unknown" and not recent_file("result/scanNetwork/scan.txt"):
+                arp_scan("wlan0")
+                list_info = getInfoFromScan(ip)
+                his_ip = list_info[0]
+                his_hostname = list_info[2]
+
+            if int(nb_pck)/int(total_time) < 2:
+                print colors.WARNING +  his_hostname + " is suspect" + colors.ENDC
+                my_output.write(his_hostname + " may have attacked you\n")
+
+            else:
+                result = False
+                print colors.FAIL + his_hostname + " attacking you" + colors.ENDC
+                my_output.write(his_hostname + " attacked you\n")
+
+            print (time.asctime(time.localtime(end)) + " : " \
+                + "\n '->" + his_ip + " : " + his_mac \
+                + "\n '->He send " + nb_pck + " packets in " + str(end-beginning) + " seconds\n\n")
+
+            my_output.write(time.asctime(time.localtime(end)) + " " \
+                        + "\n '->" + his_ip + " : " + his_mac  \
+                        +"\n '->He send " + nb_pck + " packets in " \
+                        + str(end-beginning) + " seconds\n\n")
+
+    return result
 
 #dns request
 #sudo tshark -i wlan0 -f "src port 53" -n -T fields -e frame.time -e ip.src -e ip.dst -e dns.qry.name
