@@ -70,7 +70,8 @@ class Spoofer_Detector(Thread):
             arp_scan("wlan0")
         while self.running and self.no_interrupt:
             beginning =  time.time()
-            my_lfilter = lambda (r): ARP in r and r[ARP].op == 1
+            my_ip = netifaces.ifaddresses("wlan0")[2][0]['addr']
+            my_lfilter = lambda (r): ARP in r and r[ARP].pdst == my_ip
             ans = sniff(filter="arp",
                         prn=None,
                         lfilter=my_lfilter,
@@ -296,7 +297,7 @@ def detect_suspect_arp_request(ans, beginning, end, my_output):
                 his_ip = list_info[0]
                 his_hostname = list_info[2]
 
-            if int(nb_pck)/int(total_time) < 2:
+            if int(nb_pck) < 2:
                 print colors.WARNING +  his_hostname + " is suspect" + colors.ENDC
                 my_output.write(his_hostname + " may have attacked you\n")
 
