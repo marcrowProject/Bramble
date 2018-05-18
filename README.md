@@ -52,30 +52,30 @@ step by step.
          7. Sniffer
             -Website's names
             -Detect sniffing attack (by arp poisoning)
-            -Read previous report (sniffing, scan, detection)
-         7. Tools
+            -Read a previous report (sniffing, scan, detection)
+         8. Tools
             -Erase permently a file/folder
             -Password generator from file
             -Scan a network
             -ARP scanner
             -Change mac adress
-         8. Option
+         9. Option
             -Unmount an usb device
             -Display ip adress
 
 ###  :hourglass_flowing_sand: _Coming soon :_
-         7. Wifi Attack
+         10. Wifi Attack
             -Wps attack
             -Bruteforce attack
-         8. Fake access point
+         11. Fake access point
             -Sniffing
             -Phishing ?
-         9. Sniffer
+         12. Sniffer
             -Password sniffer
             -Website sniffer
             -Custom sniffer
-         10. Network backdoor
-         11. Bruteforce
+         13. Network backdoor
+         14. Bruteforce
             -zip (for the moment too slow)
 
 ## :globe_with_meridians: Requirements
