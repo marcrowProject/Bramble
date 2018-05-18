@@ -41,4 +41,4 @@ while answer != "y":
     #come back from lines delete it and come back again
     print(colors.CLEAR)
 
-print_file("./result/scanNetwork/"+file_name_list[i],10)
+print_file("./result/scanNetwork/"+file_name_list[i],4)

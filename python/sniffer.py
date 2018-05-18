@@ -22,4 +22,4 @@ th_spoofer.stop()
 
 print(colors.CLEAR)
 dns_get_parser("./result/scanNetwork/dns_http_sniffed","./result/scanNetwork/dns_http_sniffed_proper.txt")
-print_file("./result/scanNetwork/dns_http_sniffed_proper.txt")
+print_file("./result/scanNetwork/dns_http_sniffed_proper.txt",4)

@@ -173,7 +173,6 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
             my_file = open(output,"r")
             for lines in my_file:
                 ip_list.append(lines.strip("\n"))
-            print ip_list
             my_file.close()
             return ip_list
     my_file = open(output,"w")
@@ -198,7 +197,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
     for snd, rcv in ans:
         his_ip = rcv.sprintf(r"%Ether.psrc%")
         his_mac = rcv.sprintf(r"%Ether.src%")
-        ip_list.append(his_ip)
+        
         my_file.write(his_ip+" "+his_mac)
         if decoy and nb_decoy > 0:
             my_thread = Decoy(str(his_ip), addr_list, my_interface)
@@ -209,11 +208,13 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
             info = socket.gethostbyaddr(his_ip)
             his_hostname = str(info[0])
             my_file.write(" "+his_hostname+"\n")
+            ip_list.append(his_ip+" "+his_mac+" "+his_hostname)
             if verbosity > 0:
                 print(his_mac+" - "+his_ip+" - "+his_hostname)
         except:
             print(his_mac+" - "+his_ip)
             my_file.write(" Unknown\n")
+            ip_list.append(his_ip+" "+his_mac+" Unknown")
     if verbosity > 0:
         print(colors.OKGREEN+"\nIt's done."+colors.ENDC+" Press a button to quit")
     for current in threads_list:
@@ -247,7 +248,8 @@ def preset_arp_spoofing(ip_forward=True):
     print("press n to spoof only one target on the network"+colors.ENDC)
     answer = raw_input()
     if answer == "n":
-        target = select_val(target_list,"Please select a victim:")
+    	proper_target_list = [t[0]+" "+t[2] for t in [t.split(" ") for t in target_list]]
+        target = select_val(proper_target_list,"Please select a victim:")
         result.append(target)
     else:
         target = target_list
@@ -282,18 +284,18 @@ def detect_suspect_arp_request(ans, beginning, end, my_output):
             my_list.append(str(arp.hwsrc))
     my_set = set(my_list)
     total_time = end - beginning
-    for ip in my_set:
-        nb_pck = str(my_list.count(ip))
-        if int(nb_pck)/int(total_time) > 1:
+    for device in my_set:
+        nb_pck = str(my_list.count(device))
+        if int(nb_pck) > 1:
             #we have only the mac address because the hacker spoof her ip
             #-> we use our scan files to found information about him
-            list_info = getInfoFromScan(ip)
+            list_info = getInfoFromScan(device)
             his_ip = list_info[0]
             his_hostname = list_info[2].replace("\n","")
-            his_mac = ip
+            his_mac = device
             if list_info[0]=="Unknown" and not recent_file("result/scanNetwork/scan.txt"):
                 arp_scan("wlan0")
-                list_info = getInfoFromScan(ip)
+                list_info = getInfoFromScan(device)
                 his_ip = list_info[0]
                 his_hostname = list_info[2]
 
