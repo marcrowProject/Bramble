@@ -39,8 +39,8 @@ step by step.
          3. Wifi jammer/deauther
             -Scan access point
             -Scan networks
-            -Deauth all users from a network
-            -Deauth one user
+            -Deauth user(s) from a network (connection not required, monitor mode required)
+            -Deauth user(s) from your network (connection required, monitor mode not required)
          4. Evil twin
             -Fluxion custom version for bramble
          5. Key cloner
@@ -49,6 +49,10 @@ step by step.
             -Copy only some types of files
          6. Bruteforce
             -ssh
+         7. Sniffer
+            -Website's names
+            -Detect sniffing attack (by arp poisoning)
+            -Read previous report (sniffing, scan, detection)
          7. Tools
             -Erase permently a file/folder
             -Password generator from file
