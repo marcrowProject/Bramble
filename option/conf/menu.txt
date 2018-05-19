@@ -7,7 +7,7 @@
 <name=" 6 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
 <name=" 7 change mac adress at boot time" src="" path="">
 <name=" 8 change keyboard language" src="" path="">
-<name="+Update" src="" path="">
+<name="+Update" src="" path="option/src/update.sh">
 <name="~Help" src="option/conf/help.txt">
 <name="~Restart" src="reboot" path="/sbin/reboot">
 <name="~exit" src="">
