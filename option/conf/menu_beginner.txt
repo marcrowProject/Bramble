@@ -1,0 +1,12 @@
+<name=" 0 unmount an usb device *" src="./unmount.sh" path="option/src/unmount.sh">
+<name=" 1 display ip ardess" src="./ipadress.sh" path="option/src/ipadress.sh">
+<name=" 2 password generator from file" src="./gadget -passGen" path="tools/gadget">
+<name=" 3 add a password to defaults password" src="" path="">
+<name=" 4 delete a password from defaults password" src="" path="">
+<name=" 5 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
+<name=" 6 change keyboard language" src="" path="">
+<name=" 7 switch to light/classic menu" src="./changeLvl.sh" path="option/src/changeLvl.sh">
+<name="+Update" src="" path="option/src/update.sh">
+<name="~Help" src="option/conf/help.txt">
+<name="~Restart" src="reboot" path="/sbin/reboot">
+<name="~exit" src="">
