@@ -79,9 +79,17 @@ int main(int argc, char ** argv)
         return 0;
     }
 
-
+    std::ifstream lvl("conf/lvl", std::ios::in);
+    std::string line;
+    if(lvl)
+      getline(lvl, line);
+    else
+      line = "0";
     while (1) {
-        strt=loadMenu(menu,"conf/menu.txt");
+        if(line=="0")
+          strt=loadMenu(menu,"conf/menu.txt");
+        else
+          strt=loadMenu(menu,"conf/menu_beginner.txt");
         if(strt==-2) return -2;
         tmp=displayMenu(menu);
         if(tmp==1) return 0;
