@@ -50,7 +50,7 @@ step by step.
          6. Bruteforce
             -ssh
          7. Sniffer
-            -Unacrypted passwords
+            -Unencrypted passwords
             -Website's names
             -Detect sniffing attack (by arp poisoning)
             -Read a previous report (sniffing, scan, detection)
