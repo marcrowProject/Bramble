@@ -50,6 +50,7 @@ step by step.
          6. Bruteforce
             -ssh
          7. Sniffer
+            -Unacrypted passwords
             -Website's names
             -Detect sniffing attack (by arp poisoning)
             -Read a previous report (sniffing, scan, detection)
@@ -59,9 +60,10 @@ step by step.
             -Scan a network
             -ARP scanner
             -Change mac adress
-         9. Option
+         9. Settings
             -Unmount an usb device
             -Display ip adress
+            -switch to ligth/classic menu
 
 ###  :hourglass_flowing_sand: _Coming soon :_
          10. Wifi Attack
