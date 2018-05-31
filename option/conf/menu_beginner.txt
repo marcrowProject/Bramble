@@ -5,7 +5,9 @@
 <name=" 4 delete a password from defaults password" src="" path="">
 <name=" 5 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
 <name=" 6 change keyboard language" src="" path="">
-<name=" 7 switch to light/classic menu" src="./changeLvl.sh" path="option/src/changeLvl.sh">
+<name=" 7 change orientation left/right hander" src="./changeOrientation.sh" path="option/src/changeOrientation.sh">
+<name=" 8 switch to hdmi/built-in display" src="./hdmi.sh" path="option/src/hdmi.sh">
+<name=" 9 switch to light/classic menu" src="./changeLvl.sh" path="option/src/changeLvl.sh">
 <name="+Update" src="" path="option/src/update.sh">
 <name="~Help" src="option/conf/help.txt">
 <name="~Restart" src="reboot" path="/sbin/reboot">
