@@ -6,4 +6,4 @@
 <name="~Settings" src="./option" path="option/option">
 <name="~Help" src="conf/help.txt" path="">
 <name="~Tools" src="./gadget" path="tools/gadget">
-<name="~Leave bramble" src="" path="">
+<name="~leave bramble" src="" path="">
