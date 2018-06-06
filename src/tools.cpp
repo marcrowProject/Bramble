@@ -123,7 +123,15 @@ int displayMenu(std::map<std::string, std::string>& menu)
                 path.assign(it->second, foundN + 1, it->second.length());
                 std::cout << "path :" << path << "\n";
                 //----
-
+                if (it->first.compare("~Leave bramble") == 0) {
+                    clrscr();
+                    std::cout << "Do you want to shutdown your device?" << '\n';
+                    std::cin >> ans;
+                    if ( ans == "y" ){
+                        char *arg[]= { "shutdown", "0", NULL };
+                        launch(arg,"/sbin/shutdown");
+                    }
+                }
                 //if the user want to exit
                 if (it->first.compare("~exit") == 0) {
                     std::cout << std::endl
