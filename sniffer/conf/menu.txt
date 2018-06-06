@@ -1,4 +1,5 @@
 <name=" 0 sniffing website's names" src="./sniffer -dns" path="sniffer/sniffer">
+<name=" 0 sniffing unencrypted passwords" src="./sniffer -password" path="sniffer/sniffer">
 <name=" 1 detect suspicious sniffing" src="./sniffer -detect" path="sniffer/sniffer">
 <name=" 2 read a previous sniffing session" src="./sniffer -reader" path="sniffer/sniffer">
 <name="~Help" src="sniffer/conf/help.txt">

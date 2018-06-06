@@ -50,6 +50,7 @@ step by step.
          6. Bruteforce
             -ssh
          7. Sniffer
+            -Unencrypted passwords
             -Website's names
             -Detect sniffing attack (by arp poisoning)
             -Read a previous report (sniffing, scan, detection)
@@ -59,9 +60,10 @@ step by step.
             -Scan a network
             -ARP scanner
             -Change mac adress
-         9. Option
+         9. Settings
             -Unmount an usb device
             -Display ip adress
+            -switch to ligth/classic menu
 
 ###  :hourglass_flowing_sand: _Coming soon :_
          10. Wifi Attack
@@ -89,5 +91,8 @@ It may become compatible with others devices powered by kali linux.
 
 
 ![alt text](https://user-images.githubusercontent.com/37142652/37241895-edb24fba-2460-11e8-8985-312442e1ac6d.gif)
+
+### First prototype :
+![alt text](https://user-images.githubusercontent.com/37142652/41043460-47e3cbb6-69a4-11e8-8082-b6ea5610a6a3.png)
 
 

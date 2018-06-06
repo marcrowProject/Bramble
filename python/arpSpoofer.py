@@ -18,5 +18,13 @@ print(colors.CLEAR+colors.OKGREEN+colors.BOLD+"start the spoofing attack"+colors
 print(colors.OKBLUE+"press ctrl+c when you want to stop"+colors.ENDC)
 #th_sniffer= Sniffer("wlan0","dns")
 #th_sniffer.start()
-arpSpoofing(address[0],address[1],address[2])
+try:
+    arpSpoofing(address[0],address[1],address[2])
+except (KeyboardInterrupt, SystemExit):
+    sys.exit()
+except:
+    print "Unexpected error:", sys.exc_info()[0]
+    print colors.WARNING +"press a button to quit"+colors.ENDC
+    sys.exit()
+
 #th_sniffer.join()

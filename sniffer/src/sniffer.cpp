@@ -24,6 +24,11 @@ int main(int argc, char ** argv)
       launch(arg,"/usr/bin/sudo");
     }
 
+    if (strcmp(argv[1],"-password")==0) {
+      char *arg[]= { "sudo", "python", "./python/passwordSniffer.py", NULL };
+      launch(arg,"/usr/bin/sudo");
+    }
+
     if (strcmp(argv[1],"-reader")==0) {
       char *arg[]= { "python", "./python/reader.py", NULL };
       launch(arg,"/usr/bin/python2.7");
