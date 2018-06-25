@@ -8,21 +8,13 @@ powerfull tool, and may be considerated
 as illegal in some countries. Please
 use it only on a network belongs to you.
 
-To use the wifi jammer you need to have
-a network card compatible with injection
-like "ALFA NETWORK AWUS036H"
-
-before to jamm a network you need to scan
- all networks around you. To do that, launch
- "scann networks" wait approximately 10
- seconds then press the 'quit button / CTRL + C'
- Now bramble have some informations about networks
- and let's start the jamm process. Keep the process
- active to continue to jamm the network.
-
+To use the wifi jammer without connection
+you need to have a network card compatible
+with injection like "ALFA NETWORK AWUS036H"
 
 Used :
   -airodump-ng
   -aireplay-ng
+  -arp spoofing without ip forwarding
 
 developper Marc-Antoine Delannoy

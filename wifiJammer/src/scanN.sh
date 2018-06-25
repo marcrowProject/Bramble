@@ -20,7 +20,7 @@ function restoreInterface {
        	echo -e $green"Done."$transparent
 }
 
-
+clear
 
 while [ $ans != "y" ]
 do
