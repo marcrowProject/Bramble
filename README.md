@@ -37,8 +37,6 @@ step by step.
             -Restore specific type of files
             -Erase permently a file/folder
          3. Wifi jammer/deauther
-            -Scan access point
-            -Scan networks
             -Deauth user(s) from a network (connection not required, monitor mode required)
             -Deauth user(s) from your network (connection required, monitor mode not required)
          4. Evil twin
@@ -68,7 +66,6 @@ step by step.
 ###  :hourglass_flowing_sand: _Coming soon :_
          10. Wifi Attack
             -Wps attack
-            -Bruteforce attack
          11. Fake access point
             -Sniffing
             -Phishing ?
