@@ -1,20 +1,39 @@
          Help File
 
-Button
+----------Buttons-----------
+
 ° <- y + enter -> select
 ° <- n + enter -> don't select
 ° <- Ctrl+C -> stop process
-° <- off 
+
+--------description---------
+
+--cryptography--
+
+--hide file in a file--
+
+--wifi jammer--
+
+--wifi attack--
+
+--evil twin--
+
+--fake access point--
+
+--sniffer--
+ 
+--network backdoor--
+
+--bruteforce--
+
+--key cloner--
+copy all data from an usb device
+to another. It' a feature
+as simple as usefull.
+
+-----------Information-------------
 
 if you have any questions or if you have
 developped a new script, go to
 https://github.com/marcrowProject/Bramble 
 and post it.
-
-description
---keyVacuum--
-copy all data from an usb device
-to another. It' a fonctionnality
-as simple as usefull.
-
-developper Marc-Antoine Delannoy
