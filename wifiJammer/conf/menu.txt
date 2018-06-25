@@ -1,6 +1,6 @@
 <name=" 0 scan access points" src="./scanN.sh" path="wifiJammer/src/scanN.sh">
 <name=" 1 scan users on a network" src="./scanUser.sh" path="wifiJammer/src/scanUser.sh">
-<name=" 2 jamm a wifi network" src="./wifiJammer.sh" path="wifiJammer/src/wifiJammer.sh">
+<name=" 2 jamm a wifi network without connection" src="./wifiJammer.sh" path="wifiJammer/src/wifiJammer.sh">
 <name=" 3 jamm user from a network without connection" src="./jammAnUser.sh" path="wifiJammer/src/jamnAnUser.sh">
 <name=" 4 jamm your network with connection" src="./wifiJammer -d" path="wifiJammer/wifiJammer">
 <name=" 5 jamm many wifi networks ???" src="" path="">
