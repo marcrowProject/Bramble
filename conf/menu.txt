@@ -3,12 +3,13 @@
 <name=" 2 forensic tools" src="./forensic" path="forensic/forensic">
 <name=" 3 wifi jammer" src="./wifiJammer" path="wifiJammer/wifiJammer">
 <name=" 4 wifi attack" src="" path="">
-<name=" 5 evil twin" src="./starter.sh" path="evilTwin/src/starter.sh">
+<name=" 5 evil twin" src="./evilTwin" path="evilTwin/evilTwin">
 <name=" 6 fake access point" src="" path="">
 <name=" 7 sniffer" src="" path="sniffer/sniffer">
 <name=" 8 network backdoor" src="" path="">
 <name=" 9 bruteforce" src="" path="bruteforce/bruteforce">
 <name="10 key cloner" src="./keyVacuum" path="vacuum/keyVacuum">
+<name="~Credits" src="./option" path="">
 <name="~Settings" src="./option" path="option/option">
 <name="~Help" src="conf/help.txt" path="">
 <name="~Tools" src="./gadget" path="tools/gadget">

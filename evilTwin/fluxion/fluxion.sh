@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #This version of fluxion has been modify to work properly wih bramble.
-
+cd evilTwin/fluxion
 ########## DEBUG Mode ##########
 if [ -z ${FLUX_DEBUG+x} ]; then FLUX_DEBUG=0
     else FLUX_DEBUG=1
@@ -70,6 +70,7 @@ general_exitmode_6="Restarting "$grey"Network-Manager"
 general_exitmode_7="Cleanup performed successfully!"
 general_exitmode_8="Thanks for using fluxion"
 #############################################################################################
+
 
 # DEBUG MODE = 0 ; DEBUG MODE = 1 [Normal Mode / Developer Mode]
 if [ $FLUX_DEBUG = 1 ]; then
@@ -2563,16 +2564,16 @@ function handshakecheck {
         if [ $authmode = "handshake" ]; then
                 echo "aircrack-ng -a 2 -b $Host_MAC -0 -s $DUMP_PATH/$Host_MAC-01.cap -w $DUMP_PATH/data.txt && echo && echo -e \"The password was saved in "$red"$HOME/$Host_SSID-password.txt"$transparent"\"
                 ">>$DUMP_PATH/handcheck
-		
+
 
         elif [ $authmode = "wpa_supplicant" ]; then
                 echo "echo -e \"The password was saved in "$red"$HOME/$Host_SSID-password.txt"$transparent"\"">>$DUMP_PATH/handcheck
-		
+
         fi
 
         echo "kill -INT \$(ps a | grep bash| grep flux | awk '{print \$1}') &>$flux_output_device">>$DUMP_PATH/handcheck
         chmod +x $DUMP_PATH/handcheck
-	
+
 }
 
 

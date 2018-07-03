@@ -58,13 +58,13 @@ function exitmode {
         fi
 
         echo -e ""$white"["$red"-"$white"] "$white"$general_exitmode_4"$transparent""
-        if [ ! -f $DUMP_PATH/iptables-rules ];then 
-            iptables --flush 
-            iptables --table nat --flush 
+        if [ ! -f $DUMP_PATH/iptables-rules ];then
+            iptables --flush
+            iptables --table nat --flush
             iptables --delete-chain
-            iptables --table nat --delete-chain 
-        else 
-            iptables-restore < $DUMP_PATH/iptables-rules   
+            iptables --table nat --delete-chain
+        else
+            iptables-restore < $DUMP_PATH/iptables-rules
         fi
 
         echo -e ""$white"["$red"-"$white"] "$white"$general_exitmode_5"$transparent""
@@ -86,17 +86,15 @@ function exitmode {
 		  		service networkmanager restart &> $flux_output_device &
 	            service networking restart &> $flux_output_device &
 	        else
-	            systemctl restart NetworkManager &> $flux_output_device & 	
-	        fi 
-		./../../src/restartAllNetwork.sh
+	            systemctl restart NetworkManager &> $flux_output_device &
+	        fi
+		      ./../../tools/src/restartAllNetwork.sh
 	        echo -e ""$white"["$green"+"$white"] "$green"$general_exitmode_7"$transparent""
 	        echo -e ""$white"["$green"+"$white"] "$grey"$general_exitmode_8"$transparent""
 	        sleep 2
 	        clear
 	    fi
-
 	fi
-	ps -e | grep -w xterm | sudo kill `cut -d " " -f 1`
-        exit
-    
+  killall xterm &>$flux_output_device
+  exit
 }

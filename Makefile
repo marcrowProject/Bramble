@@ -16,6 +16,7 @@ DIR6=wifiJammer
 DIR7=forensic
 DIR8=bruteforce
 DIR9=sniffer
+DIR10=evilTwin
 EXEC=($DIR)/steganography
 
 all: $(SOURCES) $(EXECUTABLE) $(EXEC)
@@ -33,6 +34,7 @@ $(EXEC) :
 	@(cd $(DIR7) && $(MAKE))
 	@(cd $(DIR8) && $(MAKE))
 	@(cd $(DIR9) && $(MAKE))
+	@(cd $(DIR10) && $(MAKE))
 	mkdir -p result/scanNetwork
 	mkdir -p result/clone
 
@@ -54,6 +56,7 @@ clean:
 	@(cd $(DIR7) && $(MAKE) $@)
 	@(cd $(DIR8) && $(MAKE) $@)
 	@(cd $(DIR9) && $(MAKE) $@)
+	@(cd $(DIR10) && $(MAKE) $@)
 
 #Crée les dépendances avec les .h si un .h modifié on refait le make
 -include $(DEPS)
