@@ -18,8 +18,8 @@ int main(int argc, char ** argv)
         return 0;
     }
 
-    if (strcmp(argv[1],"-default")==0) {
-      char *arg[]= { "sudo", "./evilTwin/fluxion/fluxion.sh", NULL };
+    if (strcmp(argv[1],"--default")==0) {
+      char *arg[]= { "sudo", "./evilTwin/fluxion/fluxion.sh", "1", NULL };
       launch(arg,"/usr/bin/sudo");
     }
     else{

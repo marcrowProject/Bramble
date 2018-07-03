@@ -1,4 +1,4 @@
-<name=" 0 default attack" src="./evilTwin" path="evilTwin/evilTwin">
+<name=" 0 default attack" src="./evilTwin --default" path="evilTwin/evilTwin">
 <name=" 1 custom attack" src="./evilTwin --custom" path="evilTwin/evilTwin">
 <name="~Help" src="conf/help.txt" path="">
 <name="~Exit" src="" path="">

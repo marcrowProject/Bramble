@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#set -xv
 #This version of fluxion has been modify to work properly wih bramble.
 cd evilTwin/fluxion
 ########## DEBUG Mode ##########
@@ -42,7 +42,11 @@ revision=9
 version=2
 IP=192.168.1.1
 RANG_IP=$(echo $IP | cut -d "." -f 1,2,3)
-
+#with the default option fluxion use automaticaly the first choice in the list
+default=0
+if [ $# -eq 1 ]; then
+  default=$1
+fi
 #Colors
 white="\033[1;37m"
 grey="\033[0;37m"
@@ -597,8 +601,11 @@ else
 			done
 			echo "         |"
 			echo "         V"
-
-			read ans
+      if [ $default -eq 1 ]; then
+        ans="y"
+      else
+        read ans
+      fi
 			if [ $ans = "y" ]; then
 				clear
 				echo "you select : "${tab_Language[i]}
@@ -981,35 +988,38 @@ function askAP {
              #   top
 
 ######################################Custom for bramble#####################################################
-		yn=5
-		i=1
-                while true; do
+    		  yn=5
+    		  i=1
+          while true; do
 
-                        infoap
-                        echo -e $transparent" $header_askAP"
-			if [ $i -eq 1 ]; then
-				echo -e " "$red"["$yellow"1"$red"]"$green"-- $askAP_option_1 $green --"
-			else
-                        	echo -e ""$red"["$yellow"1"$red"]"$grey" $askAP_option_1"
-			fi
-			if [ $i -eq 2 ]; then
-				echo -e " "$red"["$yellow"2"$red"]"$green"-- $askAP_option_2 --"
-			else
-				echo -e ""$red"["$yellow"2"$red"]"$transparent" $askAP_option_2"
-			fi
-			if [ $i -eq 3 ]; then
-				echo -e " "$red"["$yellow"3"$red"]"$green"-- $general_back --" $transparent
-				i=0
-			else
-				echo -e ""$red"["$yellow"3"$red"]"$red" $general_back" $transparent
-			fi
+              infoap
+              echo -e $transparent" $header_askAP"
+    			if [ $i -eq 1 ]; then
+              echo -e " "$red"["$yellow"1"$red"]"$green"-- $askAP_option_1 $green --"
+    			else
+              echo -e ""$red"["$yellow"1"$red"]"$grey" $askAP_option_1"
+    			fi
+    			if [ $i -eq 2 ]; then
+    				    echo -e " "$red"["$yellow"2"$red"]"$green"-- $askAP_option_2 --"
+    			else
+    				    echo -e ""$red"["$yellow"2"$red"]"$transparent" $askAP_option_2"
+    			fi
+    			if [ $i -eq 3 ]; then
+    				    echo -e " "$red"["$yellow"3"$red"]"$green"-- $general_back --" $transparent
+    				i=0
+    			else
+    				    echo -e ""$red"["$yellow"3"$red"]"$red" $general_back" $transparent
+    			fi
+          if [ $default -eq 1 ]; then
+              ans="y"
+          else
+              read ans
+          fi
+    			if [ $ans = "y" ]; then
+    				yn=$i
+    			fi
 
-			read ans
-			if [ $ans = "y" ]; then
-				yn=$i
-			fi
-
-			i=`expr $i + 1`
+    			i=`expr $i + 1`
 
 ################################################################################################################
                         case $yn in
@@ -1181,7 +1191,11 @@ function deauthforce {
 				else
 		                	echo -e ""$red"["$yellow"3"$red"]"$red" $general_back" $transparent
 				fi
-		                read ans
+        if [ $default -eq 1 ]; then
+            ans="y"
+        else
+		        read ans
+        fi
 				conditional_clear
 				if [ $ans = "y" ]; then
 					yn=$i
@@ -1252,7 +1266,11 @@ function askclientsel {
 			else
 	                        echo -e ""$red"["$yellow"5"$red"]"$transparent" Exit"
 			fi
-			read ans
+      if [ $default -eq 1 ]; then
+          ans="y"
+      else
+          read ans
+      fi
 			if [ $ans = "y" ]; then
 				yn=$i
 
@@ -1471,7 +1489,11 @@ function certssl {
                               else
                                     echo -e ""$red"["$yellow"3"$red"]"$red" Exit" $transparent
                               fi
-                              read ans
+                              if [ $default -eq 1 ]; then
+                                  ans="y"
+                              else
+                      		        read ans
+                              fi
                               if [ $ans = "y" ]; then
                                     yn=$i
 
@@ -1565,7 +1587,11 @@ function webinterface {
                         else
                               echo -e ""$red"["$yellow"2"$red"]"$transparent" \e[1;31mExit"$transparent""
                         fi
-                        read ans
+                        if [ $default -eq 1 ]; then
+                            ans="y"
+                        else
+                		        read ans
+                        fi
                         if [ $ans = "y" ]; then
                               yn=$i
 
