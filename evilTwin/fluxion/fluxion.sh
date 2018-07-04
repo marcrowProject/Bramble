@@ -665,39 +665,39 @@ function setinterface {
                 if [ "$INTERFACESNUMBER" -eq "1" ]; then
                         PREWIFI=$(echo ${wirelessifaces[0]} | awk '{print $1}')
                 else
-                        echo $header_setinterface
-                        echo
-                        i=0
+                    echo $header_setinterface
+                    echo
+                    i=0
 #########################################custom for bramble###########################"
-                        for line in "${wirelessifaces[@]}"; do
-                                i=$(($i+1))
-                                wirelessifaces[$i]=$line
-                        done
-                        if [ "$FLUX_AUTO" = "1" ];then
-                                line="1"
-                        else
-			j=1
-                                while true; do
-					conditional_clear
-					echo $header_setinterface
-					echo -e "      "$red"["$yellow"$j"$red"]"$green"-- ${wirelessifaces[$j]} --"
-					tmp_Next=$(((j+1)%(i+1)))
-					if [ $tmp_Next -eq "0" ]; then
-						tmp_Next=1
-					fi
-					echo -e ""$red"["$yellow"$tmp_Next"$red"]"$transparent"${wirelessifaces[$tmp_Next]}"
+                    for line in "${wirelessifaces[@]}"; do
+                            i=$(($i+1))
+                            wirelessifaces[$i]=$line
+                    done
+                    if [ "$FLUX_AUTO" = "1" ];then
+                            line="1"
+                    else
+	                  j=1
+                    while true; do
+            					conditional_clear
+            					echo $header_setinterface
+            					echo -e "      "$red"["$yellow"$j"$red"]"$green"-> ${wirelessifaces[$j]} <-\n"
+            					tmp_Next=$(((j+1)%(i+1)))
+            					if [ $tmp_Next -eq "0" ]; then
+            						tmp_Next=1
+            					fi
+            					echo -e ""$red"["$yellow"$tmp_Next"$red"]"$transparent"${wirelessifaces[$tmp_Next]}"
 
-    					read ans
-					if [ $ans = "y" ]; then
-						break
-					fi
-					j=$(((j+1)%(i+1)))
-					if [ $j -eq "0" ]; then
-						j=1
-					fi
-				done
-                                line=$j
-                        fi
+                					read ans
+            					if [ $ans = "y" ]; then
+            						break
+            					fi
+            					j=$(((j+1)%(i+1)))
+            					if [ $j -eq "0" ]; then
+            						j=1
+            					fi
+            				done
+                    line=$j
+                  fi
 
                         PREWIFI=$(echo ${wirelessifaces[$line]} | awk '{print $1}')
 
@@ -906,10 +906,12 @@ function selection {
 	tab_essid=($list_essid)
 	while true; do
 		clear
-		echo -e $green""${tab_essid[j]}" " $yellow""${tab_power[j]}"% --"$transparent
+    echo "Select the target internet access point :"
+		echo -e $yellow"->"$transparent""$Cafe""${tab_essid[j]}" " $yellow""${tab_power[j]}"% <-"$transparent"\n"
 		tmp1=`expr $j + 1`
 		tmp1=`expr $tmp1 % $i`
-		tmp2=`expr $tmp1 + 5`
+		tmp2=`expr ${#tab_essid[@]} % 5` # display all access points but max 5 by 5
+    tmp2=`expr $tmp2 - 1`
 		for k in `seq $tmp1 $tmp2`;
 		do
 			echo -e " "${tab_essid[`expr $k % $i`]}" " $yellow""${tab_power[`expr $k % $i`]}"%"$transparent
@@ -1258,7 +1260,7 @@ function askclientsel {
 			if [ $i -eq 4 ]; then
 				echo -e ""$red"["$yellow"4"$red"]"$green"-- Rescan networks --"
 			else
-                        	echo -e ""$red"["$yellow"4"$red"]"$transparent" Rescan networks "
+      	echo -e ""$red"["$yellow"4"$red"]"$transparent" Rescan networks "
 			fi
 			if [ $i -eq 5 ]; then
 				echo -e "      "$red"["$yellow"5"$red"]"$green"-- Exit --"
