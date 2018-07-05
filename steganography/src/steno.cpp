@@ -17,23 +17,58 @@ int main(int argc, char ** argv)
     }
 
     if (strcmp(argv[1],"-h")==0) {
-        printf ("\33[H\33[1J");
-        std::cout << "select the file you want to hide:" << '\n';
+        clrscr();
         unsigned int i=0;
-        std::string ans;
-        std::cout << "select the file inside you want to hide the file:" << '\n';
-        std::string pathsrc=selectFileFromDfPath();
-        std::string pathdst=selectFileFromDfPath();
+        std::string ans; //user's answers
+        std::string pass; //password used to hide the file
+        std::string path; //path of the password-file
+        std::string pathsave; //path of the password-file copy
+        std::string pathsrc; // file to hide
+        std::string pathdst; // destination file
+
+        color("32"); //text in green
+        std::cout << "select the file you want to hide:" << '\n';
+        color("0");
+        pathsrc=selectFileFromDfPath();
+
+
+        while(true) {
+          clrscr();
+          color("32");
+          std::cout << "select the file in which you want to hide the file:" << '\n';
+          color("0");
+          color("36,1");
+          goto_x_y(6,0);
+          std::cout << "It is necessarily a bmp, jpg or wave file" << '\n';
+          color("0");
+          pathdst=selectFileFromDfPath();
+          std::size_t found = pathdst.find_last_of(".");
+          std::string extension = pathdst.substr(found+1);
+          if(extension.compare("jpg") == 0 || extension.compare("jpeg") == 0 || extension.compare("bmp") == 0 || extension.compare("wave") == 0){
+              break;
+          }
+          else {
+              clrscr();
+              color("31");
+              std::cout << "You have selected a file type that is not compatible." << '\n';
+              std::cout << "Please select a conciliable file" << '\n';
+              std::cout << "Press a button to continue or Ctrl+c to stop" << '\n';
+              color("0");
+              std::cin >> ans;
+          }
+        }
+
         clrscr();
         std::string choice;
         std::cout << "y to use a file as password \n\t\tor\nn to use password saved\n\t\tor\nan other letter to enter with keyboard" << '\n';
         std::cin >> choice;
-        std::string pass;
-        std::string path;
+
         clrscr();
 
         if(choice.compare("y")==0) {
+
             path=selectFileFromDfPath();
+
             if(path.compare(pathdst)==0) {
                 std::cout << "you can't select the same file for lock and hide." << '\n';
                 return 0;
@@ -43,9 +78,8 @@ int main(int argc, char ** argv)
 
             std::cout << "Be carreful, don't loose or modify your passfile\n else you can't get back your hidding file\n"
                       <<"do you want to see the password generated? y/n" << '\n';
-            std::cin >> ans;
-            std::string pathsave;
 
+            std::cin >> ans;
             if(ans.compare("y")==0) {
                 std::cout << "password : " << pass << '\n';
                 std::cin >> ans;
@@ -136,66 +170,27 @@ int main(int argc, char ** argv)
 
     if (strcmp(argv[1],"-e")==0) {
 
-        printf ("\33[H\33[1J");
-        std::cout << "select the file :" << '\n';
+        clrscr();
+        std::cout << "select the file in which you want to hide the file:" << '\n';
         std::vector<std::string> uOi; //usb or internal storage
         unsigned int i=0;
-        uOi.insert(uOi.begin(),"from usb device");
-        uOi.insert(uOi.begin(),"from internal storage bramble/result");
+        std::string pass;
+        std::string path;
         std::string ans;
-        while(ans.compare("y")!=0 ) {
-            std::cout << ans << '\n';
-            for (i=0; i<uOi.size(); i++) {
-                std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                std::cin >> ans;
-                std::cout << ans << '\n';
-                if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                clrscr();
-            }
-        }
-        clrscr();
-
-        std::string pathsrc;
-        if(i==0) {
-            pathsrc="./result";
-        }
-        else {
-            pathsrc="/media";
-        }
-        selectFile(pathsrc);
+        std::string choice;
+        std::string pathsrc=selectFileFromDfPath();
         std::cout << pathsrc << '\n';
 
         clrscr();
-        std::string choice;
         std::cout << "y to use a file as password \n\t\tor\nn to use password saved\n\t\tor\nan other letter to enter with keyboard" << '\n';
         std::cin >> choice;
-        std::string pass;
-        std::string path;
+
         clrscr();
 
         if(choice.compare("y")==0) {
             ans="n";
-            while(ans.compare("y")!=0 ) {
-                for (i=0; i<uOi.size(); i++) {
-                    std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                    std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                    std::cin >> ans;
-                    std::cout << ans << '\n';
-                    if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                    clrscr();
-                }
-            }
-            clrscr();
-            if(i==0) {
-                path="./result";
-            }
-            else {
-                path="/media";
-            }
-            selectFile(path);
+            path=selectFileFromDfPath();
             pass=generateHash(path);
-
         }
         //end passfile
 
@@ -259,9 +254,11 @@ int main(int argc, char ** argv)
             std::cin >> pass;
         }
 
-        pass="\""+pass+"\"";
+      //  pass="\""+pass+"\"";
         std::string dest=pathsrc+"-extract";
+        std::cout << pass << '\n';
         char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(),"-xf",(char*) dest.c_str(), NULL };
+        std::cout << arg << '\n';
         launch(arg,"/usr/bin/steghide");
         std::cout << "Press a key to quit" << '\n';
         std::string tmp;
