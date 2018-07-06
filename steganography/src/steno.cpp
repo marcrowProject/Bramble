@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
         //end password by file
 
         else if(choice.compare("n")==0) {
-            std::cout << "y to use the file Bramble/conf/.pass or n to use a custom file" << '\n';
+            std::cout << "y to use the default password file or n to use a custom file" << '\n';
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
@@ -149,7 +149,6 @@ int main(int argc, char ** argv)
                     std::cerr << "Error file "<< path <<"can't be open." << '\n';
                     return -1;
                 }
-                std::cout << "next ->" << next << '\n';
             }while(next.compare("y")!=0);
 
         }
@@ -159,23 +158,19 @@ int main(int argc, char ** argv)
             std::cin >> pass;
         }
         pass="\""+pass+"\"";
-        std::cout << pass << '\n';
+        clrscr();
+        color("1");
         char *arg[]= { "steghide","--embed","-ef",(char*) pathsrc.c_str(),"-cf",(char*) pathdst.c_str(), "-v", "-z","9","-p",(char *) pass.c_str(), NULL };
         launch(arg,"/usr/bin/steghide");
-      /*  std::cout << arg << '\n';
-        int tmp = system(arg.c_str());
-        if(tmp!=0) {
-            std::cout << "Error : may be the source is too big or the destination file is to small" << '\n';
-            return -1;
-        }*/
-        std::cout << arg<< '\n';
+        color("0");
+        color("33");
         std::cout << "do you want erase the hidding file? y/n" << '\n';
+        std::cout << "Read the above information carefully to verify that your file is well hidden" << '\n';
+        color("0");
         std::cin >> ans;
         if(ans.compare("y")==0) {
             remove(pathsrc.c_str());
         }
-        //steghide --embed -ef love.txt -cf result.txt -e none * -z 9
-        std::cout << "well done : your file is hidding" << '\n';
         std::cin >> ans;
     }
 
@@ -207,7 +202,7 @@ int main(int argc, char ** argv)
 
 
         else if(choice.compare("n")==0) {
-            std::cout << "y to use the file Bramble/conf/.pass or n to use a custom file" << '\n';
+            std::cout << "y to use the default password file or n to use a custom file" << '\n';
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
@@ -246,7 +241,6 @@ int main(int argc, char ** argv)
                     std::cerr << "Error file "<< path <<"can't be open." << '\n';
                     return -1;
                 }
-                std::cout << "next ->" << next << '\n';
             }while(next.compare("y")!=0);
 
         }
@@ -255,13 +249,13 @@ int main(int argc, char ** argv)
             std::cout << "your password : ";
             std::cin >> pass;
         }
-
+        clrscr();
         pass="\""+pass+"\"";
+        color("1");
         std::string dest=pathsrc+"-extract";
-        std::cout << pass << '\n';
         char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(),"-xf",(char*) dest.c_str(), NULL };
-        std::cout << arg << '\n';
         launch(arg,"/usr/bin/steghide");
+        color("0");
         std::cout << "Press a key to quit" << '\n';
         std::string tmp;
         std::cin >> tmp;
