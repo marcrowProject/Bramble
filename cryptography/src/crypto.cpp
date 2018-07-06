@@ -325,7 +325,9 @@ int main(int argc, char ** argv) {
         std::cout << "supress : " << pathdst << "\n";
         int i=remove(pathdst.c_str());
         if (i!=0) {
+            color("31");
             std::cout << "decrypt success but the suppress process failed" << '\n';
+            color("0");
             return -2;
         }
 
