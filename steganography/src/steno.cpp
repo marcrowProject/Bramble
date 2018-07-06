@@ -111,7 +111,7 @@ int main(int argc, char ** argv)
         //end password by file
 
         else if(choice.compare("n")==0) {
-            std::cout << "y to use the file bramble/.pass or n to use a custom file" << '\n';
+            std::cout << "y to use the file Bramble/conf/.pass or n to use a custom file" << '\n';
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
@@ -121,26 +121,36 @@ int main(int argc, char ** argv)
             else {
                 pathPass=selectFileFromDfPath();
             }
-            std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
-            if(file)  // si l'ouverture a réussi
-            {
-                // instructions
-                std::string next;
-                std::string line;
-                while(getline(file, line)) {
-                    std::cout << "y to select / n to continue" << '\n';
-                    std::cout << line<<"\n";
-                    std::cin >> next;
-                    if(next.compare("y")!=0) {
-                        break;
-                    }
+            std::string next;
+            do {
+                std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
+                if(file)  // si l'ouverture a réussi
+                {
+                    // instructions
+                    std::string line;
+                    ans="n";
+                        while(getline(file, line)) {
+                            clrscr();
+                            std::cout << "y to select / n to continue\n" << '\n';
+                            color("36");
+                            std::cout << line<<"\n";
+                            color("0");
+                            std::cout << "..." << '\n';
+                            std::cin >> next;
+                            if(next.compare("y")==0) {
+                                break;
+                            }
+                        }
+
+                    pass=line;
+                    file.close();
                 }
-                pass=line;
-            }
-            else {
-                std::cerr << "Error file "<< path <<"can't be open." << '\n';
-                return -1;
-            }
+                else {
+                    std::cerr << "Error file "<< path <<"can't be open." << '\n';
+                    return -1;
+                }
+                std::cout << "next ->" << next << '\n';
+            }while(next.compare("y")!=0);
 
         }
 
@@ -149,6 +159,7 @@ int main(int argc, char ** argv)
             std::cin >> pass;
         }
         pass="\""+pass+"\"";
+        std::cout << pass << '\n';
         char *arg[]= { "steghide","--embed","-ef",(char*) pathsrc.c_str(),"-cf",(char*) pathdst.c_str(), "-v", "-z","9","-p",(char *) pass.c_str(), NULL };
         launch(arg,"/usr/bin/steghide");
       /*  std::cout << arg << '\n';
@@ -196,56 +207,47 @@ int main(int argc, char ** argv)
 
 
         else if(choice.compare("n")==0) {
-            std::cout << "y to use the file bramble/.pass or n to use a custom file" << '\n';
+            std::cout << "y to use the file Bramble/conf/.pass or n to use a custom file" << '\n';
             std::cin >> ans;
             std::string pathPass;
             if(ans.compare("y")==0) {
-                pathPass="./.pass";
+                pathPass="./conf/.pass";
             }
             //load custom file
             else {
-                while(ans.compare("y")!=0 ) {
-                    for (i=0; i<uOi.size(); i++) {
-                        std::cout <<"-- "<< uOi[i%uOi.size()]<< " --" << '\n';
-                        std::cout << uOi[(i+1)%uOi.size()] << '\n';
-                        std::cin >> ans;
-                        std::cout << ans << '\n';
-                        if(ans.compare("y")==0 || ans.compare("Y")==0) break;
-                        clrscr();
-                    }
-                }
-                clrscr();
-                if(i==0) {
-                    pathPass="./result";
+                pathPass=selectFileFromDfPath();
+            }
+
+            std::string next;
+            do {
+                std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
+                if(file)  // si l'ouverture a réussi
+                {
+                    // instructions
+                    std::string line;
+                    ans="n";
+                        while(getline(file, line)) {
+                            clrscr();
+                            std::cout << "y to select / n to continue\n" << '\n';
+                            color("36");
+                            std::cout << line<<"\n";
+                            color("0");
+                            std::cout << "..." << '\n';
+                            std::cin >> next;
+                            if(next.compare("y")==0) {
+                                break;
+                            }
+                        }
+
+                    pass=line;
+                    file.close();
                 }
                 else {
-                    pathPass="/media";/* message */
+                    std::cerr << "Error file "<< path <<"can't be open." << '\n';
+                    return -1;
                 }
-            }
-            std::cout << pathPass << '\n';
-            browseFile(pathPass);
-            clrscr();
-
-            std::ifstream file(pathPass, std::ios::in);  // on ouvre le fichier en lecture
-            if(file)  // si l'ouverture a réussi
-            {
-                // instructions
-                std::string next;
-                std::string line;
-                while(getline(file, line)) {
-                    std::cout << "y to select / n to continue" << '\n';
-                    std::cout << line<<"\n";
-                    std::cin >> next;
-                    if(next.compare("y")!=0) {
-                        break;
-                    }
-                }
-                pass=line;
-            }
-            else {
-                std::cerr << "Error file "<< path <<"can't be open." << '\n';
-                return -1;
-            }
+                std::cout << "next ->" << next << '\n';
+            }while(next.compare("y")!=0);
 
         }
 
@@ -254,7 +256,7 @@ int main(int argc, char ** argv)
             std::cin >> pass;
         }
 
-      //  pass="\""+pass+"\"";
+        pass="\""+pass+"\"";
         std::string dest=pathsrc+"-extract";
         std::cout << pass << '\n';
         char *arg[]= { "steghide","--extract","-sf",(char*) pathsrc.c_str(),"-p",(char*) pass.c_str(),"-xf",(char*) dest.c_str(), NULL };
