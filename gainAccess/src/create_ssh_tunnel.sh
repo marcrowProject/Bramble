@@ -6,7 +6,7 @@ username=""
 ip=""
 
 createTunnel() {
-    /usr/bin/ssh -N -R 2222:localhost:22 $username@$ip
+    /usr/bin/ssh -N -R -i ~/.ssh/$username.pub 2222:localhost:22 $username@$ip
     if [[ $? -eq 0 ]]; then
     echo Tunnel to jumpbox created successfully
     else
