@@ -19,7 +19,7 @@ read password
 echo "$username $ip">>../../conf/ssh
 
 clear
-ssh-keygen -N -f ~/.ssh/$username -P $password
+ssh-keygen -N "" -f ~/.ssh/$username
 chmod 600 ~/.ssh/$username.pub
 
 clear
