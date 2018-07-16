@@ -24,8 +24,4 @@ do
 done
 echo $username $ip > ../../conf/current_ssh
 sudo /etc/init.d/ssh start
-while [ true ]
-do
-        ./create_ssh_tunnel.sh
-        sleep 5s
-done
+./create_ssh_tunnel.sh

@@ -12,15 +12,10 @@ clear
 echo "Please enter the user's name of your pc"
 read username
 
-clear
-echo "Please enter the password"
-read password
-
 echo "$username $ip">>../../conf/ssh
 
 clear
 ssh-keygen -N "" -f ~/.ssh/$username
-chmod 600 ~/.ssh/$username.pub
 
 clear
 if [[ $? -eq 0 ]]; then
@@ -32,7 +27,7 @@ else
     exit
 fi
 clear
-ssh-copy-id -i ~/.ssh/$username.pub $username:$password@$ip
+ssh-copy-id -i ~/.ssh/$username.pub $username@$ip
 if [[ $? -eq 0 ]]; then
     echo "Your key has been share with your pc"
     echo "Your ssh connection is secured"
