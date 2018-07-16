@@ -1,4 +1,4 @@
-#include "bruteforce.h"
+#include "gainAccess.h"
 
 
 int main(int argc, char ** argv)
@@ -7,7 +7,7 @@ int main(int argc, char ** argv)
     printf ("\33[H\33[2J");
     if(argc<2) {
         std::map<std::string,std::string> menu;
-        strt=loadMenu(menu,"bruteforce/conf/menu.txt");
+        strt=loadMenu(menu,"gainAccess/conf/menu.txt");
         if(strt==-2) {
             printf ("\33[H\33[2J");
             strt=loadMenu(menu,"conf/menu.txt");
