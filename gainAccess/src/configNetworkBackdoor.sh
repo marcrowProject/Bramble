@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo /etc/init.d/ssh start
+
 clear
 echo -e "\tConfiguration"
 echo "You need to use a keyboard for this."
