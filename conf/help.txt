@@ -23,6 +23,14 @@ feature you can hide your file in a
 jpg picture and protect it with a
 password.
 
+--forensic tools--
+When you suppress data this data is not
+really suppressed, the space is released
+but as long as no other file takes this
+space the data can be recovered.
+In fact it's really impressive what you
+can recovered in an usb stick...
+
 --wifi jammer--
 Stop the access to an access point.
 It isn't a phisical wifi jammer, it
@@ -56,13 +64,78 @@ child is doing on the internet
 
 --gain access--
 gain network access with network
-backdoor or gain computer computer
-with a bruteforce ssh.
+backdoor or gain computer access
+with a bruteforce ssh. With the
+network backdoor you can controll
+your bramble on another network and
+use all features provide with BrambleS
 
 --key cloner--
 copy all data from an usb device
 to another. It' a feature
 as simple as usefull.
+
+
+cryptography
+    L-> encrypt a file
+    L-> decrypt a file
+    L-> encrypt a folder
+    L-> decrypt a folder/archive
+
+hide file in a file
+    L-> hide file in a file
+    L-> extract file from a file
+
+forensic tools
+    L-> restore all deleted files
+    L-> retore specific type of files
+    L-> erasing permently a file/folder
+
+wifi jammer
+    L-> jamm a wifi network without connection
+    L-> jamm user from a network without connection
+    L-> jamm your network with connection
+
+evil twin
+    L-> default attack
+    L-> custom attack
+
+sniffer
+    L-> sniffing unencrypted passwords
+    L-> sniffing website's names
+    L-> detect suspicious sniffing
+    L-> read a previous sniffing session
+
+gain access
+    L-> bruteforce ssh
+    L-> config network backdoor
+    L-> use my backdoor
+
+key cloner
+    L-> key to key
+    L-> key to internal storage
+    L-> copy only some types of files
+
+settings
+    L-> unmount an usb device
+    L-> display ip ardess
+    L-> check/change ssh status
+    L-> password generator from file
+    L-> add a password to defaults password
+    L-> delete a password from defaults password
+    L-> change mac adress
+    L-> change mac adress at boot time
+    L-> change keyboard language
+    L-> change orientation left/right hander
+    L-> switch to hdmi/built-in display
+    L-> switch to light/classic menu
+
+tools
+    L-> erasing permently a file/folder
+    L-> password generator from file
+    L-> scan a network
+    L-> scan a network (arp)
+    L-> change mac adress
 
 -----------Information-------------
 
