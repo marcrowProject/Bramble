@@ -45,8 +45,9 @@ step by step.
             -Copy an usb storage to another usb key
             -Copy an usb storage to internal storage
             -Copy only some types of files
-         6. Bruteforce
-            -ssh
+         6. Gain access
+            -Bruteforce ssh
+            -Network backdoor
          7. Sniffer
             -Unencrypted passwords
             -Website's names
@@ -73,9 +74,6 @@ step by step.
             -Password sniffer
             -Website sniffer
             -Custom sniffer
-         13. Network backdoor
-         14. Bruteforce
-            -zip (for the moment too slow)
 
 ## :globe_with_meridians: Requirements
  As of today, this software works only on the bramble enivronment.
