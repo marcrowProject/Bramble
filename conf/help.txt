@@ -9,22 +9,55 @@
 --------description---------
 
 --cryptography--
+Your data is important so you need
+to protect it. Bramble is here for
+you. Encrypt your files quickly
+to be only accessible by the
+password holder
 
 --hide file in a file--
+Your data is important so you need
+to protect it, but they are sensitive
+too. So why not hide them? With this
+feature you can hide your file in a
+jpg picture and protect it with a
+password.
 
 --wifi jammer--
-
+Stop the access to an access point.
+It isn't a phisical wifi jammer, it
+doesn't jamm the waves because it's
+totally illegal. This feature uses
+Denial of service attacks. You can
+jamm a remote wifi or your own wifi
+where you are connected.
 --wifi attack--
 
 --evil twin--
+It's pretty difficult to crack
+the wifi password. That's why
+we choose to attack the weakness
+of every system : the human.
+Bramble stop the access to the
+access point and create a copy.
+the target will have to connect
+to our access point and
+enter the wifi key to access
+the internet.
 
 --fake access point--
 
 --sniffer--
- 
---network backdoor--
+Captures network traffic.
+You can capture the names
+of visited sites or http
+passwords to check what your
+child is doing on the internet
 
---bruteforce--
+--gain access--
+gain network access with network
+backdoor or gain computer computer
+with a bruteforce ssh.
 
 --key cloner--
 copy all data from an usb device
@@ -35,5 +68,5 @@ as simple as usefull.
 
 if you have any questions or if you have
 developped a new script, go to
-https://github.com/marcrowProject/Bramble 
+https://github.com/marcrowProject/Bramble
 and post it.
