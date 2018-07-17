@@ -1,5 +1,5 @@
-<name=" 0 ssh bruteforce" src="./gainAccess/src/bruteForceSSH.sh" path="gainAccess/src/bruteForceSSH.sh">
+<name=" 0 bruteforce ssh" src="./gainAccess/src/bruteForceSSH.sh" path="gainAccess/src/bruteForceSSH.sh">
 <name=" 1 config network backdoor" src="./gainAccess/src/configNetworkBackdoor.sh" path="gainAccess/src/configNetworkBackdoor.sh">
-<name=" 2 start my backdoor" src="./gainAccess/src/networkBackdoor.sh" path="gainAccess/src/networkBackdoor.sh">
+<name=" 2 use my backdoor" src="./gainAccess/src/networkBackdoor.sh" path="gainAccess/src/networkBackdoor.sh">
 <name="~Help" src="/conf/help.txt">
 <name="~exit" src="">
