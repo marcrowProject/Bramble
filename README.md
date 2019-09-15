@@ -54,6 +54,7 @@ step by step.
             -Detect sniffing attack (by arp poisoning)
             -Read a previous report (sniffing, scan, detection)
          8. Tools
+            -Enable/Disable the web interface
             -Erase permently a file/folder
             -Password generator from file
             -Scan a network
