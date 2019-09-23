@@ -5,7 +5,7 @@ bReverse="\e[7;1m"
 title="\e[3;33m"
 
 ans="n"
-folder="/media/pi/"
+folder="/media/$USER/"
 test=$(ls $folder)
 #Select the directory where the usb is mounted
 if [ $? != "0" ]; then

@@ -12,10 +12,10 @@ echo "-y- from internal storage "
 echo "-n- from usb device"
 read ans
 if [ $ans = "y" ]; then
-  path='/home/scarecrow/Bureau/bramble/result'
+  path='/home/$USER/Desktop/bramble/result'
   echo $path
 else
-  path='/media/pi'
+  path="/media/$USER"
 fi
 
 clear
