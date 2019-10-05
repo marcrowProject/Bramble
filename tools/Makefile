@@ -7,10 +7,13 @@ OBJECTS=$(SOURCES:.cpp=.o)
 DEPS=$(SOURCES:.cpp=.d)
 EXECUTABLE=gadget
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(SOURCES) $(EXECUTABLE) wifi
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+wifi : src/wifi.cpp
+		$(CC) $(LDFLAGS) -std=c++11 src/wifi.cpp -o $@
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -20,6 +23,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) -MM -MD $(CFLAGS) $< -o $@
 clean:
 	rm -f gadget src/*.o src/*.d src/*~ *~
+	rm -f wifi src/*.o src/*.d src/*~ *~
 
 
 #Crée les dépendances avec les .h si un .h modifié on refait le make
