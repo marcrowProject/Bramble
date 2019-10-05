@@ -56,6 +56,7 @@ int change_wifi(std::string interface, std::string mac, std::string pass, const 
     std::ofstream configFile;
     std::string line, someString;
     int wifiSection=0;
+    int lineExist=false;
 
     copy_file("/etc/network/interfaces","/etc/network/interfaces-old");
     wifiFile.open("/etc/network/interfaces-old", ios::in | ios::app);
@@ -65,6 +66,7 @@ int change_wifi(std::string interface, std::string mac, std::string pass, const 
         while(getline(wifiFile,line)){
             if(line.find("iface "+interface+" inet dhcp") != string::npos){
                 wifiSection=1;
+                lineExist=true;
                 configFile << line << "\n";
                 configFile << "wpa-conf "+path << '\n';
                 continue;
@@ -76,6 +78,11 @@ int change_wifi(std::string interface, std::string mac, std::string pass, const 
                 configFile << line << "\n";
             }
         } //end while
+        if(!lineExist){
+            configFile << "iface "+interface+" inet dhcp" << "\n";
+            configFile << line << "\n";
+            configFile << "wpa-conf "+path << '\n';
+        }
     } //end if
     else{
         std::cerr << "Plroblem with the opening of /etc/network/interfaces or /etc/network/interfaces-old" << '\n';
