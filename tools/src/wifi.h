@@ -15,7 +15,7 @@ int mac_regex(const std::string mac);
 //verify if a file exist
 inline bool file_exist(const std::string& name);
 //create a backup of a file
-int copy_file(const std::string src,const std::string dst);
+void copy_file(const std::string src,const std::string dst);
 //create a file conf to connect to an access point
 //mac = mac address of the access point
 //pass = password of the access point

@@ -37,14 +37,14 @@ inline bool file_exist(const std::string& name) {
 }
 
 //use to have a backup
-int copy_file(const std::string src,const std::string dst){
+void copy_file(const std::string src,const std::string dst){
     std::fstream wifiFile;
     std::ofstream backup;
     std::string line;
     wifiFile.open(src, ios::in | ios::app);
     backup.open(dst, ios::in | ios::trunc);
-    backup << line << endl;
     while(getline(wifiFile,line)){
+	backup << line << endl;
     }
     wifiFile.close();
     backup.close();
@@ -78,7 +78,7 @@ int change_wifi(const std::string interface, const std::string path){
     int lineExist=false;
 
     copy_file("/etc/network/interfaces","/etc/network/interfaces-old");
-    wifiFile.open("/etc/network/interfaces-old", ios::in | ios::app);
+    wifiFile.open("/etc/network/interfaces-old", ios::in);
     configFile.open("/etc/network/interfaces", ios::in | ios::trunc);
 
     if(wifiFile.is_open() && configFile.is_open()){
@@ -98,8 +98,9 @@ int change_wifi(const std::string interface, const std::string path){
             }
         } //end while
         if(!lineExist){
+	    configFile << line << "\n";
+	    configFile << "auto "+interface << "\n";
             configFile << "iface "+interface+" inet dhcp" << "\n";
-            configFile << line << "\n";
             configFile << "wpa-conf "+path << '\n';
         }
     } //end if
