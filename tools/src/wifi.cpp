@@ -122,7 +122,7 @@ int main(int argc, char ** argv)
         std::cerr << "Please specify the interface used, the essid, the bssid of the access point the password" << '\n';
         return -1;
     }
-    //std::string interface = argv[1];
+    std::string interface = argv[1];
     std::string essid = argv[2];
     std::string mac = argv[3];
     std::string pass = argv[4];
