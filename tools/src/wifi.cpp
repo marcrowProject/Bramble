@@ -1,4 +1,4 @@
-#include "wifi.h"
+ #include "wifi.h"
 
 using namespace std;
 
@@ -9,6 +9,22 @@ int mac_regex(const std::string mac){
         return true;
     }
     return false;
+}
+
+int verify_interface(string interface){
+    struct ifaddrs *ifap, *ifa;
+    char *addr;
+    getifaddrs (&ifap);
+    for (ifa = ifap; ifa; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr->sa_family==AF_INET) {
+            if(strcmp(interface.c_str(),ifa->ifa_name)==0){
+                freeifaddrs(ifap);
+                return 0;
+            }
+        }
+    }
+    freeifaddrs(ifap);
+    return -1;
 }
 
 inline bool file_exist(const std::string& name) {
@@ -27,18 +43,21 @@ int copy_file(const std::string src,const std::string dst){
     std::string line;
     wifiFile.open(src, ios::in | ios::app);
     backup.open(dst, ios::in | ios::trunc);
+    backup << line << endl;
     while(getline(wifiFile,line)){
-        backup << line << endl;
     }
     wifiFile.close();
     backup.close();
 }
 
-int add_supplicant(const std::string mac, const std::string pass, const std::string path){
+int add_supplicant(const std::string essid, const std::string mac, const std::string pass, const std::string path){
     std::ofstream wpa_sup;
     wpa_sup.open(path, ios::in | ios::trunc);
     if(wpa_sup.is_open()){
+        wpa_sup << "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" << "\n";
+        wpa_sup << "update_config=1" << "\n";
         wpa_sup << "network={" << "\n";
+        wpa_sup << "ssid=\""+essid+"\"" << "\n";
         wpa_sup << "bssid="+mac << "\n";
         wpa_sup << "psk=\""+pass <<"\"\n";
         wpa_sup << "}";
@@ -51,7 +70,7 @@ int add_supplicant(const std::string mac, const std::string pass, const std::str
     return 0;
 }
 
-int change_wifi(std::string interface, std::string mac, std::string pass, const std::string path){
+int change_wifi(const std::string interface, const std::string path){
     std::fstream wifiFile;
     std::ofstream configFile;
     std::string line, someString;
@@ -64,7 +83,7 @@ int change_wifi(std::string interface, std::string mac, std::string pass, const 
 
     if(wifiFile.is_open() && configFile.is_open()){
         while(getline(wifiFile,line)){
-            if(line.find("iface "+interface+" inet dhcp") != string::npos){
+            if(line.find("iface "+interface+" inet") != string::npos){
                 wifiSection=1;
                 lineExist=true;
                 configFile << line << "\n";
@@ -94,22 +113,33 @@ int change_wifi(std::string interface, std::string mac, std::string pass, const 
 }
 
 
+
+
 int main(int argc, char ** argv)
 {
-    if(argc<4){
+    if(argc<5){
         std::cerr << "Some paramaters are missing:";
-        std::cerr << "Please specify the interface used, the bssid of the access point and the password" << '\n';
+        std::cerr << "Please specify the interface used, the essid, the bssid of the access point the password" << '\n';
         return -1;
     }
-    std::string interface = argv[1];
-    std::string mac = argv[2];
-    std::string pass = argv[3];
+    //std::string interface = argv[1];
+    std::string essid = argv[2];
+    std::string mac = argv[3];
+    std::string pass = argv[4];
+
+    int valid_int = verify_interface(interface);
+    if(valid_int!=0) {
+        std::cout << "Interface Invalide " << '\n';
+        return -4;
+    }
+
     if (mac_regex(mac)){
+        //creates the configuration file to connect to the appropriate wifi
         std::string path="/etc/wpa_supplicant/wpa_supplicant_"+mac+".conf";
-        if(add_supplicant(mac, pass, path)==-1){
+        if(add_supplicant(essid, mac, pass, path)==-1){
             return -2;
         }
-        if(change_wifi(interface,mac,pass,path)==-1){
+        if(change_wifi(interface, path)==-1){
             return -3;
         }
     }
