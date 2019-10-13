@@ -7,12 +7,12 @@ OBJECTS=$(SOURCES:.cpp=.o)
 DEPS=$(SOURCES:.cpp=.d)
 EXECUTABLE=gadget
 
-all: $(SOURCES) $(EXECUTABLE) wifi
+all: $(SOURCES) $(EXECUTABLE) /usr/bin/wifi
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-wifi : src/wifi.cpp
+/usr/bin/wifi : src/wifi.cpp
 		$(CC) $(LDFLAGS) -std=c++11 src/wifi.cpp -o $@
 
 %.o: %.cpp

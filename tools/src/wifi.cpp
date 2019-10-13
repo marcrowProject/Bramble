@@ -17,6 +17,7 @@ int verify_interface(string interface){
     getifaddrs (&ifap);
     for (ifa = ifap; ifa; ifa = ifa->ifa_next) {
         if (ifa->ifa_addr->sa_family==AF_INET) {
+		std::cout << ifa->ifa_name << '\n';
             if(strcmp(interface.c_str(),ifa->ifa_name)==0){
                 freeifaddrs(ifap);
                 return 0;
