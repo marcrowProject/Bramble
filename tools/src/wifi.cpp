@@ -129,11 +129,18 @@ int main(int argc, char ** argv)
     std::string mac = argv[3];
     std::string pass = argv[4];
 
-    int valid_int = verify_interface(interface);
+        std::cout <<" int :"+ interface <<'\n';
+        std::cout <<" essid :"+ essid <<'\n';
+        std::cout <<" mac :"+ mac <<'\n';
+        std::cout <<" pass :"+ pass <<'\n';
+
+//    return 0;
+
+/*    int valid_int = verify_interface(interface);
     if(valid_int!=0) {
         std::cout << "Interface Invalide " << '\n';
         return -4;
-    }
+    }*/
 
     if (mac_regex(mac)){
         //creates the configuration file to connect to the appropriate wifi
