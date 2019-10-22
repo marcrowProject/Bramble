@@ -1,9 +1,10 @@
-<name=" 0 enable web interface" src="./webinterface.sh --start" path="tools/src/webinterface.sh">
-<name=" 1 disable web interface" src="./webinterface.sh --stop" path="tools/src/webinterface.sh">
-<name=" 2 erasing permently a file/folder *" src="./tools/src/safeRemove.sh" path="tools/src/safeRemove.sh">
-<name=" 3 password generator from file" src="./gadget -passGen" path="tools/gadget">
-<name=" 4 scan a network" src="./scan.sh" path="tools/src/scan.sh">
-<name=" 5 scan a network (arp)"  src="./scan.sh arp" path="tools/src/scan.sh">
-<name=" 6 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
+<name=" 0 enable/disable wifi access point" src="./accessPoint.sh" path="tools/src/accessPoint.sh"
+<name=" 1 enable web interface" src="./webinterface.sh --start" path="tools/src/webinterface.sh">
+<name=" 2 disable web interface" src="./webinterface.sh --stop" path="tools/src/webinterface.sh">
+<name=" 3 erasing permently a file/folder *" src="./tools/src/safeRemove.sh" path="tools/src/safeRemove.sh">
+<name=" 4 password generator from file" src="./gadget -passGen" path="tools/gadget">
+<name=" 5 scan a network" src="./scan.sh" path="tools/src/scan.sh">
+<name=" 6 scan a network (arp)"  src="./scan.sh arp" path="tools/src/scan.sh">
+<name=" 7 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
 <name="~Help" src="/conf/help.txt">
 <name="~exit" src="">
