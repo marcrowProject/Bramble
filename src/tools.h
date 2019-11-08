@@ -69,6 +69,8 @@ std::string spaceEchapment(std::string str);
 int readFile(std::string path);
 //browse from the path and select the file
 DIR *  browseFile(std::string & path);
+//browse in directory
+std::pair<std::string,char> browse(std::string& path);
 //browse and permit to select only file, no folders
 DIR * selectFile(std::string & path);
 //load default path and call selectFile

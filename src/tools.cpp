@@ -286,7 +286,9 @@ std::string spaceEchapment(std::string str)
     std::size_t found = str.find(space);
     while (found != std::string::npos) {
         i++;
-        str.replace(found, space.length(), "\\ ");
+        if(space[found-1]!='\\'){
+        	str.replace(found, space.length(), "\\ ");
+        }
         found = str.find(space, found + i);
     }
     std::cout << str << '\n';
@@ -326,6 +328,79 @@ int readFile(std::string path)
     return 0;
 }
 
+std::pair<std::string,char> browse(std::string& path)
+{
+	//find name of user and load the list of usb keys
+    std::string tmp, ans, select;
+    //number of lines displayed
+    int nbDisplayed=6;
+    std::multimap<std::string,char> folder;
+    //open directory and load the name of all file in folder map
+	
+    
+    struct dirent* lecture;
+    DIR* rep;
+    char* dir = new char[path.length() + 1];
+    std::strcpy(dir, path.c_str());
+    rep = opendir(dir);
+	char type='o';
+    if (rep == 0) {
+        std::cout << "Error we can't open the folder " << path << '\n';
+        return std::pair<std::string,char>("",'n');
+    }
+    while ((lecture = readdir(rep))) {
+        if (strcmp(lecture->d_name, "..") != 0 && strcmp(lecture->d_name, ".") != 0){
+        	if(lecture->d_type == DT_DIR) type = 'd';
+        	else if(lecture->d_type == DT_REG) type = 'f';
+        	else type = 'o';
+            folder.insert(std::pair<std::string,char>(lecture->d_name,type));
+        }
+    }
+    int i = -1;
+    std::string name="";
+    ans = "n";
+    std::multimap<std::string,char>::iterator it;
+    while (ans.compare("y") != 0) {
+        i = (i + 1) % folder.size();
+        int j = 0;
+		//-------color meaning display--------
+        std::cout << "color meaning :";
+        	color("32");
+        	std::cout << " directory, ";
+        	color("0");
+        	color("33");
+        	std::cout << "file, ";
+        	color("0");
+        	color("35");
+        	std::cout << "other.\n";
+        	color("0");
+        //-------end color---------------------
+        for (it = folder.begin(); it != folder.end(); it++) {
+            if (i == j) {
+                color("7;1");
+                if(it->second=='d') color("32");
+                else if(it->second=='f') color("33");
+                else color("35");
+                std::cout << "->" << it->first << " " << it->second << "<-" << '\n';
+                name = it->first;
+                type = it->second;
+                color("0");
+            }
+            else {
+            	if(it->second=='d') color("32");
+                else if(it->second=='f') color("33");
+                else color("35");
+                if (i < j && j-i<nbDisplayed) std::cout << it->first << " " << it->second << '\n';
+                color("0");
+            }
+            j = (j + 1) % folder.size();
+        }
+        std::cin >> ans;
+        clrscr();
+    }
+    return std::pair<std::string,char>(name,type);
+}
+
 DIR* browseFile(std::string& path)
 {
     //find name of user and load the list of usb keys
@@ -333,49 +408,22 @@ DIR* browseFile(std::string& path)
     //number of lines displayed
     int nbDisplayed=6;
 
-    //open directory and load the name of all file in folder map
-    std::vector<std::string> folder;
-    struct dirent* lecture;
     DIR* rep;
-    char* dir = new char[path.length() + 1];
-    std::strcpy(dir, path.c_str());
-    rep = opendir(dir);
-    if (rep == 0) {
-        std::cout << "Error we can't open the folder " << path << '\n';
-        return rep;
-    }
-    while ((lecture = readdir(rep))) {
-        if (strcmp(lecture->d_name, "..") != 0 && strcmp(lecture->d_name, ".") != 0)
-            folder.insert(folder.begin(), lecture->d_name);
-    }
+	std::pair<std::string,char> target = browse(path);
+	std::string name = target.first;
+	char type = target.second;
+	//if it's impossible to open the directory
+	if(name==""){
+		std::cout << "error";
+		//rep = selectFile(path);
+	}
 
-    //let the user selected the file or directory
-    int i = -1;
-    ans = "n";
-    while (ans.compare("y") != 0) {
-        i = (i + 1) % folder.size();
-        int j = 0;
-        for (std::vector<std::string>::iterator it = folder.begin(); it < folder.end(); it++) {
-            if (i == j) {
-                color("7;1");
-                std::cout << "->" << *it << "<-" << '\n';
-                color("0");
-            }
-            else {
-                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
-            }
-            j = (j + 1) % folder.size();
-        }
-        std::cin >> ans;
-        clrscr();
-    }
-
-    path += "/" + folder[i];
+    path += "/" + name;
     std::cout << "Y if you want to select it \nN if you want to go in" << '\n';
     std::cin >> ans;
     if (ans.compare("y") == 0 || ans.compare("Y") == 0) {
         closedir(rep);
-        dir = new char[path.length() + 1];
+        char * dir = new char[path.length() + 1];
         std::strcpy(dir, path.c_str());
         rep = opendir(dir);
         return rep;
@@ -389,57 +437,28 @@ DIR* browseFile(std::string& path)
 
 DIR* selectFile(std::string& path)
 {
-    //find name of user and load the list of usb keys
-    std::string tmp, ans, select;
-    //number of lines displayed
-    int nbDisplayed=6;
-
-    //open directory and load the name of all file in folder map
-    std::vector<std::string> folder;
-    struct dirent* lecture;
-    DIR* rep;
-    char* dir = new char[path.length() + 1];
-    std::strcpy(dir, path.c_str());
-    rep = opendir(dir);
-    if (rep == 0) {
-        std::cout << "Error we can't open the folder " << path << '\n';
-        return rep;
-    }
-    while ((lecture = readdir(rep))) {
-        if (strcmp(lecture->d_name, "..") != 0 && strcmp(lecture->d_name, ".") != 0)
-            folder.insert(folder.begin(), lecture->d_name);
-    }
-
-    int i = -1;
-    ans = "n";
-    std::vector<std::string>::iterator it;
-    while (ans.compare("y") != 0) {
-        i = (i + 1) % folder.size();
-        int j = 0;
-        for (it = folder.begin(); it < folder.end(); it++) {
-            if (i == j) {
-                color("7;1");
-                std::cout << "->" << *it << "<-" << '\n';
-                color("0");
-            }
-            else {
-                if (i < j && j-i<nbDisplayed) std::cout << *it << '\n';
-            }
-            j = (j + 1) % folder.size();
-        }
-        std::cin >> ans;
-        clrscr();
-    }
-    path += "/" + folder[i];
+	DIR* rep;
+	std::pair<std::string,char> target = browse(path);
+	std::string name = target.first;
+	char type = target.second;
+	//if it's impossible to open the directory
+	if(name==""){
+		std::cout << "error";
+		rep = selectFile(path);
+	}
+	
+    path += "/" + name;
     std::cout << path << '\n';
     path = spaceEchapment(path);
-    dir = new char[path.length() + 1];
+    char* dir = new char[path.length() + 1];
     std::strcpy(dir, path.c_str());
+    std::cout << "type " << type << "\n";
     rep = opendir(dir);
     if (rep == 0) {
         closedir(rep);
         return rep;
     }
+   // else std::cout << "non";
     rep = selectFile(path);
     return rep;
 }
@@ -513,3 +532,5 @@ std::string selectFromDfPath()
     browseFile(path);
     return path;
 }
+
+
