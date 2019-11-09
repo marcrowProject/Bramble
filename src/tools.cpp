@@ -365,15 +365,15 @@ std::pair<std::string,char> browse(std::string& path)
         int j = 0;
 		//-------color meaning display--------
         std::cout << "color meaning :";
-        	color("32");
-        	std::cout << " directory, ";
-        	color("0");
-        	color("33");
-        	std::cout << "file, ";
-        	color("0");
-        	color("35");
-        	std::cout << "other.\n";
-        	color("0");
+	color("32");
+	std::cout << " directory, ";
+	color("0");
+	color("33");
+	std::cout << "file, ";
+	color("0");
+	color("35");
+	std::cout << "other.\n";
+	color("0");
         //-------end color---------------------
         for (it = folder.begin(); it != folder.end(); it++) {
             if (i == j) {
@@ -381,7 +381,7 @@ std::pair<std::string,char> browse(std::string& path)
                 if(it->second=='d') color("32");
                 else if(it->second=='f') color("33");
                 else color("35");
-                std::cout << "->" << it->first << " " << it->second << "<-" << '\n';
+                std::cout << "->" << it->first << '\n';
                 name = it->first;
                 type = it->second;
                 color("0");
@@ -390,7 +390,7 @@ std::pair<std::string,char> browse(std::string& path)
             	if(it->second=='d') color("32");
                 else if(it->second=='f') color("33");
                 else color("35");
-                if (i < j && j-i<nbDisplayed) std::cout << it->first << " " << it->second << '\n';
+                if (i < j && j-i<nbDisplayed) std::cout << it->first << '\n';
                 color("0");
             }
             j = (j + 1) % folder.size();
@@ -404,7 +404,7 @@ std::pair<std::string,char> browse(std::string& path)
 DIR* browseFile(std::string& path)
 {
     //find name of user and load the list of usb keys
-    std::string tmp, ans, select;
+    std::string ans;
     //number of lines displayed
     int nbDisplayed=6;
 
@@ -415,7 +415,6 @@ DIR* browseFile(std::string& path)
 	//if it's impossible to open the directory
 	if(name==""){
 		std::cout << "error";
-		//rep = selectFile(path);
 	}
 
     path += "/" + name;
@@ -532,5 +531,3 @@ std::string selectFromDfPath()
     browseFile(path);
     return path;
 }
-
-
