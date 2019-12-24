@@ -100,7 +100,7 @@ int change_wifi(const std::string interface, const std::string path){
         } //end while
         if(!lineExist){
 	    configFile << line << "\n";
-	    configFile << "auto "+interface << "\n";
+	    configFile << "allow-hotplug "+interface << "\n";
             configFile << "iface "+interface+" inet dhcp" << "\n";
             configFile << "wpa-conf "+path << '\n';
         }
