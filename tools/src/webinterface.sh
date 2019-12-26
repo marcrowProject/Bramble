@@ -16,7 +16,7 @@ error="[$warning ERROR $transparent]"
 echo $1
 if [ $1 = "--start" ]; then
 	echo -e "$title\tStart the web interface...$transparent"
-    /var/www/bramble-dashboard/bramble/start.sh
+    /var/www/bramble-dashboard/start.sh
     if [ $? -ne 0 ]; then
         echo -e "$error Unable to start the web service or the web console"
     fi
@@ -44,7 +44,7 @@ fi
 
 if [ $1 = "--stop" ]; then
     echo -e "$title\tStop the web interface$transparent"
-    /var/www/bramble-dashboard/bramble/stop.sh
+    /var/www/bramble-dashboard/stop.sh
 fi
 
 echo "Press a button to quit"
