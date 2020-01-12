@@ -53,7 +53,7 @@ while True:
     if (state == 0) :
     	device.emit(uinput.KEY_LEFTCTRL, 1) 
     	device.emit(uinput.KEY_C, 1)
-        device.emit(uinput.KEY_ENTER, 1)
-    	device.emit(uinput.KEY_ENTER, 0)
+        device.emit(uinput.KEY_LEFTCTRL, 0) 
+        device.emit(uinput.KEY_C, 0)
     # avoids using too many resources
     time.sleep(0.3)
