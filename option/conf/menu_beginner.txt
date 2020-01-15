@@ -4,11 +4,12 @@
 <name=" 3 add a password to defaults password" src="" path="">
 <name=" 4 delete a password from defaults password" src="" path="">
 <name=" 5 display code to reset password (web)" src="./reset_code.sh" path="option/src/reset_code.sh">
-<name=" 6 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
-<name=" 7 change keyboard language" src="" path="">
-<name=" 8 change orientation left/right hander" src="./changeOrientation.sh" path="option/src/changeOrientation.sh">
-<name=" 9 switch to hdmi/built-in display" src="./hdmi.sh" path="option/src/hdmi.sh">
-<name="10 switch to light/classic menu" src="./changeLvl.sh" path="option/src/changeLvl.sh">
+<name=" 7 change an user password (web)" src="./change_web_password.sh" path="option/src/change_web_password.sh">
+<name=" 7 change mac adress" src="./changeMac.sh" path="tools/src/changeMac.sh">
+<name=" 8 change keyboard language" src="" path="">
+<name=" 9 change orientation left/right hander" src="./changeOrientation.sh" path="option/src/changeOrientation.sh">
+<name="10 switch to hdmi/built-in display" src="./hdmi.sh" path="option/src/hdmi.sh">
+<name="11 switch to light/classic menu" src="./changeLvl.sh" path="option/src/changeLvl.sh">
 <name="+Update" src="" path="option/src/update.sh">
 <name="~Help" src="option/conf/help.txt">
 <name="~Restart" src="reboot" path="/sbin/reboot">
