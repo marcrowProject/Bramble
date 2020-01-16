@@ -1,5 +1,6 @@
-
-![alt text](https://github.com/marcrowProject/Bramble/blob/master/result/Bramble-logo%20alpha.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/37142652/72528402-35978500-386b-11ea-88c5-8eeff321cc5e.png" width="300">
+</p>
    
 # :seedling: Bramble a new hacking Open source suite.
 ## :scroll: Summary
