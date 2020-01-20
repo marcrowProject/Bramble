@@ -1,5 +1,6 @@
-
-![alt text](https://github.com/marcrowProject/Bramble/blob/master/result/Bramble-logo%20alpha.png)
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/37142652/72528402-35978500-386b-11ea-88c5-8eeff321cc5e.png" width="300">
+</p>
    
 # :seedling: Bramble a new hacking Open source suite.
 ## :scroll: Summary
@@ -81,14 +82,15 @@ step by step.
 It may become compatible with others devices powered by kali linux.
 
 ##  :thumbsup: Credits
+ ### App
  Fluxion 
+ ### Pentest
+ Édouard Huon
+ 
+ 
 ## :white_square_button: Screenshots
-
-
 
 ![alt text](https://user-images.githubusercontent.com/37142652/37241895-edb24fba-2460-11e8-8985-312442e1ac6d.gif)
 
-### First prototype :
-![alt text](https://user-images.githubusercontent.com/37142652/41043460-47e3cbb6-69a4-11e8-8082-b6ea5610a6a3.png)
 
 
