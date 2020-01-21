@@ -19,6 +19,8 @@ if [ $# -gt 0 ]; then
 			else
 				lvl=1
 			fi
+			echo $lvl > $BRAMBLE_PATH/conf/lvl
+			exit
 		else
 			if [ "$lvl" == "0" ];then
 				lvl=1
@@ -27,6 +29,7 @@ if [ $# -gt 0 ]; then
 			fi 
 		echo $lvl > $BRAMBLE_PATH/conf/lvl
 		exit
+		fi
 	fi
 fi
 
